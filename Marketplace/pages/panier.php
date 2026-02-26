@@ -11,7 +11,6 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Récupérer les articles du panier
 try {
     $stmt = $pdo->prepare("SELECT p.*, a.titre, a.prix, a.image_url, a.vendeur_id,
                                   u.prenom AS vendeur_prenom, u.nom AS vendeur_nom
@@ -33,66 +32,87 @@ foreach ($panier_items as $item) {
 
 <main class="py-4">
     <div class="container">
-        <h1 class="mb-4"><i class="bi bi-cart3"></i> Mon Panier</h1>
+        <h1 class="h3 mb-4"><i class="bi bi-cart3 me-2"></i>Mon Panier</h1>
 
         <?php if (!empty($panier_items)): ?>
-            <div class="row">
+            <div class="row g-4">
                 <div class="col-lg-8">
-                    <?php foreach ($panier_items as $item): ?>
-                        <div class="cart-item d-flex align-items-center">
-                            <img src="<?php echo $base_url . htmlspecialchars($item['image_url'] ?? 'images/placeholder.png'); ?>"
-                                 class="rounded me-3" style="width: 80px; height: 80px; object-fit: cover;"
-                                 alt="<?php echo htmlspecialchars($item['titre']); ?>">
-                            <div class="flex-grow-1">
-                                <h5 class="mb-1">
-                                    <a href="article.php?id=<?php echo $item['article_id']; ?>" class="text-decoration-none">
-                                        <?php echo htmlspecialchars($item['titre']); ?>
-                                    </a>
-                                </h5>
-                                <p class="text-muted mb-0 small">
-                                    Vendeur : <?php echo htmlspecialchars($item['vendeur_prenom'] . ' ' . $item['vendeur_nom']); ?>
-                                </p>
-                            </div>
-                            <div class="text-end">
-                                <p class="fw-bold text-primary mb-1"><?php echo number_format($item['prix'], 2, ',', ' '); ?> &euro;</p>
-                                <button class="btn btn-outline-danger btn-sm btn-remove-cart" data-article-id="<?php echo $item['article_id']; ?>">
-                                    <i class="bi bi-trash"></i> Retirer
-                                </button>
-                            </div>
+                    <div class="card p-3 shadow-sm" style="border-radius: 16px;">
+                        <div class="d-flex justify-content-between align-items-center px-3 pb-3 border-bottom">
+                            <h6 class="mb-0 fw-bold"><?php echo count($panier_items); ?> article<?php echo count($panier_items) > 1 ? 's' : ''; ?></h6>
+                            <span class="text-muted small">Prix</span>
                         </div>
-                    <?php endforeach; ?>
+                        <?php foreach ($panier_items as $item): ?>
+                            <div class="cart-item d-flex align-items-center px-3">
+                                <img src="<?php echo $base_url . htmlspecialchars($item['image_url'] ?? 'images/placeholder.png'); ?>"
+                                     class="rounded me-3" style="width: 90px; height: 90px; object-fit: cover;"
+                                     alt="<?php echo htmlspecialchars($item['titre']); ?>">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">
+                                        <a href="article.php?id=<?php echo $item['article_id']; ?>" class="text-decoration-none text-dark">
+                                            <?php echo htmlspecialchars($item['titre']); ?>
+                                        </a>
+                                    </h6>
+                                    <p class="text-muted mb-1 small">
+                                        <i class="bi bi-person"></i> <?php echo htmlspecialchars($item['vendeur_prenom'] . ' ' . $item['vendeur_nom']); ?>
+                                    </p>
+                                    <button class="btn btn-sm btn-outline-danger btn-remove-cart" data-article-id="<?php echo $item['article_id']; ?>">
+                                        <i class="bi bi-trash3"></i> Retirer
+                                    </button>
+                                </div>
+                                <div class="text-end">
+                                    <p class="fw-bold text-primary fs-5 mb-0"><?php echo number_format($item['prix'], 2, ',', ' '); ?> &euro;</p>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
+
                 <div class="col-lg-4">
-                    <div class="card p-4 shadow-sm">
-                        <h5>Récapitulatif</h5>
-                        <hr>
+                    <div class="card p-4 shadow-sm cart-summary" style="border-radius: 16px;">
+                        <h5 class="fw-bold mb-3">Récapitulatif</h5>
                         <div class="d-flex justify-content-between mb-2">
-                            <span>Articles (<?php echo count($panier_items); ?>)</span>
-                            <span><?php echo number_format($total, 2, ',', ' '); ?> &euro;</span>
+                            <span class="text-muted">Sous-total (<?php echo count($panier_items); ?> article<?php echo count($panier_items) > 1 ? 's' : ''; ?>)</span>
+                            <span class="fw-semibold"><?php echo number_format($total, 2, ',', ' '); ?> &euro;</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
-                            <span>Livraison</span>
-                            <span class="text-success">Gratuite</span>
+                            <span class="text-muted">Livraison</span>
+                            <span class="text-success fw-semibold"><i class="bi bi-check-circle"></i> Gratuite</span>
                         </div>
                         <hr>
-                        <div class="d-flex justify-content-between fw-bold fs-5">
+                        <div class="d-flex justify-content-between fw-bold fs-5 mb-3">
                             <span>Total</span>
                             <span class="text-primary"><?php echo number_format($total, 2, ',', ' '); ?> &euro;</span>
                         </div>
                         <?php if ($total > 100): ?>
-                            <div class="alert alert-success mt-3 small">
-                                <i class="bi bi-gift"></i> Vous êtes éligible à une carte de réduction de 10 à 20% !
+                            <div class="alert alert-success d-flex align-items-start gap-2 mb-3" style="border-radius: 10px;">
+                                <i class="bi bi-gift-fill fs-5 mt-1"></i>
+                                <div>
+                                    <strong>Vous êtes éligible !</strong>
+                                    <p class="mb-0 small">Carte de réduction de 10 à 20% après cet achat.</p>
+                                </div>
                             </div>
                         <?php endif; ?>
-                        <a href="paiement.php" class="btn btn-primary btn-lg w-100 mt-3">Passer au paiement</a>
+                        <a href="paiement.php" class="btn btn-primary btn-lg w-100">
+                            <i class="bi bi-lock me-1"></i> Passer au paiement
+                        </a>
+                        <a href="tout_parcourir.php" class="btn btn-outline-secondary w-100 mt-2">
+                            <i class="bi bi-arrow-left me-1"></i> Continuer mes achats
+                        </a>
                     </div>
                 </div>
             </div>
         <?php else: ?>
-            <div class="text-center text-muted py-5">
-                <i class="bi bi-cart-x display-4"></i>
-                <p class="mt-3">Votre panier est vide.</p>
-                <a href="tout_parcourir.php" class="btn btn-primary">Parcourir les articles</a>
+            <div class="text-center py-5">
+                <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
+                     style="width:100px;height:100px;background:rgba(var(--omnes-primary-rgb),0.1);">
+                    <i class="bi bi-cart-x text-primary" style="font-size:3rem;"></i>
+                </div>
+                <h4 class="mt-2">Votre panier est vide</h4>
+                <p class="text-muted mb-4">Parcourez notre marketplace pour trouver des articles intéressants !</p>
+                <a href="tout_parcourir.php" class="btn btn-primary btn-lg">
+                    <i class="bi bi-search me-2"></i> Parcourir les articles
+                </a>
             </div>
         <?php endif; ?>
     </div>

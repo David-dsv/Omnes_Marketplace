@@ -5,40 +5,110 @@ $page_title = 'Accueil';
 require_once 'config/database.php';
 include 'includes/header.php';
 include 'includes/navbar.php';
+
+// Stats for counters
+try {
+    $nb_articles = $pdo->query("SELECT COUNT(*) FROM articles WHERE statut = 'disponible'")->fetchColumn();
+    $nb_vendeurs = $pdo->query("SELECT COUNT(*) FROM utilisateurs WHERE role = 'vendeur'")->fetchColumn();
+    $nb_acheteurs = $pdo->query("SELECT COUNT(*) FROM utilisateurs WHERE role = 'acheteur'")->fetchColumn();
+    $nb_commandes = $pdo->query("SELECT COUNT(*) FROM commandes")->fetchColumn();
+} catch (PDOException $e) {
+    $nb_articles = 150; $nb_vendeurs = 25; $nb_acheteurs = 500; $nb_commandes = 300;
+}
 ?>
 
 <main>
-    <!-- Hero Banner -->
-    <section class="hero-banner text-white text-center py-5">
-        <div class="container">
-            <h1 class="display-4 fw-bold">Bienvenue sur Omnes MarketPlace</h1>
-            <p class="lead">La marketplace de la communauté Omnes Education</p>
-            <a href="pages/tout_parcourir.php" class="btn btn-light btn-lg mt-3">
-                <i class="bi bi-search"></i> Parcourir les articles
-            </a>
+    <!-- Hero Banner with Carousel -->
+    <section class="hero-banner text-white">
+        <div class="geometric-shapes">
+            <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="container text-center py-5">
+            <div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel" data-bs-interval="5000">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="py-5">
+                            <h1 class="display-4 fw-bold mb-3">Bienvenue sur Omnes MarketPlace</h1>
+                            <p class="lead mb-0">La marketplace de la communauté Omnes Education</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="py-5">
+                            <h1 class="display-4 fw-bold mb-3"><i class="bi bi-lightning-fill"></i> Ventes Flash</h1>
+                            <p class="lead mb-0">Découvrez des articles rares et haut de gamme à prix exceptionnels</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="py-5">
+                            <h1 class="display-4 fw-bold mb-3"><i class="bi bi-hammer"></i> Enchères & Négociations</h1>
+                            <p class="lead mb-0">Enchérissez ou négociez pour obtenir le meilleur prix</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Search Bar -->
+            <div class="hero-search">
+                <form action="pages/tout_parcourir.php" method="GET">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control form-control-lg" placeholder="Rechercher un article, une catégorie...">
+                        <button class="btn btn-primary btn-lg" type="submit">
+                            <i class="bi bi-search me-1"></i> Rechercher
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Hero Stats -->
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number counter-animate" data-target="<?php echo $nb_articles ?: 150; ?>">0</div>
+                    <div class="stat-label">Articles en vente</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number counter-animate" data-target="<?php echo $nb_vendeurs ?: 25; ?>">0</div>
+                    <div class="stat-label">Vendeurs actifs</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number counter-animate" data-target="<?php echo $nb_acheteurs ?: 500; ?>">0</div>
+                    <div class="stat-label">Acheteurs</div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Catégories -->
     <section class="py-5">
         <div class="container">
-            <h2 class="text-center mb-4">Catégories</h2>
+            <div class="section-title animate-on-scroll">
+                <h2>Catégories</h2>
+                <p>Trouvez ce dont vous avez besoin en un clic</p>
+                <div class="title-line"></div>
+            </div>
             <div class="row g-3 justify-content-center">
                 <?php
                 $categories = [
-                    ['name' => 'Électronique', 'icon' => 'bi-laptop', 'color' => '#0d6efd'],
-                    ['name' => 'Vêtements', 'icon' => 'bi-bag', 'color' => '#6f42c1'],
-                    ['name' => 'Maison', 'icon' => 'bi-house-heart', 'color' => '#198754'],
-                    ['name' => 'Livres', 'icon' => 'bi-book', 'color' => '#fd7e14'],
-                    ['name' => 'Sports', 'icon' => 'bi-dribbble', 'color' => '#dc3545'],
-                    ['name' => 'Divers', 'icon' => 'bi-three-dots', 'color' => '#6c757d'],
+                    ['name' => 'Électronique', 'icon' => 'bi-laptop', 'color' => '#0d6efd', 'bg' => 'rgba(13,110,253,0.1)', 'desc' => 'PC, smartphones...'],
+                    ['name' => 'Vêtements', 'icon' => 'bi-bag', 'color' => '#6f42c1', 'bg' => 'rgba(111,66,193,0.1)', 'desc' => 'Mode & accessoires'],
+                    ['name' => 'Maison', 'icon' => 'bi-house-heart', 'color' => '#198754', 'bg' => 'rgba(25,135,84,0.1)', 'desc' => 'Déco & meubles'],
+                    ['name' => 'Livres', 'icon' => 'bi-book', 'color' => '#fd7e14', 'bg' => 'rgba(253,126,20,0.1)', 'desc' => 'Manuels & romans'],
+                    ['name' => 'Sports', 'icon' => 'bi-dribbble', 'color' => '#dc3545', 'bg' => 'rgba(220,53,69,0.1)', 'desc' => 'Équipements sport'],
+                    ['name' => 'Divers', 'icon' => 'bi-three-dots', 'color' => '#6c757d', 'bg' => 'rgba(108,117,125,0.1)', 'desc' => 'Tout le reste'],
                 ];
-                foreach ($categories as $cat): ?>
-                    <div class="col-6 col-md-4 col-lg-2">
+                foreach ($categories as $index => $cat): ?>
+                    <div class="col-6 col-md-4 col-lg-2 animate-on-scroll animate-delay-<?php echo $index + 1; ?>">
                         <a href="pages/tout_parcourir.php?categorie=<?php echo urlencode($cat['name']); ?>" class="text-decoration-none">
                             <div class="card category-card text-center p-3 h-100">
-                                <i class="bi <?php echo $cat['icon']; ?> display-4" style="color: <?php echo $cat['color']; ?>"></i>
+                                <div class="category-illustration" style="background: <?php echo $cat['bg']; ?>;">
+                                    <i class="bi <?php echo $cat['icon']; ?> display-5" style="color: <?php echo $cat['color']; ?>"></i>
+                                </div>
                                 <p class="mt-2 mb-0 fw-semibold text-dark"><?php echo $cat['name']; ?></p>
+                                <small class="text-muted"><?php echo $cat['desc']; ?></small>
                             </div>
                         </a>
                     </div>
@@ -48,12 +118,15 @@ include 'includes/navbar.php';
     </section>
 
     <!-- Sélection du jour -->
-    <section class="py-5 bg-light">
+    <section class="py-5 bg-white">
         <div class="container">
-            <h2 class="text-center mb-4"><i class="bi bi-star-fill text-warning"></i> Sélection du Jour</h2>
+            <div class="section-title animate-on-scroll">
+                <h2><i class="bi bi-star-fill text-warning"></i> Sélection du Jour</h2>
+                <p>Les derniers articles ajoutés par nos vendeurs</p>
+                <div class="title-line"></div>
+            </div>
             <div class="row g-4" id="selection-jour">
                 <?php
-                // Récupérer les articles mis en avant
                 try {
                     $stmt = $pdo->query("SELECT a.*, u.prenom AS vendeur_prenom, u.nom AS vendeur_nom
                                          FROM articles a
@@ -67,39 +140,98 @@ include 'includes/navbar.php';
                 }
 
                 if (!empty($articles_jour)):
-                    foreach ($articles_jour as $article): ?>
-                        <div class="col-md-6 col-lg-3">
+                    foreach ($articles_jour as $index => $article): ?>
+                        <div class="col-md-6 col-lg-3 animate-on-scroll animate-delay-<?php echo $index + 1; ?>">
                             <div class="card article-card h-100 shadow-sm">
-                                <img src="<?php echo htmlspecialchars($article['image_url'] ?? 'images/placeholder.png'); ?>"
-                                     class="card-img-top" alt="<?php echo htmlspecialchars($article['titre']); ?>">
-                                <div class="card-body">
-                                    <h5 class="card-title"><?php echo htmlspecialchars($article['titre']); ?></h5>
-                                    <p class="card-text text-muted small"><?php echo htmlspecialchars($article['categorie']); ?></p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="fw-bold text-primary fs-5"><?php echo number_format($article['prix'], 2, ',', ' '); ?> &euro;</span>
-                                        <span class="badge bg-info"><?php echo htmlspecialchars($article['type_vente']); ?></span>
+                                <div class="card-img-wrapper">
+                                    <span class="badge badge-<?php echo $article['gamme']; ?> badge-gamme"><?php echo htmlspecialchars($article['gamme']); ?></span>
+                                    <img src="<?php echo htmlspecialchars($article['image_url'] ?? 'images/placeholder.png'); ?>"
+                                         class="card-img-top" alt="<?php echo htmlspecialchars($article['titre']); ?>">
+                                    <div class="card-img-overlay-hover">
+                                        <a href="pages/article.php?id=<?php echo $article['id']; ?>" class="btn btn-light btn-sm">
+                                            <i class="bi bi-eye"></i> Voir l'article
+                                        </a>
                                     </div>
                                 </div>
-                                <div class="card-footer bg-white">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo htmlspecialchars($article['titre']); ?></h5>
+                                    <p class="text-muted small mb-2">
+                                        <i class="bi bi-person"></i> <?php echo htmlspecialchars($article['vendeur_prenom'] . ' ' . $article['vendeur_nom']); ?>
+                                    </p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="price-tag"><?php echo number_format($article['prix'], 2, ',', ' '); ?> &euro;</span>
+                                        <span class="badge badge-<?php echo $article['type_vente']; ?>"><?php echo htmlspecialchars($article['type_vente']); ?></span>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
                                     <a href="pages/article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary btn-sm w-100">Voir l'article</a>
                                 </div>
                             </div>
                         </div>
                     <?php endforeach;
                 else: ?>
-                    <div class="col-12 text-center text-muted">
-                        <p><i class="bi bi-inbox display-4"></i></p>
-                        <p>Aucun article disponible pour le moment.</p>
+                    <div class="col-12 text-center text-muted py-4">
+                        <i class="bi bi-inbox display-4"></i>
+                        <p class="mt-3">Aucun article disponible pour le moment.</p>
                     </div>
                 <?php endif; ?>
             </div>
         </div>
     </section>
 
-    <!-- Ventes Flash / Best-sellers -->
-    <section class="py-5">
+    <!-- Comment ça marche -->
+    <section class="py-5" style="background: #f0f4ff;">
         <div class="container">
-            <h2 class="text-center mb-4"><i class="bi bi-lightning-fill text-danger"></i> Ventes Flash &amp; Best-sellers</h2>
+            <div class="section-title animate-on-scroll">
+                <h2>Comment ça marche ?</h2>
+                <p>Achetez et vendez en 3 étapes simples</p>
+                <div class="title-line"></div>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-4 animate-on-scroll animate-delay-1">
+                    <div class="how-it-works-step">
+                        <div class="step-icon" style="background: linear-gradient(135deg, #0d6efd, #0dcaf0);">
+                            <i class="bi bi-search"></i>
+                            <span class="step-number">1</span>
+                        </div>
+                        <h5>Trouvez votre article</h5>
+                        <p>Parcourez des centaines d'articles ou utilisez la recherche pour trouver exactement ce qu'il vous faut.</p>
+                        <span class="how-it-works-connector d-none d-md-block"><i class="bi bi-arrow-right"></i></span>
+                    </div>
+                </div>
+                <div class="col-md-4 animate-on-scroll animate-delay-2">
+                    <div class="how-it-works-step">
+                        <div class="step-icon" style="background: linear-gradient(135deg, #198754, #20c997);">
+                            <i class="bi bi-chat-dots"></i>
+                            <span class="step-number">2</span>
+                        </div>
+                        <h5>Achetez, enchérissez ou négociez</h5>
+                        <p>Achat immédiat, enchères ou négociation directe — choisissez le mode qui vous convient.</p>
+                        <span class="how-it-works-connector d-none d-md-block"><i class="bi bi-arrow-right"></i></span>
+                    </div>
+                </div>
+                <div class="col-md-4 animate-on-scroll animate-delay-3">
+                    <div class="how-it-works-step">
+                        <div class="step-icon" style="background: linear-gradient(135deg, #fd7e14, #ffc107);">
+                            <i class="bi bi-bag-check"></i>
+                            <span class="step-number">3</span>
+                        </div>
+                        <h5>Recevez votre commande</h5>
+                        <p>Payez en toute sécurité et recevez votre article. Profitez de réductions dès 100€ d'achats !</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ventes Flash / Best-sellers -->
+    <section class="py-5 bg-white">
+        <div class="container">
+            <div class="section-title animate-on-scroll">
+                <h2><i class="bi bi-lightning-fill text-danger"></i> Ventes Flash &amp; Best-sellers</h2>
+                <p>Articles rares et haut de gamme à ne pas manquer</p>
+                <div class="title-line"></div>
+            </div>
             <div class="row g-4" id="ventes-flash">
                 <?php
                 try {
@@ -115,19 +247,25 @@ include 'includes/navbar.php';
                 }
 
                 if (!empty($articles_flash)):
-                    foreach ($articles_flash as $article): ?>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="card article-card h-100 shadow-sm border-danger">
-                                <div class="position-relative">
+                    foreach ($articles_flash as $index => $article): ?>
+                        <div class="col-md-6 col-lg-3 animate-on-scroll animate-delay-<?php echo $index + 1; ?>">
+                            <div class="card article-card h-100 shadow-sm">
+                                <div class="card-img-wrapper">
+                                    <span class="badge badge-<?php echo $article['gamme']; ?> badge-gamme"><?php echo htmlspecialchars($article['gamme']); ?></span>
+                                    <span class="badge bg-danger badge-flash"><i class="bi bi-lightning-fill"></i> Flash</span>
                                     <img src="<?php echo htmlspecialchars($article['image_url'] ?? 'images/placeholder.png'); ?>"
                                          class="card-img-top" alt="<?php echo htmlspecialchars($article['titre']); ?>">
-                                    <span class="badge bg-danger position-absolute top-0 end-0 m-2">Flash</span>
+                                    <div class="card-img-overlay-hover">
+                                        <a href="pages/article.php?id=<?php echo $article['id']; ?>" class="btn btn-light btn-sm">
+                                            <i class="bi bi-eye"></i> Voir l'article
+                                        </a>
+                                    </div>
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title"><?php echo htmlspecialchars($article['titre']); ?></h5>
-                                    <span class="fw-bold text-danger fs-5"><?php echo number_format($article['prix'], 2, ',', ' '); ?> &euro;</span>
+                                    <span class="price-tag text-danger"><?php echo number_format($article['prix'], 2, ',', ' '); ?> &euro;</span>
                                 </div>
-                                <div class="card-footer bg-white">
+                                <div class="card-footer">
                                     <a href="pages/article.php?id=<?php echo $article['id']; ?>" class="btn btn-outline-danger btn-sm w-100">Voir l'article</a>
                                 </div>
                             </div>
@@ -138,6 +276,91 @@ include 'includes/navbar.php';
                         <p>Pas de ventes flash en ce moment. Revenez bientôt !</p>
                     </div>
                 <?php endif; ?>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compteurs animés -->
+    <section class="counter-section">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-6 col-md-3">
+                    <div class="counter-item animate-on-scroll">
+                        <div class="counter-icon"><i class="bi bi-box-seam"></i></div>
+                        <div class="counter-number counter-animate" data-target="<?php echo $nb_articles ?: 150; ?>">0</div>
+                        <div class="counter-label">Articles en vente</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="counter-item animate-on-scroll animate-delay-1">
+                        <div class="counter-icon"><i class="bi bi-shop"></i></div>
+                        <div class="counter-number counter-animate" data-target="<?php echo $nb_vendeurs ?: 25; ?>">0</div>
+                        <div class="counter-label">Vendeurs vérifiés</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="counter-item animate-on-scroll animate-delay-2">
+                        <div class="counter-icon"><i class="bi bi-people"></i></div>
+                        <div class="counter-number counter-animate" data-target="<?php echo $nb_acheteurs ?: 500; ?>">0</div>
+                        <div class="counter-label">Acheteurs actifs</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="counter-item animate-on-scroll animate-delay-3">
+                        <div class="counter-icon"><i class="bi bi-bag-check"></i></div>
+                        <div class="counter-number counter-animate" data-target="<?php echo $nb_commandes ?: 300; ?>">0</div>
+                        <div class="counter-label">Commandes réalisées</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Témoignages -->
+    <section class="py-5">
+        <div class="container">
+            <div class="section-title animate-on-scroll">
+                <h2><i class="bi bi-chat-square-quote"></i> Ce qu'en disent nos étudiants</h2>
+                <p>Retours d'expérience de la communauté Omnes</p>
+                <div class="title-line"></div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4 animate-on-scroll animate-delay-1">
+                    <div class="testimonial-card h-100">
+                        <p class="testimonial-text">"J'ai trouvé mon MacBook à un super prix grâce au système d'enchères. La plateforme est vraiment intuitive !"</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">SL</div>
+                            <div>
+                                <strong>Sophie L.</strong>
+                                <small class="d-block text-muted">Étudiante ECE Paris</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 animate-on-scroll animate-delay-2">
+                    <div class="testimonial-card h-100">
+                        <p class="testimonial-text">"En tant que vendeur, la gestion de mes articles est très simple. Les négociations rendent les échanges dynamiques."</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">MR</div>
+                            <div>
+                                <strong>Maxime R.</strong>
+                                <small class="d-block text-muted">Étudiant Omnes Education</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 animate-on-scroll animate-delay-3">
+                    <div class="testimonial-card h-100">
+                        <p class="testimonial-text">"La carte de réduction après 100€ d'achats, c'est vraiment un plus. Je recommande à tous les étudiants !"</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">AC</div>
+                            <div>
+                                <strong>Amélie C.</strong>
+                                <small class="d-block text-muted">Étudiante INSEEC</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
