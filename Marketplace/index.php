@@ -20,9 +20,6 @@ try {
 <main>
     <!-- Hero Banner with Carousel -->
     <section class="hero-banner text-white">
-        <div class="geometric-shapes">
-            <span></span><span></span><span></span><span></span><span></span>
-        </div>
         <div class="container text-center py-5">
             <div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel" data-bs-interval="5000">
                 <div class="carousel-indicators">
