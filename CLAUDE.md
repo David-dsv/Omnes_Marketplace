@@ -83,6 +83,12 @@ ProjetWebAPP/
 - **Map**: Google Maps showing Campus ECE Paris
 - **Bonus features**: Rating/review system, discount cards (10-20% for purchases > 100€), special event themes
 
+## Design Rules (STRICT)
+
+- **NO emojis anywhere on the site** — no decorative icons in section titles, no heart/star/lightning icons used as decoration
+- **NO hover scale/rotate animations** — no `transform: scale()` or `transform: rotate()` on hover for icons, images, or cards
+- **Keep it clean and professional** — avoid effects that look AI-generated (excessive gradients, floating shapes, icon animations)
+
 ## Navigation Structure
 
 Accueil | Tout Parcourir | Notifications | Panier | Votre Compte

@@ -39,13 +39,13 @@ try {
                     </div>
                     <div class="carousel-item">
                         <div class="py-5">
-                            <h1 class="display-4 fw-bold mb-3"><i class="bi bi-lightning-fill"></i> Ventes Flash</h1>
+                            <h1 class="display-4 fw-bold mb-3">Ventes Flash</h1>
                             <p class="lead mb-0">Découvrez des articles rares et haut de gamme à prix exceptionnels</p>
                         </div>
                     </div>
                     <div class="carousel-item">
                         <div class="py-5">
-                            <h1 class="display-4 fw-bold mb-3"><i class="bi bi-hammer"></i> Enchères & Négociations</h1>
+                            <h1 class="display-4 fw-bold mb-3">Enchères & Négociations</h1>
                             <p class="lead mb-0">Enchérissez ou négociez pour obtenir le meilleur prix</p>
                         </div>
                     </div>
@@ -93,21 +93,18 @@ try {
             <div class="row g-3 justify-content-center">
                 <?php
                 $categories = [
-                    ['name' => 'Électronique', 'icon' => 'bi-laptop', 'color' => '#0d6efd', 'bg' => 'rgba(13,110,253,0.1)', 'desc' => 'PC, smartphones...'],
-                    ['name' => 'Vêtements', 'icon' => 'bi-bag', 'color' => '#6f42c1', 'bg' => 'rgba(111,66,193,0.1)', 'desc' => 'Mode & accessoires'],
-                    ['name' => 'Maison', 'icon' => 'bi-house-heart', 'color' => '#198754', 'bg' => 'rgba(25,135,84,0.1)', 'desc' => 'Déco & meubles'],
-                    ['name' => 'Livres', 'icon' => 'bi-book', 'color' => '#fd7e14', 'bg' => 'rgba(253,126,20,0.1)', 'desc' => 'Manuels & romans'],
-                    ['name' => 'Sports', 'icon' => 'bi-dribbble', 'color' => '#dc3545', 'bg' => 'rgba(220,53,69,0.1)', 'desc' => 'Équipements sport'],
-                    ['name' => 'Divers', 'icon' => 'bi-three-dots', 'color' => '#6c757d', 'bg' => 'rgba(108,117,125,0.1)', 'desc' => 'Tout le reste'],
+                    ['name' => 'Électronique', 'color' => '#0d6efd', 'desc' => 'PC, smartphones...'],
+                    ['name' => 'Vêtements', 'color' => '#6f42c1', 'desc' => 'Mode & accessoires'],
+                    ['name' => 'Maison', 'color' => '#198754', 'desc' => 'Déco & meubles'],
+                    ['name' => 'Livres', 'color' => '#fd7e14', 'desc' => 'Manuels & romans'],
+                    ['name' => 'Sports', 'color' => '#dc3545', 'desc' => 'Équipements sport'],
+                    ['name' => 'Divers', 'color' => '#6c757d', 'desc' => 'Tout le reste'],
                 ];
                 foreach ($categories as $index => $cat): ?>
                     <div class="col-6 col-md-4 col-lg-2 animate-on-scroll animate-delay-<?php echo $index + 1; ?>">
                         <a href="pages/tout_parcourir.php?categorie=<?php echo urlencode($cat['name']); ?>" class="text-decoration-none">
                             <div class="card category-card text-center p-3 h-100">
-                                <div class="category-illustration" style="background: <?php echo $cat['bg']; ?>;">
-                                    <i class="bi <?php echo $cat['icon']; ?> display-5" style="color: <?php echo $cat['color']; ?>"></i>
-                                </div>
-                                <p class="mt-2 mb-0 fw-semibold text-dark"><?php echo $cat['name']; ?></p>
+                                <p class="mt-2 mb-0 fw-semibold text-dark" style="color: <?php echo $cat['color']; ?> !important;"><?php echo $cat['name']; ?></p>
                                 <small class="text-muted"><?php echo $cat['desc']; ?></small>
                             </div>
                         </a>
@@ -121,7 +118,7 @@ try {
     <section class="py-5 bg-white">
         <div class="container">
             <div class="section-title animate-on-scroll">
-                <h2><i class="bi bi-star-fill text-warning"></i> Sélection du Jour</h2>
+                <h2>Sélection du Jour</h2>
                 <p>Les derniers articles ajoutés par nos vendeurs</p>
                 <div class="title-line"></div>
             </div>
@@ -171,7 +168,7 @@ try {
                     <?php endforeach;
                 else: ?>
                     <div class="col-12 text-center text-muted py-4">
-                        <i class="bi bi-inbox display-4"></i>
+                        <p class="display-4">Aucun article</p>
                         <p class="mt-3">Aucun article disponible pour le moment.</p>
                     </div>
                 <?php endif; ?>
@@ -228,7 +225,7 @@ try {
     <section class="py-5 bg-white">
         <div class="container">
             <div class="section-title animate-on-scroll">
-                <h2><i class="bi bi-lightning-fill text-danger"></i> Ventes Flash &amp; Best-sellers</h2>
+                <h2>Ventes Flash &amp; Best-sellers</h2>
                 <p>Articles rares et haut de gamme à ne pas manquer</p>
                 <div class="title-line"></div>
             </div>
@@ -252,7 +249,7 @@ try {
                             <div class="card article-card h-100 shadow-sm">
                                 <div class="card-img-wrapper">
                                     <span class="badge badge-<?php echo $article['gamme']; ?> badge-gamme"><?php echo htmlspecialchars($article['gamme']); ?></span>
-                                    <span class="badge bg-danger badge-flash"><i class="bi bi-lightning-fill"></i> Flash</span>
+                                    <span class="badge bg-danger badge-flash">Flash</span>
                                     <img src="<?php echo htmlspecialchars($article['image_url'] ?? 'images/placeholder.png'); ?>"
                                          class="card-img-top" alt="<?php echo htmlspecialchars($article['titre']); ?>">
                                     <div class="card-img-overlay-hover">
@@ -320,7 +317,7 @@ try {
     <section class="py-5">
         <div class="container">
             <div class="section-title animate-on-scroll">
-                <h2><i class="bi bi-chat-square-quote"></i> Ce qu'en disent nos étudiants</h2>
+                <h2>Ce qu'en disent nos étudiants</h2>
                 <p>Retours d'expérience de la communauté Omnes</p>
                 <div class="title-line"></div>
             </div>

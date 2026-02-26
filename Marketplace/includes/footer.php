@@ -75,7 +75,7 @@
                     &copy; 2026 Omnes MarketPlace - Projet Web APP Omnes Education. Tous droits réservés.
                     <span class="d-none d-md-inline mx-2">|</span>
                     <br class="d-md-none">
-                    Fait avec <i class="bi bi-heart-fill text-danger"></i> par les étudiants ECE
+                    Fait par les étudiants ECE
                 </small>
             </div>
         </div>
