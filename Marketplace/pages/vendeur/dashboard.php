@@ -23,11 +23,8 @@ try {
     $chiffre_affaires->execute([':uid' => $uid]);
     $chiffre_affaires = $chiffre_affaires->fetchColumn();
 
-    $nb_encheres = $pdo->prepare("SELECT COUNT(*) FROM articles WHERE vendeur_id = :uid AND type_vente = 'enchere' AND statut = 'disponible'");
-    $nb_encheres->execute([':uid' => $uid]);
-    $nb_encheres = $nb_encheres->fetchColumn();
 } catch (PDOException $e) {
-    $nb_articles = $nb_vendus = $chiffre_affaires = $nb_encheres = 0;
+    $nb_articles = $nb_vendus = $chiffre_affaires = 0;
 }
 
 include $base_url . 'includes/header.php';
@@ -71,15 +68,6 @@ include $base_url . 'includes/navbar.php';
                     </div>
                     <div class="stat-number" style="font-size: 1.5rem;"><?php echo number_format($chiffre_affaires, 0, ',', ' '); ?> &euro;</div>
                     <div class="stat-label">Chiffre d'affaires</div>
-                </div>
-            </div>
-            <div class="col-md-3 col-6 animate-on-scroll animate-delay-3">
-                <div class="dashboard-stat stat-danger">
-                    <div class="stat-icon" style="background: rgba(220,53,69,0.1); color: var(--omnes-danger);">
-                        <i class="bi bi-hammer"></i>
-                    </div>
-                    <div class="stat-number"><?php echo $nb_encheres; ?></div>
-                    <div class="stat-label">Enchères actives</div>
                 </div>
             </div>
         </div>

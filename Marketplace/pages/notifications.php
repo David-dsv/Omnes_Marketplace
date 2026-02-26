@@ -35,9 +35,7 @@ try {
                     $iconClass = 'bi-info-circle';
                     $iconBg = 'rgba(13,110,253,0.1)';
                     $iconColor = 'var(--omnes-primary)';
-                    if (strpos($notif['message'], 'enchère') !== false) {
-                        $iconClass = 'bi-hammer'; $iconBg = 'rgba(220,53,69,0.1)'; $iconColor = 'var(--omnes-danger)';
-                    } elseif (strpos($notif['message'], 'commande') !== false || strpos($notif['message'], 'achat') !== false) {
+                    if (strpos($notif['message'], 'commande') !== false || strpos($notif['message'], 'achat') !== false) {
                         $iconClass = 'bi-bag-check'; $iconBg = 'rgba(25,135,84,0.1)'; $iconColor = 'var(--omnes-success)';
                     } elseif (strpos($notif['message'], 'négociation') !== false) {
                         $iconClass = 'bi-chat-dots'; $iconBg = 'rgba(255,193,7,0.1)'; $iconColor = 'var(--omnes-warning)';
@@ -64,7 +62,7 @@ try {
                     <i class="bi bi-bell-slash text-primary" style="font-size:3rem;"></i>
                 </div>
                 <h5 class="mt-2">Aucune notification</h5>
-                <p class="text-muted">Vous recevrez ici les mises à jour sur vos enchères, négociations et commandes.</p>
+                <p class="text-muted">Vous recevrez ici les mises à jour sur vos négociations et commandes.</p>
             </div>
         <?php endif; ?>
 

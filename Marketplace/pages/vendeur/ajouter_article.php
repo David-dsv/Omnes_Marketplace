@@ -72,7 +72,6 @@ include $base_url . 'includes/navbar.php';
                             <option value="">Choisir...</option>
                             <option value="achat_immediat">Achat immédiat</option>
                             <option value="negociation">Négociation</option>
-                            <option value="enchere">Enchère (meilleure offre)</option>
                         </select>
                     </div>
 
@@ -84,13 +83,6 @@ include $base_url . 'includes/navbar.php';
                             <option value="haut_de_gamme">Haut de gamme</option>
                             <option value="rare">Article rare</option>
                         </select>
-                    </div>
-
-                    <!-- Auction fields -->
-                    <div class="col-md-6" id="enchere-fields" style="display:none;">
-                        <label class="form-label fw-semibold">Date de fin d'enchère</label>
-                        <input type="datetime-local" name="date_fin_enchere" class="form-control">
-                        <small class="text-muted">L'enchère se termine automatiquement à cette date</small>
                     </div>
 
                     <div class="col-md-6">
@@ -112,11 +104,5 @@ include $base_url . 'includes/navbar.php';
     </div>
 </main>
 
-<script>
-    document.querySelector('[name="type_vente"]').addEventListener('change', function() {
-        document.getElementById('enchere-fields').style.display =
-            this.value === 'enchere' ? 'block' : 'none';
-    });
-</script>
 
 <?php include $base_url . 'includes/footer.php'; ?>

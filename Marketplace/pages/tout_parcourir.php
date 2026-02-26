@@ -144,7 +144,6 @@ if ($recherche) $active_filters[] = ['label' => '"' . $recherche . '"', 'param' 
                                 <option value="">Tous</option>
                                 <option value="achat_immediat" <?php echo $type_vente === 'achat_immediat' ? 'selected' : ''; ?>>Achat immédiat</option>
                                 <option value="negociation" <?php echo $type_vente === 'negociation' ? 'selected' : ''; ?>>Négociation</option>
-                                <option value="enchere" <?php echo $type_vente === 'enchere' ? 'selected' : ''; ?>>Enchère</option>
                             </select>
                         </div>
                         <!-- Gamme -->

@@ -101,8 +101,7 @@ include $base_url . 'includes/navbar.php';
                 <!-- Badges -->
                 <div class="d-flex flex-wrap gap-2 mb-3">
                     <span class="badge badge-<?php echo $article['type_vente']; ?> px-3 py-2">
-                        <i class="bi <?php echo $article['type_vente'] === 'enchere' ? 'bi-hammer' : ($article['type_vente'] === 'negociation' ? 'bi-chat-dots' : 'bi-cart-check'); ?>"></i>
-                        <?php echo htmlspecialchars($article['type_vente']); ?>
+                        <?php echo $article['type_vente'] === 'negociation' ? 'Négociation' : 'Achat immédiat'; ?>
                     </span>
                     <span class="badge bg-light text-dark border px-3 py-2">
                         <i class="bi bi-tag"></i> <?php echo htmlspecialchars($article['categorie']); ?>
@@ -139,15 +138,11 @@ include $base_url . 'includes/navbar.php';
                 <div class="d-grid gap-2">
                     <?php if ($article['type_vente'] === 'achat_immediat'): ?>
                         <button class="btn btn-primary btn-lg btn-add-cart" data-article-id="<?php echo $article['id']; ?>">
-                            <i class="bi bi-cart-plus me-2"></i> Ajouter au panier
+                            Ajouter au panier
                         </button>
                     <?php elseif ($article['type_vente'] === 'negociation'): ?>
                         <a href="negociation.php?article_id=<?php echo $article['id']; ?>" class="btn btn-warning btn-lg">
-                            <i class="bi bi-chat-dots me-2"></i> Négocier le prix
-                        </a>
-                    <?php elseif ($article['type_vente'] === 'enchere'): ?>
-                        <a href="enchere.php?article_id=<?php echo $article['id']; ?>" class="btn btn-danger btn-lg">
-                            <i class="bi bi-hammer me-2"></i> Participer à l'enchère
+                            Négocier le prix
                         </a>
                     <?php endif; ?>
                 </div>

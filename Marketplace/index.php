@@ -45,8 +45,8 @@ try {
                     </div>
                     <div class="carousel-item">
                         <div class="py-5">
-                            <h1 class="display-4 fw-bold mb-3">Enchères & Négociations</h1>
-                            <p class="lead mb-0">Enchérissez ou négociez pour obtenir le meilleur prix</p>
+                            <h1 class="display-4 fw-bold mb-3">Négociations</h1>
+                            <p class="lead mb-0">Négociez directement avec les vendeurs pour obtenir le meilleur prix</p>
                         </div>
                     </div>
                 </div>

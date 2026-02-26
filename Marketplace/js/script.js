@@ -264,34 +264,6 @@ $(document).ready(function () {
     });
 
     // ========================
-    // Enchères - Timer en temps réel
-    // ========================
-    if ($('#auction-timer').length) {
-        var endTime = new Date($('#auction-timer').data('end-time')).getTime();
-        function updateAuctionTimer() {
-            var now = new Date().getTime();
-            var distance = endTime - now;
-            if (distance <= 0) {
-                $('#auction-timer').text('Enchère terminée').addClass('expired');
-                return;
-            }
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            var timerText = '';
-            if (days > 0) timerText += days + 'j ';
-            timerText += String(hours).padStart(2, '0') + ':' +
-                        String(minutes).padStart(2, '0') + ':' +
-                        String(seconds).padStart(2, '0');
-            $('#auction-timer').text(timerText);
-            requestAnimationFrame(updateAuctionTimer);
-        }
-        updateAuctionTimer();
-    }
-
-    // ========================
     // Négociation - Envoi d'offre
     // ========================
     $('#negotiation-form').on('submit', function (e) {

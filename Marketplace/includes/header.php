@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Omnes MarketPlace - La marketplace étudiante de la communauté Omnes Education. Achetez et vendez entre étudiants.">
-    <meta name="keywords" content="marketplace, étudiants, Omnes Education, ECE, achat, vente, enchères, négociation">
+    <meta name="keywords" content="marketplace, étudiants, Omnes Education, ECE, achat, vente, négociation">
     <meta name="author" content="Omnes Education">
     <meta name="theme-color" content="#0d6efd">
     <title><?php echo isset($page_title) ? htmlspecialchars($page_title) . ' - ' : ''; ?>Omnes MarketPlace</title>

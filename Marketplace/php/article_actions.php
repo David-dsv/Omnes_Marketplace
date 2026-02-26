@@ -24,7 +24,6 @@ switch ($action) {
         $categorie = $_POST['categorie'] ?? '';
         $type_vente = $_POST['type_vente'] ?? '';
         $gamme = $_POST['gamme'] ?? '';
-        $date_fin_enchere = $_POST['date_fin_enchere'] ?? null;
 
         if (!$titre || !$description || $prix <= 0 || !$categorie || !$type_vente || !$gamme) {
             header('Location: ../pages/vendeur/ajouter_article.php?error=' . urlencode('Veuillez remplir tous les champs.'));
@@ -49,8 +48,8 @@ switch ($action) {
         }
 
         try {
-            $stmt = $pdo->prepare("INSERT INTO articles (vendeur_id, titre, description, prix, categorie, type_vente, gamme, image_url, date_fin_enchere, statut)
-                                   VALUES (:vid, :titre, :desc, :prix, :cat, :type, :gamme, :img, :fin, 'disponible')");
+            $stmt = $pdo->prepare("INSERT INTO articles (vendeur_id, titre, description, prix, categorie, type_vente, gamme, image_url, statut)
+                                   VALUES (:vid, :titre, :desc, :prix, :cat, :type, :gamme, :img, 'disponible')");
             $stmt->execute([
                 ':vid'   => $uid,
                 ':titre' => $titre,
@@ -60,7 +59,6 @@ switch ($action) {
                 ':type'  => $type_vente,
                 ':gamme' => $gamme,
                 ':img'   => $image_url,
-                ':fin'   => $date_fin_enchere ?: null,
             ]);
 
             header('Location: ../pages/vendeur/mes_articles.php?success=' . urlencode('Article publié avec succès !'));

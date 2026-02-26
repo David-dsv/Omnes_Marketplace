@@ -15,9 +15,8 @@ try {
     $nb_articles = $pdo->query("SELECT COUNT(*) FROM articles")->fetchColumn();
     $nb_commandes = $pdo->query("SELECT COUNT(*) FROM commandes")->fetchColumn();
     $chiffre_affaires = $pdo->query("SELECT COALESCE(SUM(total), 0) FROM commandes")->fetchColumn();
-    $nb_encheres_actives = $pdo->query("SELECT COUNT(*) FROM articles WHERE type_vente = 'enchere' AND statut = 'disponible'")->fetchColumn();
 } catch (PDOException $e) {
-    $nb_users = $nb_vendeurs = $nb_articles = $nb_commandes = $chiffre_affaires = $nb_encheres_actives = 0;
+    $nb_users = $nb_vendeurs = $nb_articles = $nb_commandes = $chiffre_affaires = 0;
 }
 
 include $base_url . 'includes/header.php';
@@ -85,20 +84,6 @@ include $base_url . 'includes/navbar.php';
                         <div>
                             <p class="text-muted small mb-0">Chiffre d'affaires total</p>
                             <h4 class="fw-bold mb-0"><?php echo number_format($chiffre_affaires, 2, ',', ' '); ?> &euro;</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 animate-on-scroll animate-delay-1">
-                <div class="card p-4 shadow-sm" style="border-radius: 16px;">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center"
-                             style="width:56px;height:56px;background:rgba(220,53,69,0.1);">
-                            <i class="bi bi-hammer text-danger fs-4"></i>
-                        </div>
-                        <div>
-                            <p class="text-muted small mb-0">Enchères actives</p>
-                            <h4 class="fw-bold mb-0"><?php echo $nb_encheres_actives; ?></h4>
                         </div>
                     </div>
                 </div>

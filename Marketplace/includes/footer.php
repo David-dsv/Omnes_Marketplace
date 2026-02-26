@@ -7,7 +7,7 @@
                         <img src="<?php echo $base_url; ?>images/Logo_Omnes_Éducation.svg.png" alt="Omnes Education" class="footer-logo"> MarketPlace
                     </div>
                     <p class="text-muted mb-3" style="font-size: 0.9rem; color: rgba(255,255,255,0.6) !important;">
-                        La marketplace de la communauté Omnes Education. Achetez et vendez entre étudiants en toute confiance, avec des options d'enchères et de négociation.
+                        La marketplace de la communauté Omnes Education. Achetez et vendez entre étudiants en toute confiance, avec négociation et achat immédiat.
                     </p>
                     <div class="social-links">
                         <a href="#" title="Facebook"><i class="bi bi-facebook"></i></a>

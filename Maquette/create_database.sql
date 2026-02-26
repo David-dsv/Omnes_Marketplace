@@ -32,11 +32,10 @@ CREATE TABLE articles (
     description TEXT NOT NULL,
     prix DECIMAL(10, 2) NOT NULL,
     categorie ENUM('Électronique', 'Vêtements', 'Maison', 'Livres', 'Sports', 'Divers') NOT NULL,
-    type_vente ENUM('achat_immediat', 'negociation', 'enchere') NOT NULL,
+    type_vente ENUM('achat_immediat', 'negociation') NOT NULL,
     gamme ENUM('regulier', 'haut_de_gamme', 'rare') NOT NULL DEFAULT 'regulier',
     image_url VARCHAR(500) DEFAULT 'images/placeholder.png',
     statut ENUM('disponible', 'vendu', 'retire') NOT NULL DEFAULT 'disponible',
-    date_fin_enchere DATETIME DEFAULT NULL,
     date_creation DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (vendeur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -78,20 +77,6 @@ CREATE TABLE commande_articles (
     prix DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (commande_id) REFERENCES commandes(id) ON DELETE CASCADE,
     FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
-) ENGINE=InnoDB;
-
--- =============================================
--- Table : encheres
--- =============================================
-CREATE TABLE encheres (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    article_id INT NOT NULL,
-    acheteur_id INT NOT NULL,
-    montant DECIMAL(10, 2) NOT NULL,
-    montant_max DECIMAL(10, 2) NOT NULL,
-    date_creation DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
-    FOREIGN KEY (acheteur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- =============================================
@@ -208,18 +193,15 @@ INSERT INTO utilisateurs (prenom, nom, email, mot_de_passe, telephone, adresse, 
 ('Thomas', 'Petit', 'thomas.petit@edu.ece.fr', '$2y$10$wEDskPO.g4O5iQjS3F2jFuYX8K7VvM3tZ.Q8K6bC4fLjDf4N5hCma', '06 55 66 77 88', '8 Avenue Montaigne, 75008 Paris', 'acheteur');
 
 -- Articles d'exemple
-INSERT INTO articles (vendeur_id, titre, description, prix, categorie, type_vente, gamme) VALUES
-(2, 'MacBook Pro M3 2024', 'MacBook Pro 14 pouces avec puce M3, 16 Go RAM, 512 Go SSD. Excellent état, utilisé 6 mois.', 1499.00, 'Électronique', 'achat_immediat', 'haut_de_gamme'),
-(2, 'Lot de livres Informatique', '5 livres de programmation : Python, Java, C++, Algorithmes, Base de données. Parfait pour les étudiants ECE.', 45.00, 'Livres', 'achat_immediat', 'regulier'),
-(2, 'Vélo de course Specialized', 'Vélo de course Specialized Allez en carbone. Taille M, très bon état.', 800.00, 'Sports', 'negociation', 'haut_de_gamme'),
-(3, 'iPhone 15 Pro Max 256 Go', 'iPhone 15 Pro Max couleur titane, 256 Go. Sous garantie Apple.', 950.00, 'Électronique', 'enchere', 'haut_de_gamme'),
-(3, 'Bureau ergonomique IKEA', 'Bureau réglable en hauteur IKEA BEKANT 160x80 cm. Blanc, très bon état.', 150.00, 'Maison', 'achat_immediat', 'regulier'),
-(3, 'Montre Casio vintage rare', 'Casio A168WA édition limitée dorée. Neuve dans son emballage d''origine.', 250.00, 'Divers', 'enchere', 'rare'),
-(2, 'Veste North Face Nuptse', 'Doudoune North Face Nuptse 1996 noire, taille L. Portée 2 fois.', 180.00, 'Vêtements', 'negociation', 'regulier'),
-(3, 'Calculatrice TI-83 Premium', 'Calculatrice Texas Instruments TI-83 Premium CE. Parfaite pour les cours de maths.', 60.00, 'Électronique', 'achat_immediat', 'regulier');
-
--- Mise à jour des dates fin enchère pour les articles en enchère
-UPDATE articles SET date_fin_enchere = DATE_ADD(NOW(), INTERVAL 7 DAY) WHERE type_vente = 'enchere';
+INSERT INTO articles (vendeur_id, titre, description, prix, categorie, type_vente, gamme, image_url) VALUES
+(2, 'MacBook Pro M3 2024', 'MacBook Pro 14 pouces avec puce M3, 16 Go RAM, 512 Go SSD. Excellent état, utilisé 6 mois.', 1499.00, 'Électronique', 'achat_immediat', 'haut_de_gamme', 'images/macm3.jpg'),
+(2, 'Lot de livres Informatique', '5 livres de programmation : Python, Java, C++, Algorithmes, Base de données. Parfait pour les étudiants ECE.', 45.00, 'Livres', 'achat_immediat', 'regulier', 'images/lotlivreinformatique.jpg'),
+(2, 'Vélo de course Specialized', 'Vélo de course Specialized Allez en carbone. Taille M, très bon état.', 800.00, 'Sports', 'negociation', 'haut_de_gamme', 'images/velo-de-route-specialized-tarmac-expert-ultegra-di2-54.jpg'),
+(3, 'iPhone 15 Pro Max 256 Go', 'iPhone 15 Pro Max couleur titane, 256 Go. Sous garantie Apple.', 950.00, 'Électronique', 'achat_immediat', 'haut_de_gamme', 'images/Apple-iPhone-15-Pro-Max-6-7-5G-Double-SIM-256-Go-Bleu-Titanium.jpg'),
+(3, 'Bureau ergonomique IKEA', 'Bureau réglable en hauteur IKEA BEKANT 160x80 cm. Blanc, très bon état.', 150.00, 'Maison', 'achat_immediat', 'regulier', 'images/placeholder.png'),
+(3, 'Montre Casio vintage rare', 'Casio A168WA édition limitée dorée. Neuve dans son emballage d''origine.', 250.00, 'Divers', 'negociation', 'rare', 'images/placeholder.png'),
+(2, 'Veste North Face Nuptse', 'Doudoune North Face Nuptse 1996 noire, taille L. Portée 2 fois.', 180.00, 'Vêtements', 'negociation', 'regulier', 'images/placeholder.png'),
+(3, 'Calculatrice TI-83 Premium', 'Calculatrice Texas Instruments TI-83 Premium CE. Parfaite pour les cours de maths.', 60.00, 'Électronique', 'achat_immediat', 'regulier', 'images/placeholder.png');
 
 -- Cartes bancaires de test (simulation)
 INSERT INTO cartes_bancaires (numero_carte, expiration, cvv, titulaire) VALUES

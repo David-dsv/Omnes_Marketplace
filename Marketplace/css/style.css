@@ -1220,11 +1220,6 @@ section h2 {
     color: #b78300;
     font-weight: 600;
 }
-.badge-enchere {
-    background: rgba(220, 53, 69, 0.1);
-    color: var(--omnes-danger);
-    font-weight: 600;
-}
 
 /* ============================================
    NEGOTIATION CHAT
@@ -1308,68 +1303,6 @@ section h2 {
     border-color: var(--omnes-primary);
     color: var(--omnes-primary);
     animation: pulseGlow 2s infinite;
-}
-
-/* ============================================
-   AUCTION / ENCHÈRE
-   ============================================ */
-.auction-timer {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--omnes-danger);
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 2px;
-    animation: timerPulse 2s infinite;
-}
-.auction-timer.expired {
-    animation: none;
-    color: var(--omnes-secondary);
-}
-
-.auction-timer-card {
-    background: linear-gradient(135deg, #fff5f5, #ffe8e8);
-    border: 2px solid rgba(220, 53, 69, 0.15);
-    border-radius: 16px;
-    padding: 1.5rem;
-    text-align: center;
-}
-
-.bid-history {
-    max-height: 350px;
-    overflow-y: auto;
-    border-radius: var(--omnes-border-radius);
-}
-.bid-history::-webkit-scrollbar {
-    width: 4px;
-}
-.bid-history::-webkit-scrollbar-thumb {
-    background: #dee2e6;
-    border-radius: 4px;
-}
-.bid-history .table {
-    margin: 0;
-}
-.bid-history .table th {
-    position: sticky;
-    top: 0;
-    background: white;
-    z-index: 1;
-    border-bottom: 2px solid #e9ecef;
-}
-
-/* Auction progress bar */
-.auction-progress {
-    height: 8px;
-    border-radius: 4px;
-    background: #e9ecef;
-    overflow: hidden;
-    margin: 1rem 0;
-}
-.auction-progress-bar {
-    height: 100%;
-    border-radius: 4px;
-    background: linear-gradient(90deg, var(--omnes-warning), var(--omnes-danger));
-    transition: width 0.5s ease;
 }
 
 /* ============================================
@@ -2000,9 +1933,6 @@ footer .footer-bottom {
         height: 170px;
     }
     .counter-item .counter-number {
-        font-size: 1.8rem;
-    }
-    .auction-timer {
         font-size: 1.8rem;
     }
     .negotiation-message {

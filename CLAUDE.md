@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Key Concept
 - Three user roles: **Administrateur**, **Vendeur**, **Acheteur**
-- Three sale types: **Achat immédiat**, **Transaction vendeur-client** (negotiation, max 5 rounds), **Meilleure offre** (auction with auto-bidding)
+- Two sale types: **Achat immédiat**, **Transaction vendeur-client** (negotiation, max 5 rounds)
 - Three product tiers: **Articles rares**, **Articles hauts de gamme**, **Articles réguliers**
 - Product categories: Électronique, Vêtements, Maison, Livres, Sports, Divers
 
@@ -96,8 +96,7 @@ Accueil | Tout Parcourir | Notifications | Panier | Votre Compte
 ## Business Rules
 
 - Admin creates/deletes vendor accounts; anyone can create a buyer account
-- An item cannot be simultaneously sold by auction AND negotiation
 - Negotiation: max 5 rounds, buyer is legally bound if seller accepts
-- Auction: buyer sets max price, system auto-bids (winner pays current highest + 1€, not their max)
 - Payment validation checks credentials exist in DB (no real bank API)
 - Purchase confirmation sent via email/SMS simulation
+- **No auction system** — only achat immédiat and négociation are supported
