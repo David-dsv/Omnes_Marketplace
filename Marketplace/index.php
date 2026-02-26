@@ -93,7 +93,7 @@ try {
             <div class="row g-3 justify-content-center">
                 <?php
                 $categories = [
-                    ['name' => 'Électronique', 'color' => '#0d6efd', 'desc' => 'PC, smartphones...'],
+                    ['name' => 'Électronique', 'color' => '#6B3FBE', 'desc' => 'PC, smartphones...'],
                     ['name' => 'Vêtements', 'color' => '#6f42c1', 'desc' => 'Mode & accessoires'],
                     ['name' => 'Maison', 'color' => '#198754', 'desc' => 'Déco & meubles'],
                     ['name' => 'Livres', 'color' => '#fd7e14', 'desc' => 'Manuels & romans'],
@@ -187,7 +187,7 @@ try {
             <div class="row g-4 justify-content-center">
                 <div class="col-md-4 animate-on-scroll animate-delay-1">
                     <div class="how-it-works-step">
-                        <div class="step-icon" style="background: linear-gradient(135deg, #0d6efd, #0dcaf0);">
+                        <div class="step-icon" style="background: linear-gradient(135deg, #3D1A8A, #8B44FF);">
                             <i class="bi bi-search"></i>
                             <span class="step-number">1</span>
                         </div>

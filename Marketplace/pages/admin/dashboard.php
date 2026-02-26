@@ -36,7 +36,7 @@ include $base_url . 'includes/navbar.php';
         <div class="row g-4 mb-5">
             <div class="col-md-3 col-6 animate-on-scroll">
                 <div class="dashboard-stat stat-primary">
-                    <div class="stat-icon" style="background: rgba(13,110,253,0.1); color: var(--omnes-primary);">
+                    <div class="stat-icon" style="background: rgba(var(--omnes-primary-rgb),0.1); color: var(--omnes-primary);">
                         <i class="bi bi-people-fill"></i>
                     </div>
                     <div class="stat-number"><?php echo $nb_users; ?></div>
@@ -95,7 +95,7 @@ include $base_url . 'includes/navbar.php';
         <div class="row g-4 animate-on-scroll">
             <div class="col-md-6">
                 <div class="action-card h-100">
-                    <div class="action-icon" style="background: rgba(13,110,253,0.1); color: var(--omnes-primary);">
+                    <div class="action-icon" style="background: rgba(var(--omnes-primary-rgb),0.1); color: var(--omnes-primary);">
                         <i class="bi bi-people-fill"></i>
                     </div>
                     <h5 class="fw-bold">Gestion des vendeurs</h5>

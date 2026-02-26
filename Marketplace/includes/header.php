@@ -6,7 +6,7 @@
     <meta name="description" content="Omnes MarketPlace - La marketplace étudiante de la communauté Omnes Education. Achetez et vendez entre étudiants.">
     <meta name="keywords" content="marketplace, étudiants, Omnes Education, ECE, achat, vente, négociation">
     <meta name="author" content="Omnes Education">
-    <meta name="theme-color" content="#0d6efd">
+    <meta name="theme-color" content="#1F1B4E">
     <title><?php echo isset($page_title) ? htmlspecialchars($page_title) . ' - ' : ''; ?>Omnes MarketPlace</title>
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="<?php echo $base_url; ?>images/OMNES.png">

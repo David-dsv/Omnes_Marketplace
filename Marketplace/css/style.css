@@ -1,23 +1,25 @@
 /* ==========================================
    Omnes MarketPlace - Styles professionnels
-   Thème : Bleu & Blanc minimaliste (ECE/Omnes)
+   Thème : Violet Omnes Education
    ========================================== */
 
 /* ---- Variables ---- */
 :root {
-    --omnes-primary: #0d6efd;
-    --omnes-primary-dark: #0a58ca;
-    --omnes-primary-rgb: 13, 110, 253;
+    --omnes-primary: #6B3FBE;
+    --omnes-primary-dark: #3D1A8A;
+    --omnes-primary-rgb: 107, 63, 190;
     --omnes-secondary: #6c757d;
     --omnes-light: #f8f9fa;
-    --omnes-dark: #212529;
+    --omnes-dark: #0D0B2B;
     --omnes-white: #ffffff;
-    --omnes-accent: #0dcaf0;
+    --omnes-accent: #8B44FF;
     --omnes-danger: #dc3545;
     --omnes-success: #198754;
     --omnes-warning: #ffc107;
-    --omnes-purple: #6f42c1;
+    --omnes-purple: #A66FFF;
     --omnes-orange: #fd7e14;
+    --omnes-navy: #0D0B2B;
+    --omnes-navy-light: #1F1B4E;
     --omnes-border-radius: 12px;
     --omnes-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
     --omnes-shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
@@ -216,7 +218,7 @@ img {
 .navbar {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    background: linear-gradient(135deg, rgba(13, 110, 253, 0.95), rgba(10, 88, 202, 0.95)) !important;
+    background: linear-gradient(135deg, rgba(31, 27, 78, 0.95), rgba(13, 11, 43, 0.95)) !important;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
     padding: 0.6rem 0;
     transition: var(--omnes-transition);
@@ -226,7 +228,7 @@ img {
 
 .navbar.scrolled {
     padding: 0.4rem 0;
-    background: rgba(10, 88, 202, 0.98) !important;
+    background: rgba(13, 11, 43, 0.98) !important;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -1339,7 +1341,7 @@ section h2 {
    FOOTER
    ============================================ */
 footer {
-    background: linear-gradient(180deg, #1a1a2e, #16213e);
+    background: linear-gradient(180deg, var(--omnes-navy-light), var(--omnes-navy));
     color: #e0e0e0;
 }
 footer h5,

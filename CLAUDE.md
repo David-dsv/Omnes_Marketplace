@@ -78,7 +78,8 @@ ProjetWebAPP/
 
 ## Design Choices
 
-- **Style**: Modern & Minimalist, blue & white palette (ECE/Omnes colors), glassmorphism navbar
+- **Style**: Modern & Minimalist, violet/navy palette (Omnes Education colors), glassmorphism navbar
+- **Color palette**: Navy (#0D0B2B → #1F1B4E), Purple Brand (#3D1A8A → #6B3FBE), Violet Accent (#8B44FF → #A66FFF)
 - **Homepage**: Hero carousel + search bar + animated counters + categories + "Sélection du jour" + "Ventes flash" + "Comment ça marche" + testimonials
 - **Map**: Google Maps showing Campus ECE Paris
 - **Bonus features**: Rating/review system, discount cards (10-20% for purchases > 100€), special event themes

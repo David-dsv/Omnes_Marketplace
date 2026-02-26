@@ -23,7 +23,7 @@
                             <div class="col-md-6">
                                 <h6 class="text-uppercase text-muted small fw-bold mb-3">Catégories</h6>
                                 <a class="mega-menu-category" href="<?php echo $base_url; ?>pages/tout_parcourir.php?categorie=Électronique">
-                                    <i class="bi bi-laptop" style="background: rgba(13,110,253,0.1); color: #0d6efd;"></i>
+                                    <i class="bi bi-laptop" style="background: rgba(107,63,190,0.1); color: #6B3FBE;"></i>
                                     <div>
                                         <strong>Électronique</strong>
                                         <small class="d-block text-muted">PC, smartphones, accessoires</small>

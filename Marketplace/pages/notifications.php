@@ -33,7 +33,7 @@ try {
             <div class="animate-on-scroll">
                 <?php foreach ($notifications as $notif):
                     $iconClass = 'bi-info-circle';
-                    $iconBg = 'rgba(13,110,253,0.1)';
+                    $iconBg = 'rgba(var(--omnes-primary-rgb),0.1)';
                     $iconColor = 'var(--omnes-primary)';
                     if (strpos($notif['message'], 'commande') !== false || strpos($notif['message'], 'achat') !== false) {
                         $iconClass = 'bi-bag-check'; $iconBg = 'rgba(25,135,84,0.1)'; $iconColor = 'var(--omnes-success)';
