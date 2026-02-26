@@ -60,7 +60,8 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Jost', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
 }
 
 a {
@@ -237,10 +238,10 @@ img {
 }
 
 .navbar-brand {
-    font-family: 'Jost', sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 1.4rem;
     letter-spacing: 0.5px;
-    font-weight: 700;
+    font-weight: 500;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -466,8 +467,8 @@ img {
 }
 
 .hero-banner h1 {
-    font-family: 'Jost', sans-serif;
-    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
 
@@ -668,8 +669,8 @@ img {
    SECTIONS
    ============================================ */
 section h2 {
-    font-family: 'Jost', sans-serif;
-    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
     color: var(--omnes-dark);
     position: relative;
 }
@@ -679,7 +680,7 @@ section h2 {
     margin-bottom: 3rem;
 }
 .section-title h2 {
-    font-weight: 700;
+    font-weight: 500;
     margin-bottom: 0.75rem;
 }
 .section-title p {
@@ -1021,7 +1022,7 @@ section h2 {
     margin-bottom: 2rem;
 }
 .auth-split .auth-illustration h2 {
-    font-weight: 700;
+    font-weight: 500;
     margin-bottom: 1rem;
 }
 .auth-split .auth-illustration p {
@@ -1367,9 +1368,9 @@ footer a:hover {
     padding-left: 5px;
 }
 footer .footer-brand {
-    font-family: 'Jost', sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 1.3rem;
-    font-weight: 700;
+    font-weight: 500;
     color: white;
     display: flex;
     align-items: center;
@@ -1584,7 +1585,7 @@ footer .footer-bottom {
     box-shadow: var(--omnes-shadow);
 }
 .filter-sidebar h5 {
-    font-weight: 700;
+    font-weight: 500;
     display: flex;
     align-items: center;
     gap: 0.5rem;

@@ -199,7 +199,7 @@ INSERT INTO articles (vendeur_id, titre, description, prix, categorie, type_vent
 (2, 'Vélo de course Specialized', 'Vélo de course Specialized Allez en carbone. Taille M, très bon état.', 800.00, 'Sports', 'negociation', 'haut_de_gamme', 'images/velo-de-route-specialized-tarmac-expert-ultegra-di2-54.jpg'),
 (3, 'iPhone 15 Pro Max 256 Go', 'iPhone 15 Pro Max couleur titane, 256 Go. Sous garantie Apple.', 950.00, 'Électronique', 'achat_immediat', 'haut_de_gamme', 'images/Apple-iPhone-15-Pro-Max-6-7-5G-Double-SIM-256-Go-Bleu-Titanium.jpg'),
 (3, 'Bureau ergonomique IKEA', 'Bureau réglable en hauteur IKEA BEKANT 160x80 cm. Blanc, très bon état.', 150.00, 'Maison', 'achat_immediat', 'regulier', 'images/placeholder.png'),
-(3, 'Montre Casio vintage rare', 'Casio A168WA édition limitée dorée. Neuve dans son emballage d''origine.', 250.00, 'Divers', 'negociation', 'rare', 'images/placeholder.png'),
+(3, 'Montre Casio vintage rare', 'Casio A168WA édition limitée dorée. Neuve dans son emballage d''origine.', 250.00, 'Divers', 'negociation', 'rare', 'images/casio.jpg'),
 (2, 'Veste North Face Nuptse', 'Doudoune North Face Nuptse 1996 noire, taille L. Portée 2 fois.', 180.00, 'Vêtements', 'negociation', 'regulier', 'images/placeholder.png'),
 (3, 'Calculatrice TI-83 Premium', 'Calculatrice Texas Instruments TI-83 Premium CE. Parfaite pour les cours de maths.', 60.00, 'Électronique', 'achat_immediat', 'regulier', 'images/placeholder.png');
 
