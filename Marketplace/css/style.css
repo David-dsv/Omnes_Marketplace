@@ -238,12 +238,10 @@ img {
     align-items: center;
     gap: 0.5rem;
 }
-.navbar-brand i {
-    font-size: 1.6rem;
-    transition: var(--omnes-transition);
-}
-.navbar-brand:hover i {
-    transform: rotate(-10deg) scale(1.1);
+.navbar-brand .brand-logo {
+    height: 30px;
+    width: auto;
+    filter: brightness(0) invert(1);
 }
 
 .navbar .nav-link {
@@ -795,6 +793,15 @@ section h2 {
     margin-bottom: 0.75rem;
     opacity: 0.9;
 }
+.counter-item .counter-icon .counter-logo {
+    height: 40px;
+    width: auto;
+    filter: brightness(0) invert(1);
+}
+.stat-icon .stat-logo {
+    height: 28px;
+    width: auto;
+}
 .counter-item .counter-number {
     font-size: 2.5rem;
     font-weight: 700;
@@ -1026,10 +1033,12 @@ section h2 {
     background: radial-gradient(circle, rgba(255,255,255,0.08), transparent);
     animation: float 8s ease-in-out infinite;
 }
-.auth-split .auth-illustration i.display-1 {
-    opacity: 0.9;
+.auth-split .auth-illustration .auth-logo {
+    width: 220px;
+    height: auto;
+    filter: brightness(0) invert(1);
+    opacity: 0.95;
     margin-bottom: 2rem;
-    animation: float 3s ease-in-out infinite;
 }
 .auth-split .auth-illustration h2 {
     font-weight: 700;
@@ -1455,6 +1464,11 @@ footer .footer-brand {
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 1rem;
+}
+footer .footer-brand .footer-logo {
+    height: 28px;
+    width: auto;
+    filter: brightness(0) invert(1);
 }
 footer .social-links {
     display: flex;

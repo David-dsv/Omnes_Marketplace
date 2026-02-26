@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top" id="main-navbar">
     <div class="container">
         <a class="navbar-brand fw-bold" href="<?php echo $base_url; ?>index.php">
-            <i class="bi bi-shop"></i> Omnes MarketPlace
+            <img src="<?php echo $base_url; ?>images/Logo_Omnes_Éducation.svg.png" alt="Omnes Education" class="brand-logo"> MarketPlace
         </a>
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Menu">
             <span class="navbar-toggler-icon"></span>

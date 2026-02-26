@@ -293,7 +293,7 @@ try {
                 </div>
                 <div class="col-6 col-md-3">
                     <div class="counter-item animate-on-scroll animate-delay-1">
-                        <div class="counter-icon"><i class="bi bi-shop"></i></div>
+                        <div class="counter-icon"><img src="images/Logo_Omnes_Éducation.svg.png" alt="Omnes" class="counter-logo"></div>
                         <div class="counter-number counter-animate" data-target="<?php echo $nb_vendeurs ?: 25; ?>">0</div>
                         <div class="counter-label">Vendeurs vérifiés</div>
                     </div>

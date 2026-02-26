@@ -4,7 +4,7 @@
                 <!-- Brand & Description -->
                 <div class="col-lg-4 col-md-6 mb-3">
                     <div class="footer-brand">
-                        <i class="bi bi-shop"></i> Omnes MarketPlace
+                        <img src="<?php echo $base_url; ?>images/Logo_Omnes_Éducation.svg.png" alt="Omnes Education" class="footer-logo"> MarketPlace
                     </div>
                     <p class="text-muted mb-3" style="font-size: 0.9rem; color: rgba(255,255,255,0.6) !important;">
                         La marketplace de la communauté Omnes Education. Achetez et vendez entre étudiants en toute confiance, avec des options d'enchères et de négociation.

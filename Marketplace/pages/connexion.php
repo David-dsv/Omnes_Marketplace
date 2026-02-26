@@ -20,7 +20,7 @@ $success = $_GET['success'] ?? '';
         <div class="auth-split">
             <!-- Illustration side -->
             <div class="auth-illustration">
-                <i class="bi bi-shop display-1"></i>
+                <img src="<?php echo $base_url; ?>images/Logo_Omnes_Éducation.svg.png" alt="Omnes Education" class="auth-logo">
                 <h2>Bon retour parmi nous !</h2>
                 <p>Connectez-vous pour accéder à vos articles favoris, votre panier et suivre vos commandes.</p>
                 <div class="mt-4 d-flex gap-3">
