@@ -46,7 +46,7 @@ include $base_url . 'includes/navbar.php';
                         <div class="card article-card h-100 shadow-sm">
                             <div class="card-img-wrapper">
                                 <span class="badge badge-<?php echo $article['gamme']; ?> badge-gamme"><?php echo htmlspecialchars($article['gamme']); ?></span>
-                                <img src="<?php echo $base_url . htmlspecialchars($article['image_url'] ?? 'images/placeholder.png'); ?>"
+                                <img src="<?php echo $base_url . htmlspecialchars($article['image_url'] ?? 'images/articles/placeholder.png'); ?>"
                                      class="card-img-top" alt="<?php echo htmlspecialchars($article['titre']); ?>">
                             </div>
                             <div class="card-body">

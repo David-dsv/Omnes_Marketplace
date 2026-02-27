@@ -37,7 +37,7 @@ CREATE TABLE articles (
     categorie ENUM('Électronique', 'Vêtements', 'Maison', 'Livres', 'Sports', 'Divers') NOT NULL,
     type_vente ENUM('achat_immediat', 'negociation') NOT NULL,
     gamme ENUM('regulier', 'haut_de_gamme', 'rare') NOT NULL DEFAULT 'regulier',
-    image_url VARCHAR(500) DEFAULT 'images/placeholder.png',
+    image_url VARCHAR(500) DEFAULT 'images/articles/placeholder.png',
     statut ENUM('disponible', 'vendu', 'retire') NOT NULL DEFAULT 'disponible',
     date_creation DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (vendeur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
@@ -181,30 +181,94 @@ CREATE TABLE cartes_reduction (
 -- DONNÉES D'EXEMPLE
 -- =============================================
 
--- Admin par défaut (mot de passe : admin123)
+-- Comptes administrateurs de test (mots de passe en clair) :
+-- - admin@omnesmarketplace.fr / admin123
+-- - admin.hippolyte@edu.ece.fr / ECE Omnes 2026
 INSERT INTO utilisateurs (prenom, nom, email, mot_de_passe, role) VALUES
-('Admin', 'Omnes', 'admin@omnesmarketplace.fr', '$2y$10$8K1p/a0dL1LXMIgoEDFrwOXXJoQBFJ1TfBKdVxJFPbQZz3FVzHYC6', 'administrateur');
+('Admin', 'Omnes', 'admin@omnesmarketplace.fr', '$2y$12$3Z8YQD8ronGNz23lsddCSOpHwRTLjJni3hJCWw.G9y41TDPobeW9S', 'administrateur');
 
--- Vendeurs (mot de passe : vendeur123)
+-- Comptes vendeurs de test (mot de passe en clair pour tous) : vendeur123
+-- - marie.dupont@edu.ece.fr
+-- - lucas.martin@edu.ece.fr
+-- - sophie.leroy@edu.ece.fr
+-- - adam.moreau@edu.ece.fr
+-- - ines.garnier@edu.ece.fr
+-- - kevin.roux@edu.ece.fr
+-- - yasmine.faure@edu.ece.fr
 INSERT INTO utilisateurs (prenom, nom, email, mot_de_passe, telephone, role) VALUES
-('Marie', 'Dupont', 'marie.dupont@edu.ece.fr', '$2y$10$YgS4UxUFJH5Rn4K5Ws7OWeRfMFGDqXSfGJ5.8iVk0lHfXmPnXqGjy', '06 12 34 56 78', 'vendeur'),
-('Lucas', 'Martin', 'lucas.martin@edu.ece.fr', '$2y$10$YgS4UxUFJH5Rn4K5Ws7OWeRfMFGDqXSfGJ5.8iVk0lHfXmPnXqGjy', '06 98 76 54 32', 'vendeur');
+('Marie', 'Dupont', 'marie.dupont@edu.ece.fr', '$2y$12$MkjqymHH4npGf306PL9AbOOwBq7Oc5mmQTopoxsICjvyuiagCU7lS', '06 12 34 56 78', 'vendeur'),
+('Lucas', 'Martin', 'lucas.martin@edu.ece.fr', '$2y$12$MkjqymHH4npGf306PL9AbOOwBq7Oc5mmQTopoxsICjvyuiagCU7lS', '06 98 76 54 32', 'vendeur');
 
--- Acheteurs (mot de passe : acheteur123)
+-- Comptes acheteurs de test (mot de passe en clair pour tous) : acheteur123
 INSERT INTO utilisateurs (prenom, nom, email, mot_de_passe, telephone, adresse, role) VALUES
-('Emma', 'Bernard', 'emma.bernard@edu.ece.fr', '$2y$10$wEDskPO.g4O5iQjS3F2jFuYX8K7VvM3tZ.Q8K6bC4fLjDf4N5hCma', '06 11 22 33 44', '15 Rue de la Paix, 75002 Paris', 'acheteur'),
-('Thomas', 'Petit', 'thomas.petit@edu.ece.fr', '$2y$10$wEDskPO.g4O5iQjS3F2jFuYX8K7VvM3tZ.Q8K6bC4fLjDf4N5hCma', '06 55 66 77 88', '8 Avenue Montaigne, 75008 Paris', 'acheteur');
+('Emma', 'Bernard', 'emma.bernard@edu.ece.fr', '$2y$12$nuQLR.rRVZiyptUP2vnoi.rZjYR94f9fr7Fh0ulWXvrgHcAU/N2Qq', '06 11 22 33 44', '15 Rue de la Paix, 75002 Paris', 'acheteur'),
+('Thomas', 'Petit', 'thomas.petit@edu.ece.fr', '$2y$12$nuQLR.rRVZiyptUP2vnoi.rZjYR94f9fr7Fh0ulWXvrgHcAU/N2Qq', '06 55 66 77 88', '8 Avenue Montaigne, 75008 Paris', 'acheteur');
+
+-- Administrateur supplementaire de test
+INSERT INTO utilisateurs (prenom, nom, email, mot_de_passe, role) VALUES
+('Admin', 'Hippolyte', 'admin.hippolyte@edu.ece.fr', '$2y$12$pG.ucW1MJfWJWULV8vKrXuZSgsc/pVZ37S/MK/b2fXcuKVlk3eWeu', 'administrateur');
+
+-- Vendeurs supplementaires (mot de passe en clair : vendeur123)
+INSERT INTO utilisateurs (prenom, nom, email, mot_de_passe, telephone, role) VALUES
+('Sophie', 'Leroy', 'sophie.leroy@edu.ece.fr', '$2y$12$MkjqymHH4npGf306PL9AbOOwBq7Oc5mmQTopoxsICjvyuiagCU7lS', '06 44 11 22 33', 'vendeur'),
+('Adam', 'Moreau', 'adam.moreau@edu.ece.fr', '$2y$12$MkjqymHH4npGf306PL9AbOOwBq7Oc5mmQTopoxsICjvyuiagCU7lS', '06 67 89 10 11', 'vendeur'),
+('Ines', 'Garnier', 'ines.garnier@edu.ece.fr', '$2y$12$MkjqymHH4npGf306PL9AbOOwBq7Oc5mmQTopoxsICjvyuiagCU7lS', '06 21 32 43 54', 'vendeur'),
+('Kevin', 'Roux', 'kevin.roux@edu.ece.fr', '$2y$12$MkjqymHH4npGf306PL9AbOOwBq7Oc5mmQTopoxsICjvyuiagCU7lS', '06 88 77 66 55', 'vendeur'),
+('Yasmine', 'Faure', 'yasmine.faure@edu.ece.fr', '$2y$12$MkjqymHH4npGf306PL9AbOOwBq7Oc5mmQTopoxsICjvyuiagCU7lS', '06 56 34 12 90', 'vendeur');
+
+-- Acheteurs supplementaires (mot de passe en clair : acheteur123)
+INSERT INTO utilisateurs (prenom, nom, email, mot_de_passe, telephone, adresse, role) VALUES
+('Clara', 'Robert', 'clara.robert@edu.ece.fr', '$2y$12$nuQLR.rRVZiyptUP2vnoi.rZjYR94f9fr7Fh0ulWXvrgHcAU/N2Qq', '06 40 11 22 33', '12 Rue des Ecoles, 75005 Paris', 'acheteur'),
+('Hugo', 'Simon', 'hugo.simon@edu.ece.fr', '$2y$12$nuQLR.rRVZiyptUP2vnoi.rZjYR94f9fr7Fh0ulWXvrgHcAU/N2Qq', '06 40 22 33 44', '28 Rue Vaneau, 75007 Paris', 'acheteur'),
+('Lea', 'Laurent', 'lea.laurent@edu.ece.fr', '$2y$12$nuQLR.rRVZiyptUP2vnoi.rZjYR94f9fr7Fh0ulWXvrgHcAU/N2Qq', '06 40 33 44 55', '4 Rue Oberkampf, 75011 Paris', 'acheteur'),
+('Noah', 'Michel', 'noah.michel@edu.ece.fr', '$2y$12$nuQLR.rRVZiyptUP2vnoi.rZjYR94f9fr7Fh0ulWXvrgHcAU/N2Qq', '06 40 44 55 66', '22 Rue Legendre, 75017 Paris', 'acheteur'),
+('Manon', 'Garcia', 'manon.garcia@edu.ece.fr', '$2y$12$nuQLR.rRVZiyptUP2vnoi.rZjYR94f9fr7Fh0ulWXvrgHcAU/N2Qq', '06 40 55 66 77', '41 Rue Lecourbe, 75015 Paris', 'acheteur'),
+('Nathan', 'Chevalier', 'nathan.chevalier@edu.ece.fr', '$2y$12$nuQLR.rRVZiyptUP2vnoi.rZjYR94f9fr7Fh0ulWXvrgHcAU/N2Qq', '06 40 66 77 88', '6 Rue Monge, 75005 Paris', 'acheteur'),
+('Sarah', 'Perrin', 'sarah.perrin@edu.ece.fr', '$2y$12$nuQLR.rRVZiyptUP2vnoi.rZjYR94f9fr7Fh0ulWXvrgHcAU/N2Qq', '06 40 77 88 99', '19 Rue de Charonne, 75011 Paris', 'acheteur'),
+('Enzo', 'Renault', 'enzo.renault@edu.ece.fr', '$2y$12$nuQLR.rRVZiyptUP2vnoi.rZjYR94f9fr7Fh0ulWXvrgHcAU/N2Qq', '06 40 88 99 10', '33 Rue du Faubourg Saint-Denis, 75010 Paris', 'acheteur'),
+('Camille', 'Girard', 'camille.girard@edu.ece.fr', '$2y$12$nuQLR.rRVZiyptUP2vnoi.rZjYR94f9fr7Fh0ulWXvrgHcAU/N2Qq', '06 40 99 10 21', '17 Rue Mouffetard, 75005 Paris', 'acheteur'),
+('Julien', 'Blanchard', 'julien.blanchard@edu.ece.fr', '$2y$12$nuQLR.rRVZiyptUP2vnoi.rZjYR94f9fr7Fh0ulWXvrgHcAU/N2Qq', '06 40 10 21 32', '9 Boulevard Voltaire, 75011 Paris', 'acheteur'),
+('Zoe', 'Fontaine', 'zoe.fontaine@edu.ece.fr', '$2y$12$nuQLR.rRVZiyptUP2vnoi.rZjYR94f9fr7Fh0ulWXvrgHcAU/N2Qq', '06 40 21 32 43', '2 Rue de Turenne, 75004 Paris', 'acheteur'),
+('Maxime', 'Rolland', 'maxime.rolland@edu.ece.fr', '$2y$12$nuQLR.rRVZiyptUP2vnoi.rZjYR94f9fr7Fh0ulWXvrgHcAU/N2Qq', '06 40 32 43 54', '27 Rue de la Roquette, 75011 Paris', 'acheteur'),
+('Anais', 'Marchand', 'anais.marchand@edu.ece.fr', '$2y$12$nuQLR.rRVZiyptUP2vnoi.rZjYR94f9fr7Fh0ulWXvrgHcAU/N2Qq', '06 40 43 54 65', '14 Rue des Martyrs, 75009 Paris', 'acheteur');
 
 -- Articles d'exemple
 INSERT INTO articles (vendeur_id, titre, description, prix, categorie, type_vente, gamme, image_url) VALUES
-(2, 'MacBook Pro M3 2024', 'MacBook Pro 14 pouces avec puce M3, 16 Go RAM, 512 Go SSD. Excellent état, utilisé 6 mois.', 1499.00, 'Électronique', 'achat_immediat', 'haut_de_gamme', 'images/macm3.jpg'),
-(2, 'Lot de livres Informatique', '5 livres de programmation : Python, Java, C++, Algorithmes, Base de données. Parfait pour les étudiants ECE.', 45.00, 'Livres', 'achat_immediat', 'regulier', 'images/lotlivreinformatique.jpg'),
-(2, 'Vélo de course Specialized', 'Vélo de course Specialized Allez en carbone. Taille M, très bon état.', 800.00, 'Sports', 'negociation', 'haut_de_gamme', 'images/velo-de-route-specialized-tarmac-expert-ultegra-di2-54.jpg'),
-(3, 'iPhone 15 Pro Max 256 Go', 'iPhone 15 Pro Max couleur titane, 256 Go. Sous garantie Apple.', 950.00, 'Électronique', 'achat_immediat', 'haut_de_gamme', 'images/Apple-iPhone-15-Pro-Max-6-7-5G-Double-SIM-256-Go-Bleu-Titanium.jpg'),
-(3, 'Bureau ergonomique IKEA', 'Bureau réglable en hauteur IKEA BEKANT 160x80 cm. Blanc, très bon état.', 150.00, 'Maison', 'achat_immediat', 'regulier', 'images/placeholder.png'),
-(3, 'Montre Casio vintage rare', 'Casio A168WA édition limitée dorée. Neuve dans son emballage d''origine.', 250.00, 'Divers', 'negociation', 'rare', 'images/casio.jpg'),
-(2, 'Veste North Face Nuptse', 'Doudoune North Face Nuptse 1996 noire, taille L. Portée 2 fois.', 180.00, 'Vêtements', 'negociation', 'regulier', 'images/placeholder.png'),
-(3, 'Calculatrice TI-83 Premium', 'Calculatrice Texas Instruments TI-83 Premium CE. Parfaite pour les cours de maths.', 60.00, 'Électronique', 'achat_immediat', 'regulier', 'images/placeholder.png');
+(2, 'MacBook Pro M3 2024', 'MacBook Pro 14 pouces avec puce M3, 16 Go RAM, 512 Go SSD. Excellent état, utilisé 6 mois.', 1499.00, 'Électronique', 'achat_immediat', 'haut_de_gamme', 'images/articles/macm3.jpg'),
+(2, 'Lot de livres Informatique', '5 livres de programmation : Python, Java, C++, Algorithmes, Base de données. Parfait pour les étudiants ECE.', 45.00, 'Livres', 'achat_immediat', 'regulier', 'images/articles/lotlivreinformatique.jpg'),
+(2, 'Vélo de course Specialized', 'Vélo de course Specialized Allez en carbone. Taille M, très bon état.', 800.00, 'Sports', 'negociation', 'haut_de_gamme', 'images/articles/velo-de-route-specialized-tarmac-expert-ultegra-di2-54.jpg'),
+(3, 'iPhone 15 Pro Max 256 Go', 'iPhone 15 Pro Max couleur titane, 256 Go. Sous garantie Apple.', 950.00, 'Électronique', 'achat_immediat', 'haut_de_gamme', 'images/articles/Apple-iPhone-15-Pro-Max-6-7-5G-Double-SIM-256-Go-Bleu-Titanium.jpg'),
+(3, 'Bureau ergonomique IKEA', 'Bureau réglable en hauteur IKEA BEKANT 160x80 cm. Blanc, très bon état.', 150.00, 'Maison', 'achat_immediat', 'regulier', 'images/articles/placeholder.png'),
+(3, 'Montre Casio vintage rare', 'Casio A168WA édition limitée dorée. Neuve dans son emballage d''origine.', 250.00, 'Divers', 'negociation', 'rare', 'images/articles/casio.jpg'),
+(2, 'Veste North Face Nuptse', 'Doudoune North Face Nuptse 1996 noire, taille L. Portée 2 fois.', 180.00, 'Vêtements', 'negociation', 'regulier', 'images/articles/placeholder.png'),
+(3, 'Calculatrice TI-83 Premium', 'Calculatrice Texas Instruments TI-83 Premium CE. Parfaite pour les cours de maths.', 60.00, 'Électronique', 'achat_immediat', 'regulier', 'images/articles/placeholder.png'),
+(2, 'Adidas Muenchen pointure 40', 'Paire Adidas Muenchen pointure 40 en bon état général. Confortable et idéale pour un usage quotidien.', 120.00, 'Vêtements', 'achat_immediat', 'regulier', 'images/articles/Adidas Muenchen pointure 40.png'),
+(3, 'Chaussures Palladium T 37', 'Chaussures Palladium taille 37, propres et prêtes à porter. Style urbain et semelle robuste.', 70.00, 'Vêtements', 'achat_immediat', 'regulier', 'images/articles/Chaussures Palladium T 37.png'),
+(7, 'Chemise femme PROMOD taille 38', 'Chemise femme marque PROMOD taille 38. Coupe moderne et tissu léger.', 35.00, 'Vêtements', 'achat_immediat', 'regulier', 'images/articles/Chemise femme marque PROMOD taille 38.png'),
+(8, 'Sculpture décoration loup hurlant', 'Figurine décorative loup hurlant, idéale pour un salon ou un bureau. Objet de décoration original.', 55.00, 'Maison', 'achat_immediat', 'rare', 'images/articles/Decoration loup hurlant sculpture figurine.png'),
+(9, 'Enceinte Marshall', 'Enceinte Marshall en excellent état de fonctionnement. Son puissant et design iconique.', 200.00, 'Électronique', 'achat_immediat', 'haut_de_gamme', 'images/articles/Enceinte Marshall (200e).png'),
+(10, 'Huawei Pura 70', 'Smartphone Huawei Pura 70, appareil propre et fonctionnel. Vente avec possibilité de négociation.', 699.00, 'Électronique', 'negociation', 'haut_de_gamme', 'images/articles/Échange Huawei Pura 70 (699e).png'),
+(11, 'Fauteuil à retapisser', 'Fauteuil à retapisser, structure saine. Projet parfait pour customisation ou rénovation.', 80.00, 'Maison', 'negociation', 'regulier', 'images/articles/Fauteuil a retapisser.png'),
+(2, 'Jean Levi''s motif W31 L29', 'Jean Levi''s W31 L29 avec motif. Très bon état, coupe confortable.', 65.00, 'Vêtements', 'achat_immediat', 'regulier', 'images/articles/Jean Levi''s à motif W31 L29.png'),
+(3, 'Livre d''entraînement Sciences de l''Ingénieur', 'Ouvrage d''exercices en sciences de l''ingénieur, utile pour révisions et entraînement.', 22.00, 'Livres', 'achat_immediat', 'regulier', 'images/articles/Livre entrainement exo - de Sciences de l''Ingénieur.png'),
+(7, 'Panier de basket', 'Panier de basket pour entraînement extérieur ou intérieur. Matériel solide et simple à installer.', 110.00, 'Sports', 'achat_immediat', 'regulier', 'images/articles/Panier de basket.png'),
+(8, 'Raquette de badminton', 'Raquette de badminton légère et maniable, adaptée aux débutants comme aux joueurs réguliers.', 45.00, 'Sports', 'achat_immediat', 'regulier', 'images/articles/Raquette, badminton.png'),
+(9, 'Samsung Galaxy Note 10 Lite', 'Samsung Galaxy Note 10 Lite en bon état. Batterie correcte et appareil pleinement utilisable.', 159.00, 'Électronique', 'achat_immediat', 'haut_de_gamme', 'images/articles/SAMSUNG Galaxy Note 10 Lite (159e).png'),
+(10, 'Vélo VAE Lapierre Xeluis 600', 'Vélo à assistance électrique Lapierre Xeluis 600 avec moteur Fazua. Modèle performant.', 1850.00, 'Sports', 'negociation', 'haut_de_gamme', 'images/articles/Vend velo VAE Lapierre Xeluis 600 moteur FAZUA.png'),
+(11, 'Aspirateur robot', 'Aspirateur robot fonctionnel pour entretien quotidien du sol. Utilisation simple et efficace.', 140.00, 'Maison', 'achat_immediat', 'regulier', 'images/articles/aspirateur robot.png'),
+(2, 'Banc de musculation développé couché', 'Banc de musculation pour développé couché, stable et robuste. Idéal home gym.', 260.00, 'Sports', 'negociation', 'haut_de_gamme', 'images/articles/banc muscu dev couche.png'),
+(3, 'Buffet déco', 'Buffet déco en bon état, parfait pour rangement de salon ou salle à manger.', 190.00, 'Maison', 'negociation', 'regulier', 'images/articles/buffet deco.png'),
+(7, 'Chaises tournantes (lot)', 'Lot de chaises tournantes confortables. Convient pour bureau ou coin repas.', 150.00, 'Maison', 'achat_immediat', 'regulier', 'images/articles/chaises tournantes.png'),
+(8, 'Cage à lapin', 'Cage à lapin propre et prête à l''emploi. Accessoire pratique pour petit animal.', 40.00, 'Divers', 'achat_immediat', 'regulier', 'images/articles/divers - cage lapin.png'),
+(9, 'Distributeur machine à café', 'Distributeur machine à café en état de marche. Idéal pour espace commun ou colocation.', 300.00, 'Divers', 'negociation', 'regulier', 'images/articles/divers - distributeur machine cafe 300e.png'),
+(10, 'Nettoyeur d''oreille', 'Petit appareil nettoyeur d''oreille en bon état. Pratique pour un usage ponctuel.', 20.00, 'Divers', 'achat_immediat', 'regulier', 'images/articles/divers - netoyeur oreille.png'),
+(11, 'Déambulateur 3 roues', 'Déambulateur 3 roues stable et facile à manœuvrer. Bon état global.', 95.00, 'Divers', 'negociation', 'regulier', 'images/articles/divers deambulateur 3 roues.png'),
+(2, 'Aquarium 54L', 'Aquarium 54 litres pour poisson d''eau douce. Idéal pour débuter un petit bac.', 75.00, 'Divers', 'achat_immediat', 'regulier', 'images/articles/divers- aquarium 54L.png'),
+(3, 'Enceinte JBL Charge 5', 'Enceinte portable JBL Charge 5, son puissant et bonne autonomie.', 99.00, 'Électronique', 'achat_immediat', 'haut_de_gamme', 'images/articles/enceinteJBL charge5.png'),
+(7, 'Livre INSA - Fabriquer le monde', 'Livre orienté ingénierie et innovation, bon support de lecture pour étudiants.', 18.00, 'Livres', 'achat_immediat', 'regulier', 'images/articles/livre Ingénieurs INSA - Fabriquer le monde.png'),
+(8, 'BD Où est Charlie ?', 'Bande dessinée Où est Charlie ?, exemplaire en bon état.', 12.00, 'Livres', 'achat_immediat', 'regulier', 'images/articles/livre bd - ou est charlie.png'),
+(9, 'Lot de livres policiers', 'Lot de romans policiers, parfait pour amateurs de suspense.', 28.00, 'Livres', 'achat_immediat', 'regulier', 'images/articles/livres policiers lot.png'),
+(10, 'Raquette de tennis', 'Raquette de tennis en bon état pour entraînement et matchs loisirs.', 58.00, 'Sports', 'achat_immediat', 'regulier', 'images/articles/raquette tennis.png');
 
 -- Cartes bancaires de test (simulation)
 INSERT INTO cartes_bancaires (numero_carte, expiration, cvv, titulaire) VALUES

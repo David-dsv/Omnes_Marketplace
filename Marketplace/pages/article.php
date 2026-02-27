@@ -72,7 +72,7 @@ include $base_url . 'includes/navbar.php';
             <div class="col-lg-6 mb-4 animate-on-scroll">
                 <div class="card overflow-hidden" style="border-radius: 16px;">
                     <div class="position-relative">
-                        <img src="<?php echo $base_url . htmlspecialchars($article['image_url'] ?? 'images/placeholder.png'); ?>"
+                        <img src="<?php echo $base_url . htmlspecialchars($article['image_url'] ?? 'images/articles/placeholder.png'); ?>"
                              class="img-fluid w-100" style="max-height: 500px; object-fit: cover;"
                              alt="<?php echo htmlspecialchars($article['titre']); ?>">
                         <span class="badge badge-<?php echo $article['gamme']; ?> badge-gamme" style="position:absolute;top:16px;left:16px;font-size:0.85rem;padding:0.5em 1em;">
@@ -220,7 +220,7 @@ include $base_url . 'includes/navbar.php';
                         <div class="col-md-6 col-lg-3">
                             <div class="card article-card h-100 shadow-sm">
                                 <div class="card-img-wrapper">
-                                    <img src="<?php echo $base_url . htmlspecialchars($sim['image_url'] ?? 'images/placeholder.png'); ?>"
+                                    <img src="<?php echo $base_url . htmlspecialchars($sim['image_url'] ?? 'images/articles/placeholder.png'); ?>"
                                          class="card-img-top" alt="<?php echo htmlspecialchars($sim['titre']); ?>">
                                     <div class="card-img-overlay-hover">
                                         <a href="article.php?id=<?php echo $sim['id']; ?>" class="btn btn-light btn-sm"><i class="bi bi-eye"></i> Voir</a>

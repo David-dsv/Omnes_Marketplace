@@ -45,7 +45,7 @@ foreach ($panier_items as $item) {
                         </div>
                         <?php foreach ($panier_items as $item): ?>
                             <div class="cart-item d-flex align-items-center px-3">
-                                <img src="<?php echo $base_url . htmlspecialchars($item['image_url'] ?? 'images/placeholder.png'); ?>"
+                                <img src="<?php echo $base_url . htmlspecialchars($item['image_url'] ?? 'images/articles/placeholder.png'); ?>"
                                      class="rounded me-3" style="width: 90px; height: 90px; object-fit: cover;"
                                      alt="<?php echo htmlspecialchars($item['titre']); ?>">
                                 <div class="flex-grow-1">

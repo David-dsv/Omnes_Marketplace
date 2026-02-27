@@ -74,7 +74,7 @@ include $base_url . 'includes/navbar.php';
             <!-- Article sidebar -->
             <div class="col-lg-4 mb-4 animate-on-scroll">
                 <div class="card shadow-sm" style="border-radius: 16px; position: sticky; top: 100px;">
-                    <img src="<?php echo $base_url . htmlspecialchars($article['image_url'] ?? 'images/placeholder.png'); ?>"
+                    <img src="<?php echo $base_url . htmlspecialchars($article['image_url'] ?? 'images/articles/placeholder.png'); ?>"
                          class="card-img-top" style="height: 200px; object-fit: cover;"
                          alt="<?php echo htmlspecialchars($article['titre']); ?>">
                     <div class="card-body">

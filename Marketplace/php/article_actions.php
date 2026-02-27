@@ -31,7 +31,7 @@ switch ($action) {
         }
 
         // Gestion de l'image
-        $image_url = 'images/placeholder.png';
+        $image_url = 'images/articles/placeholder.png';
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
             $upload_dir = __DIR__ . '/../images/articles/';
             if (!is_dir($upload_dir)) {
