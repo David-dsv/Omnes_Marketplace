@@ -1,15 +1,16 @@
 <?php
 session_start();
 $base_url = '../';
+
+if (!isset($_SESSION['user_id'])) {
+    header('Location: acces_notifications.php');
+    exit;
+}
+
 $page_title = 'Notifications';
 require_once $base_url . 'config/database.php';
 include $base_url . 'includes/header.php';
 include $base_url . 'includes/navbar.php';
-
-if (!isset($_SESSION['user_id'])) {
-    header('Location: connexion.php');
-    exit;
-}
 
 try {
     $stmt = $pdo->prepare("SELECT * FROM notifications WHERE utilisateur_id = :uid ORDER BY date_creation DESC");

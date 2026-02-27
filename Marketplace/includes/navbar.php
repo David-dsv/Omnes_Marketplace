@@ -1,3 +1,12 @@
+<?php
+$notifications_url = isset($_SESSION['user_id'])
+    ? $base_url . 'pages/notifications.php'
+    : $base_url . 'pages/acces_notifications.php';
+$panier_url = isset($_SESSION['user_id'])
+    ? $base_url . 'pages/panier.php'
+    : $base_url . 'pages/acces_panier.php';
+?>
+
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top" id="main-navbar">
     <div class="container">
         <a class="navbar-brand fw-bold" href="<?php echo $base_url; ?>index.php">
@@ -78,13 +87,13 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo $base_url; ?>pages/notifications.php">
-                        <i class="bi bi-bell"></i> Notifications
+                    <a class="nav-link" href="<?php echo $notifications_url; ?>">
+                        <i class="bi bi-bell"></i><span class="nav-label-notifications"> Notifications</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link position-relative" href="<?php echo $base_url; ?>pages/panier.php">
-                        <i class="bi bi-cart3"></i> Panier
+                    <a class="nav-link position-relative" href="<?php echo $panier_url; ?>">
+                        <i class="bi bi-cart3"></i><span class="nav-label-panier"> Panier</span>
                         <span id="cart-count" class="badge bg-danger rounded-pill d-none">0</span>
                     </a>
                 </li>
@@ -94,6 +103,9 @@
             <form class="navbar-search me-3 d-none d-lg-flex" action="<?php echo $base_url; ?>pages/tout_parcourir.php" method="GET">
                 <i class="bi bi-search search-icon"></i>
                 <input type="text" name="q" class="form-control" placeholder="Rechercher un article..." autocomplete="off">
+                <button type="submit" class="navbar-search-icon-btn" aria-label="Rechercher">
+                    <i class="bi bi-search"></i>
+                </button>
             </form>
 
             <ul class="navbar-nav">
@@ -134,7 +146,7 @@
                         </a>
                     </li>
                     <li class="nav-item ms-2">
-                        <a class="nav-link btn btn-outline-light btn-sm px-3 py-1" href="<?php echo $base_url; ?>pages/inscription.php" style="margin-top:4px;">
+                        <a class="nav-link btn btn-outline-light btn-sm px-3 py-1" href="<?php echo $base_url; ?>pages/inscription.php" style="margin-top:1px;">
                             <i class="bi bi-person-plus"></i> Inscription
                         </a>
                     </li>
