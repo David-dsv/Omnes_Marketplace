@@ -18,6 +18,7 @@ try {
 }
 
 $success = $_GET['success'] ?? '';
+$error = $_GET['error'] ?? '';
 
 include $base_url . 'includes/header.php';
 include $base_url . 'includes/navbar.php';
@@ -30,12 +31,20 @@ include $base_url . 'includes/navbar.php';
                 <h1 class="h3 mb-1"><i class="bi bi-list-ul me-2"></i>Mes articles</h1>
                 <p class="text-muted mb-0"><?php echo count($articles); ?> article<?php echo count($articles) > 1 ? 's' : ''; ?></p>
             </div>
-            <a href="ajouter_article.php" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Ajouter un article</a>
+            <div class="d-flex flex-wrap gap-2">
+                <a href="dashboard.php" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Retour</a>
+                <a href="ajouter_article.php" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Ajouter un article</a>
+            </div>
         </div>
 
         <?php if ($success): ?>
             <div class="alert alert-success d-flex align-items-center">
                 <i class="bi bi-check-circle-fill me-2"></i><?php echo htmlspecialchars($success); ?>
+            </div>
+        <?php endif; ?>
+        <?php if ($error): ?>
+            <div class="alert alert-danger d-flex align-items-center">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i><?php echo htmlspecialchars($error); ?>
             </div>
         <?php endif; ?>
 
@@ -62,8 +71,8 @@ include $base_url . 'includes/navbar.php';
                                 </div>
                             </div>
                             <div class="card-footer d-flex gap-2">
-                                <a href="<?php echo $base_url; ?>pages/article.php?id=<?php echo $article['id']; ?>" class="btn btn-outline-primary btn-sm flex-grow-1">
-                                    <i class="bi bi-eye"></i> Voir
+                                <a href="editer_article.php?id=<?php echo $article['id']; ?>" class="btn btn-outline-primary btn-sm flex-grow-1">
+                                    <i class="bi bi-pencil-square"></i> Éditer
                                 </a>
                                 <form method="POST" action="<?php echo $base_url; ?>php/article_actions.php" class="flex-grow-1"
                                       data-confirm="Supprimer l'article '<?php echo htmlspecialchars($article['titre']); ?>' ?">

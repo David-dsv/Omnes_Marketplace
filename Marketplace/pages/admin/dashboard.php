@@ -46,7 +46,7 @@ include $base_url . 'includes/navbar.php';
             <div class="col-md-3 col-6 animate-on-scroll animate-delay-1">
                 <div class="dashboard-stat stat-success">
                     <div class="stat-icon" style="background: rgba(25,135,84,0.1); color: var(--omnes-success);">
-                        <img src="<?php echo $base_url; ?>images/Logo_Omnes_Éducation.svg.png" alt="Omnes" class="stat-logo">
+                        <i class="bi bi-shop"></i>
                     </div>
                     <div class="stat-number"><?php echo $nb_vendeurs; ?></div>
                     <div class="stat-label">Vendeurs</div>

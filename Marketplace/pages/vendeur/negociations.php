@@ -55,7 +55,7 @@ include $base_url . 'includes/navbar.php';
                 <h1 class="h3 mb-1">Mes négociations</h1>
                 <p class="text-muted mb-0"><?php echo count($negotiations); ?> négociation<?php echo count($negotiations) > 1 ? 's' : ''; ?> au total</p>
             </div>
-            <a href="dashboard.php" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Retour</a>
+            <a href="dashboard.php" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Retour au dashboard</a>
         </div>
 
         <?php if ($success): ?>

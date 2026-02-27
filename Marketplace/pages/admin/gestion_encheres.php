@@ -120,7 +120,7 @@ include $base_url . 'includes/navbar.php';
                                                  alt="<?php echo htmlspecialchars($a['titre']); ?>"
                                                  style="width: 90px; height: 90px; object-fit: cover; border-radius: 8px;">
                                             <div class="flex-grow-1">
-                                                <a href="<?php echo $base_url; ?>pages/article.php?id=<?php echo $a['id']; ?>" class="text-decoration-none fw-semibold">
+                                                <a href="detail_enchere.php?id=<?php echo $a['id']; ?>" class="text-decoration-none fw-semibold">
                                                     <?php echo htmlspecialchars(substr($a['titre'], 0, 35)); ?><?php echo strlen($a['titre']) > 35 ? '...' : ''; ?>
                                                 </a>
                                                 <div class="text-muted small">Par <?php echo htmlspecialchars($a['vendeur_prenom'] . ' ' . $a['vendeur_nom']); ?></div>
@@ -188,7 +188,7 @@ include $base_url . 'includes/navbar.php';
                                                  alt="<?php echo htmlspecialchars($a['titre']); ?>"
                                                  style="width: 90px; height: 90px; object-fit: cover; border-radius: 8px;">
                                             <div class="flex-grow-1">
-                                                <a href="<?php echo $base_url; ?>pages/article.php?id=<?php echo $a['id']; ?>" class="text-decoration-none fw-semibold">
+                                                <a href="detail_enchere.php?id=<?php echo $a['id']; ?>" class="text-decoration-none fw-semibold">
                                                     <?php echo htmlspecialchars(substr($a['titre'], 0, 35)); ?><?php echo strlen($a['titre']) > 35 ? '...' : ''; ?>
                                                 </a>
                                                 <div class="text-muted small">Par <?php echo htmlspecialchars($a['vendeur_prenom'] . ' ' . $a['vendeur_nom']); ?></div>
@@ -252,7 +252,7 @@ include $base_url . 'includes/navbar.php';
                                                  alt="<?php echo htmlspecialchars($a['titre']); ?>"
                                                  style="width: 90px; height: 90px; object-fit: cover; border-radius: 8px;">
                                             <div class="flex-grow-1">
-                                                <a href="<?php echo $base_url; ?>pages/article.php?id=<?php echo $a['id']; ?>" class="text-decoration-none fw-semibold">
+                                                <a href="detail_enchere.php?id=<?php echo $a['id']; ?>" class="text-decoration-none fw-semibold">
                                                     <?php echo htmlspecialchars(substr($a['titre'], 0, 35)); ?><?php echo strlen($a['titre']) > 35 ? '...' : ''; ?>
                                                 </a>
                                                 <div class="text-muted small">Par <?php echo htmlspecialchars($a['vendeur_prenom'] . ' ' . $a['vendeur_nom']); ?></div>
@@ -316,7 +316,7 @@ include $base_url . 'includes/navbar.php';
                                                  alt="<?php echo htmlspecialchars($a['titre']); ?>"
                                                  style="width: 90px; height: 90px; object-fit: cover; border-radius: 8px;">
                                             <div class="flex-grow-1">
-                                                <a href="<?php echo $base_url; ?>pages/article.php?id=<?php echo $a['id']; ?>" class="text-decoration-none fw-semibold">
+                                                <a href="detail_enchere.php?id=<?php echo $a['id']; ?>" class="text-decoration-none fw-semibold">
                                                     <?php echo htmlspecialchars(substr($a['titre'], 0, 35)); ?><?php echo strlen($a['titre']) > 35 ? '...' : ''; ?>
                                                 </a>
                                                 <div class="text-muted small">Par <?php echo htmlspecialchars($a['vendeur_prenom'] . ' ' . $a['vendeur_nom']); ?></div>

@@ -264,6 +264,12 @@ INSERT INTO utilisateurs (prenom, nom, email, mot_de_passe, telephone, adresse, 
 ('Maxime', 'Rolland', 'maxime.rolland@edu.ece.fr', '$2y$12$nuQLR.rRVZiyptUP2vnoi.rZjYR94f9fr7Fh0ulWXvrgHcAU/N2Qq', '06 40 32 43 54', '27 Rue de la Roquette, 75011 Paris', 'acheteur'),
 ('Anais', 'Marchand', 'anais.marchand@edu.ece.fr', '$2y$12$nuQLR.rRVZiyptUP2vnoi.rZjYR94f9fr7Fh0ulWXvrgHcAU/N2Qq', '06 40 43 54 65', '14 Rue des Martyrs, 75009 Paris', 'acheteur');
 
+-- Vendeur de test principal (connexion rapide)
+-- Identifiants : vendeur@vendeur.com / vendeur123
+-- date_creation forcée dans le futur pour apparaître en tête de "Gestion des vendeurs" (tri DESC)
+INSERT INTO utilisateurs (prenom, nom, email, mot_de_passe, telephone, role, date_creation) VALUES
+('Bastien', 'Delorme', 'vendeur@vendeur.com', '$2y$12$MkjqymHH4npGf306PL9AbOOwBq7Oc5mmQTopoxsICjvyuiagCU7lS', '06 00 00 00 01', 'vendeur', DATE_ADD(NOW(), INTERVAL 5 MINUTE));
+
 -- Articles d'exemple
 INSERT INTO articles (vendeur_id, titre, description, prix, categorie, type_vente, gamme, image_url) VALUES
 (2, 'MacBook Pro M3 2024', 'MacBook Pro 14 pouces avec puce M3, 16 Go RAM, 512 Go SSD. Excellent état, utilisé 6 mois.', 1499.00, 'Électronique', 'achat_immediat', 'haut_de_gamme', 'images/articles/macm3.jpg'),
@@ -302,11 +308,18 @@ INSERT INTO articles (vendeur_id, titre, description, prix, categorie, type_vent
 (9, 'Lot de livres policiers', 'Lot de romans policiers, parfait pour amateurs de suspense.', 28.00, 'Livres', 'achat_immediat', 'regulier', 'images/articles/livres policiers lot.png'),
 (10, 'Raquette de tennis', 'Raquette de tennis en bon état pour entraînement et matchs loisirs.', 58.00, 'Sports', 'achat_immediat', 'regulier', 'images/articles/raquette tennis.png');
 
+-- Articles dédiés au vendeur de test (achat immédiat + négociation)
+INSERT INTO articles (vendeur_id, titre, description, prix, categorie, type_vente, gamme, image_url) VALUES
+((SELECT id FROM utilisateurs WHERE email = 'vendeur@vendeur.com' LIMIT 1), 'Ordinateur portable Lenovo ThinkPad T14', 'Lenovo ThinkPad T14 en très bon état, batterie solide, idéal pour travail et cours.', 680.00, 'Électronique', 'achat_immediat', 'haut_de_gamme', 'images/articles/lenovo.png'),
+((SELECT id FROM utilisateurs WHERE email = 'vendeur@vendeur.com' LIMIT 1), 'Chaise de bureau ergonomique noire', 'Chaise ergonomique avec soutien lombaire, hauteur réglable, usure légère.', 95.00, 'Maison', 'negociation', 'regulier', 'images/articles/lachaisebureau.png'),
+((SELECT id FROM utilisateurs WHERE email = 'vendeur@vendeur.com' LIMIT 1), 'Lot de manuels de mathématiques', 'Lot de 4 manuels de maths (analyse et algèbre), parfait pour révisions.', 40.00, 'Livres', 'achat_immediat', 'regulier', 'images/articles/lotManuelmaths.png');
+
 -- Articles meilleure offre (enchères)
 INSERT INTO articles (vendeur_id, titre, description, prix, categorie, type_vente, gamme, image_url, date_debut_enchere, date_fin_enchere) VALUES
 (2, 'Bague Cartier 18 carats or jaune', 'Bague de marque Cartier, 18 carats d''or jaune, pesant 4.8 grammes. Pièce rare et authentique avec certificat.', 500.00, 'Divers', 'meilleure_offre', 'rare', 'images/articles/baguecartier.png', '2026-03-01 09:00:00', '2026-03-15 17:00:00'),
 (3, 'Montre Omega Seamaster vintage', 'Montre Omega Seamaster des années 70, mouvement automatique, cadran bleu. Pièce de collection en état remarquable.', 1200.00, 'Divers', 'meilleure_offre', 'rare', 'images/articles/montreomega.png', DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_ADD(NOW(), INTERVAL 7 DAY)),
-(7, 'Premier tirage Harry Potter français', 'Harry Potter à l''école des sorciers, premier tirage Gallimard 1998. Couverture rigide, état quasi neuf.', 300.00, 'Livres', 'meilleure_offre', 'rare', 'images/articles/harrypotterfolio.png', '2026-02-27 00:00:00', '2026-03-10 23:59:00');
+(7, 'Premier tirage Harry Potter français', 'Harry Potter à l''école des sorciers, premier tirage Gallimard 1998. Couverture rigide, état quasi neuf.', 300.00, 'Livres', 'meilleure_offre', 'rare', 'images/articles/harrypotterfolio.png', '2026-02-27 00:00:00', '2026-03-10 23:59:00'),
+((SELECT id FROM utilisateurs WHERE email = 'vendeur@vendeur.com' LIMIT 1), 'Montre Seiko 5 vintage', 'Montre Seiko 5 automatique vintage, bracelet acier, bon état général. Pièce recherchée.', 220.00, 'Divers', 'meilleure_offre', 'rare', 'images/articles/montreseiko.png', DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_ADD(NOW(), INTERVAL 7 DAY));
 
 -- Cartes bancaires de test (simulation)
 INSERT INTO cartes_bancaires (numero_carte, expiration, cvv, titulaire) VALUES
