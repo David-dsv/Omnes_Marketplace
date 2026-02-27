@@ -101,7 +101,14 @@ include $base_url . 'includes/navbar.php';
                 <!-- Badges -->
                 <div class="d-flex flex-wrap gap-2 mb-3">
                     <span class="badge badge-<?php echo $article['type_vente']; ?> px-3 py-2">
-                        <?php echo $article['type_vente'] === 'negociation' ? 'Négociation' : 'Achat immédiat'; ?>
+                        <?php
+                            echo match ($article['type_vente']) {
+                                'achat_immediat' => 'Achat immédiat',
+                                'negociation' => 'Négociation',
+                                'meilleure_offre' => 'Meilleure offre',
+                                default => htmlspecialchars((string)$article['type_vente']),
+                            };
+                        ?>
                     </span>
                     <span class="badge bg-light text-dark border px-3 py-2">
                         <i class="bi bi-tag"></i> <?php echo htmlspecialchars($article['categorie']); ?>
@@ -137,15 +144,152 @@ include $base_url . 'includes/navbar.php';
                 <!-- Action buttons -->
                 <div class="d-grid gap-2">
                     <?php if ($article['type_vente'] === 'achat_immediat'): ?>
-                        <button class="btn btn-primary btn-lg btn-add-cart" data-article-id="<?php echo $article['id']; ?>">
-                            Ajouter au panier
-                        </button>
+                        <?php if ($article['statut'] === 'disponible'): ?>
+                            <button class="btn btn-primary btn-lg btn-add-cart" data-article-id="<?php echo $article['id']; ?>">
+                                Ajouter au panier
+                            </button>
+                        <?php else: ?>
+                            <button class="btn btn-secondary btn-lg" disabled>Article vendu</button>
+                        <?php endif; ?>
+
                     <?php elseif ($article['type_vente'] === 'negociation'): ?>
-                        <a href="negociation.php?article_id=<?php echo $article['id']; ?>" class="btn btn-warning btn-lg">
-                            Négocier le prix
-                        </a>
+                        <?php if ($article['statut'] === 'disponible'): ?>
+                            <a href="negociation.php?article_id=<?php echo $article['id']; ?>" class="btn btn-warning btn-lg">
+                                Négocier le prix
+                            </a>
+                        <?php else: ?>
+                            <button class="btn btn-secondary btn-lg" disabled>Négociation terminée - article vendu</button>
+                        <?php endif; ?>
+
+                    <?php elseif ($article['type_vente'] === 'meilleure_offre'): ?>
+                        <?php
+                            $now = new DateTime();
+                            $date_debut = $article['date_debut_enchere'] ? new DateTime($article['date_debut_enchere']) : $now;
+                            $date_fin = $article['date_fin_enchere'] ? new DateTime($article['date_fin_enchere']) : null;
+                            $auction_started = $date_fin && $now >= $date_debut;
+                            $auction_active = $date_fin && $now >= $date_debut && $now < $date_fin;
+                            $auction_ended = $date_fin && $now >= $date_fin;
+
+                            // Nombre d'enchérisseurs (sans révéler les montants — enchères scellées)
+                            $stmt_bids = $pdo->prepare("SELECT COUNT(*) FROM encheres WHERE article_id = :id");
+                            $stmt_bids->execute([':id' => $article_id]);
+                            $nb_bidders = (int)$stmt_bids->fetchColumn();
+
+                            // Vérifier si l'utilisateur courant a déjà enchéri
+                            $user_bid = null;
+                            if (isset($_SESSION['user_id'])) {
+                                $stmt_ubid = $pdo->prepare("SELECT * FROM encheres WHERE article_id = :aid AND acheteur_id = :uid");
+                                $stmt_ubid->execute([':aid' => $article_id, ':uid' => $_SESSION['user_id']]);
+                                $user_bid = $stmt_ubid->fetch();
+                            }
+                        ?>
+
+                        <!-- Bloc Enchères -->
+                        <div class="card p-3 mb-3" style="background: linear-gradient(135deg, #fff8e1, #fffbf0); border: 1px solid #ffc107; border-radius: 12px;">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <strong class="text-dark">Meilleure Offre</strong>
+                                <span class="badge bg-warning text-dark"><?php echo $nb_bidders; ?> enchère<?php echo $nb_bidders > 1 ? 's' : ''; ?></span>
+                            </div>
+
+                            <?php if ($date_fin): ?>
+                                <div class="mb-2">
+                                    <small class="text-muted d-block">Du <?php echo $date_debut->format('d/m/Y H:i'); ?> au <?php echo $date_fin->format('d/m/Y H:i'); ?></small>
+                                </div>
+
+                                <?php if ($auction_active): ?>
+                                    <div class="countdown-timer mb-2" id="countdown-timer" data-end-time="<?php echo $article['date_fin_enchere']; ?>">
+                                        <small class="text-muted">Temps restant : </small>
+                                        <strong id="countdown-display" class="text-primary" style="font-family: 'Courier New', monospace; font-size: 1.1rem;">--:--:--</strong>
+                                    </div>
+                                <?php elseif ($auction_ended): ?>
+                                    <div class="mb-2">
+                                        <span class="badge bg-secondary">Enchères terminées</span>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="mb-2">
+                                        <span class="badge bg-info text-dark">Enchères pas encore commencées</span>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endif; ?>
+
+                            <?php if ($user_bid): ?>
+                                <div class="alert alert-info small mb-0 mt-2" style="border-radius: 10px;">
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    Vous avez déjà enchéri. Votre enchère max : <strong><?php echo number_format($user_bid['montant_max'], 2, ',', ' '); ?> €</strong>
+                                    <?php if ($user_bid['statut'] === 'gagnant'): ?>
+                                        <br><span class="badge bg-success mt-1">Vous avez gagné !</span>
+                                    <?php elseif ($user_bid['statut'] === 'perdant'): ?>
+                                        <br><span class="badge bg-danger mt-1">Enchère perdue</span>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="alert alert-info d-flex align-items-start gap-2 small mb-3" style="border-radius: 10px;">
+                            <i class="bi bi-info-circle-fill mt-1"></i>
+                            <span>Enchère scellée : indiquez le prix max que vous êtes prêt à payer. Le système enchérira pour vous. Vous ne payerez que le minimum nécessaire (2ème enchère + 1 €).</span>
+                        </div>
+
+                        <?php if ($auction_active && $article['statut'] === 'disponible'): ?>
+                            <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != $article['vendeur_id']): ?>
+                                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#bidModal">
+                                    <?php echo $user_bid ? 'Modifier mon enchère' : 'Enchérir'; ?>
+                                </button>
+                            <?php elseif (!isset($_SESSION['user_id'])): ?>
+                                <a href="connexion.php" class="btn btn-outline-primary btn-lg">Se connecter pour enchérir</a>
+                            <?php endif; ?>
+                        <?php elseif ($auction_ended && $article['statut'] === 'disponible'): ?>
+                            <button class="btn btn-secondary btn-lg" disabled>Enchères terminées — En attente de clôture</button>
+                        <?php elseif ($article['statut'] === 'vendu'): ?>
+                            <button class="btn btn-secondary btn-lg" disabled>Article vendu</button>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </div>
+
+                <?php if (isset($auction_active) && $auction_active && $article['statut'] === 'disponible' && isset($_SESSION['user_id']) && $_SESSION['user_id'] != $article['vendeur_id']): ?>
+                <!-- Modal d'enchère -->
+                <div class="modal fade" id="bidModal" tabindex="-1" aria-labelledby="bidModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content" style="border-radius: 16px; overflow: hidden;">
+                            <div class="modal-header" style="background: linear-gradient(135deg, var(--omnes-primary), var(--omnes-primary-dark)); color: white;">
+                                <h5 class="modal-title" id="bidModalLabel"><i class="bi bi-hammer me-2"></i>Placer une enchère</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                            </div>
+                            <div class="modal-body p-4">
+                                <p class="text-muted mb-3">Indiquez le prix maximum que vous êtes prêt à payer. Le système enchérira automatiquement pour vous jusqu'à ce montant.</p>
+                                <form id="bid-form">
+                                    <input type="hidden" name="action" value="place_bid">
+                                    <input type="hidden" name="article_id" value="<?php echo $article_id; ?>">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Votre prix maximum</label>
+                                        <div class="input-group input-group-lg">
+                                            <input type="number" name="montant_max" id="bid-montant-max" class="form-control"
+                                                   placeholder="0.00" step="0.01"
+                                                   min="<?php echo $article['prix']; ?>"
+                                                   <?php if ($user_bid): ?>value="<?php echo $user_bid['montant_max']; ?>"<?php endif; ?>
+                                                   required>
+                                            <span class="input-group-text">&euro;</span>
+                                        </div>
+                                        <small class="text-muted d-block mt-1">Prix de réserve : <?php echo number_format($article['prix'], 2, ',', ' '); ?> €</small>
+                                        <?php if ($user_bid): ?>
+                                            <small class="text-info d-block mt-1">Votre enchère actuelle : <?php echo number_format($user_bid['montant_max'], 2, ',', ' '); ?> €</small>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="alert alert-info small" style="border-radius: 10px;">
+                                        <i class="bi bi-shield-lock me-1"></i> Votre enchère reste confidentielle. Vous ne payerez que le montant nécessaire pour remporter l'article.
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                                <button type="button" class="btn btn-primary" id="submit-bid-btn">
+                                    <i class="bi bi-hammer me-1"></i> <?php echo $user_bid ? 'Mettre à jour' : 'Placer l\'enchère'; ?>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
             </div>
         </div>
 

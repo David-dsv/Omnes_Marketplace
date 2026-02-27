@@ -68,10 +68,11 @@ include $base_url . 'includes/navbar.php';
 
                     <div class="col-md-4">
                         <label class="form-label fw-semibold">Type de vente</label>
-                        <select name="type_vente" class="form-select" required>
+                        <select name="type_vente" id="type-vente-select" class="form-select" required>
                             <option value="">Choisir...</option>
                             <option value="achat_immediat">Achat immédiat</option>
                             <option value="negociation">Négociation</option>
+                            <option value="meilleure_offre">Meilleure Offre</option>
                         </select>
                     </div>
 
@@ -83,6 +84,26 @@ include $base_url . 'includes/navbar.php';
                             <option value="haut_de_gamme">Haut de gamme</option>
                             <option value="rare">Article rare</option>
                         </select>
+                    </div>
+
+                    <!-- Champs spécifiques Meilleure Offre -->
+                    <div id="auction-fields" class="col-12" style="display: none;">
+                        <div class="card p-3 mb-2" style="background: linear-gradient(135deg, #fff8e1, #fffbf0); border: 1px dashed #ffc107; border-radius: 12px;">
+                            <h6 class="fw-semibold mb-3"><i class="bi bi-clock-history me-1"></i>Période d'enchères</h6>
+                            <p class="text-muted small mb-3">Définissez la période pendant laquelle les acheteurs pourront soumettre leurs enchères. Le prix ci-dessus sera utilisé comme prix de réserve minimum.</p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Début des enchères</label>
+                                    <input type="datetime-local" name="date_debut_enchere" id="date-debut-enchere" class="form-control">
+                                    <small class="text-muted">Laisser vide = commence immédiatement</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Fin des enchères</label>
+                                    <input type="datetime-local" name="date_fin_enchere" id="date-fin-enchere" class="form-control">
+                                    <small class="text-muted">Date/heure de clôture des enchères</small>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-md-6">
@@ -104,5 +125,26 @@ include $base_url . 'includes/navbar.php';
     </div>
 </main>
 
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var typeSelect = document.getElementById('type-vente-select');
+    var auctionFields = document.getElementById('auction-fields');
+    var dateFinInput = document.getElementById('date-fin-enchere');
+
+    function toggleAuctionFields() {
+        if (typeSelect.value === 'meilleure_offre') {
+            auctionFields.style.display = 'block';
+            dateFinInput.required = true;
+        } else {
+            auctionFields.style.display = 'none';
+            dateFinInput.required = false;
+        }
+    }
+
+    typeSelect.addEventListener('change', toggleAuctionFields);
+    toggleAuctionFields();
+});
+</script>
 
 <?php include $base_url . 'includes/footer.php'; ?>

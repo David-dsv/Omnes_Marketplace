@@ -47,18 +47,53 @@ switch ($action) {
             }
         }
 
+        // Validation spécifique meilleure_offre
+        $date_debut_enchere = null;
+        $date_fin_enchere = null;
+
+        if ($type_vente === 'meilleure_offre') {
+            $date_fin = trim($_POST['date_fin_enchere'] ?? '');
+            $date_debut = trim($_POST['date_debut_enchere'] ?? '');
+
+            if (!$date_fin) {
+                header('Location: ../pages/vendeur/ajouter_article.php?error=' . urlencode('La date de fin d\'enchères est obligatoire.'));
+                exit;
+            }
+
+            $date_fin_ts = strtotime($date_fin);
+            if ($date_fin_ts === false || $date_fin_ts <= time()) {
+                header('Location: ../pages/vendeur/ajouter_article.php?error=' . urlencode('La date de fin doit être dans le futur.'));
+                exit;
+            }
+
+            $date_debut_ts = $date_debut ? strtotime($date_debut) : time();
+            if ($date_debut && $date_debut_ts === false) {
+                header('Location: ../pages/vendeur/ajouter_article.php?error=' . urlencode('La date de début d\'enchères est invalide.'));
+                exit;
+            }
+            if ($date_debut_ts >= $date_fin_ts) {
+                header('Location: ../pages/vendeur/ajouter_article.php?error=' . urlencode('La date de fin doit être postérieure à la date de début.'));
+                exit;
+            }
+
+            $date_fin_enchere = date('Y-m-d H:i:s', $date_fin_ts);
+            $date_debut_enchere = date('Y-m-d H:i:s', $date_debut_ts);
+        }
+
         try {
-            $stmt = $pdo->prepare("INSERT INTO articles (vendeur_id, titre, description, prix, categorie, type_vente, gamme, image_url, statut)
-                                   VALUES (:vid, :titre, :desc, :prix, :cat, :type, :gamme, :img, 'disponible')");
+            $stmt = $pdo->prepare("INSERT INTO articles (vendeur_id, titre, description, prix, categorie, type_vente, gamme, image_url, statut, date_debut_enchere, date_fin_enchere)
+                                   VALUES (:vid, :titre, :desc, :prix, :cat, :type, :gamme, :img, 'disponible', :date_debut, :date_fin)");
             $stmt->execute([
-                ':vid'   => $uid,
-                ':titre' => $titre,
-                ':desc'  => $description,
-                ':prix'  => $prix,
-                ':cat'   => $categorie,
-                ':type'  => $type_vente,
-                ':gamme' => $gamme,
-                ':img'   => $image_url,
+                ':vid'        => $uid,
+                ':titre'      => $titre,
+                ':desc'       => $description,
+                ':prix'       => $prix,
+                ':cat'        => $categorie,
+                ':type'       => $type_vente,
+                ':gamme'      => $gamme,
+                ':img'        => $image_url,
+                ':date_debut' => $date_debut_enchere,
+                ':date_fin'   => $date_fin_enchere,
             ]);
 
             header('Location: ../pages/vendeur/mes_articles.php?success=' . urlencode('Article publié avec succès !'));

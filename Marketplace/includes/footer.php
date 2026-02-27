@@ -1,3 +1,4 @@
+    <?php $is_logged_in = isset($_SESSION) && isset($_SESSION['user_id']); ?>
     <footer class="mt-5 pt-5 pb-4">
         <div class="container">
             <div class="row g-4">
@@ -24,8 +25,12 @@
                         <li><a href="<?php echo $base_url; ?>index.php"><i class="bi bi-chevron-right"></i> Accueil</a></li>
                         <li><a href="<?php echo $base_url; ?>pages/tout_parcourir.php"><i class="bi bi-chevron-right"></i> Tout Parcourir</a></li>
                         <li><a href="<?php echo $base_url; ?>pages/avis.php"><i class="bi bi-chevron-right"></i> Avis</a></li>
-                        <li><a href="<?php echo $base_url; ?>pages/connexion.php"><i class="bi bi-chevron-right"></i> Connexion</a></li>
-                        <li><a href="<?php echo $base_url; ?>pages/inscription.php"><i class="bi bi-chevron-right"></i> Inscription</a></li>
+                        <?php if ($is_logged_in): ?>
+                            <li><a href="<?php echo $base_url; ?>pages/compte.php"><i class="bi bi-chevron-right"></i> Mon compte</a></li>
+                        <?php else: ?>
+                            <li><a href="<?php echo $base_url; ?>pages/connexion.php"><i class="bi bi-chevron-right"></i> Connexion</a></li>
+                            <li><a href="<?php echo $base_url; ?>pages/inscription.php"><i class="bi bi-chevron-right"></i> Inscription</a></li>
+                        <?php endif; ?>
                     </ul>
                 </div>
 

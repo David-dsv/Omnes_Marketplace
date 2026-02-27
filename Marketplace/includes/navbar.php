@@ -23,60 +23,55 @@ $panier_url = isset($_SESSION['user_id'])
                     </a>
                 </li>
                 <!-- Tout Parcourir with Mega Menu -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="<?php echo $base_url; ?>pages/tout_parcourir.php" id="navCategoriesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <li class="nav-item dropdown nav-hover-categories">
+                    <a class="nav-link dropdown-toggle" href="<?php echo $base_url; ?>pages/tout_parcourir.php" id="navCategoriesDropdown" aria-expanded="false">
                         <i class="bi bi-grid-3x3-gap"></i> Tout Parcourir
                     </a>
                     <div class="dropdown-menu mega-menu p-4" aria-labelledby="navCategoriesDropdown">
-                        <div class="row g-0">
-                            <div class="col-md-6">
-                                <h6 class="text-uppercase text-muted small fw-bold mb-3">Catégories</h6>
-                                <a class="mega-menu-category" href="<?php echo $base_url; ?>pages/tout_parcourir.php?categorie=Électronique">
-                                    <i class="bi bi-laptop" style="background: rgba(107,63,190,0.1); color: #6B3FBE;"></i>
-                                    <div>
-                                        <strong>Électronique</strong>
-                                        <small class="d-block text-muted">PC, smartphones, accessoires</small>
-                                    </div>
-                                </a>
-                                <a class="mega-menu-category" href="<?php echo $base_url; ?>pages/tout_parcourir.php?categorie=Vêtements">
-                                    <i class="bi bi-bag" style="background: rgba(111,66,193,0.1); color: #6f42c1;"></i>
-                                    <div>
-                                        <strong>Vêtements</strong>
-                                        <small class="d-block text-muted">Mode, chaussures, accessoires</small>
-                                    </div>
-                                </a>
-                                <a class="mega-menu-category" href="<?php echo $base_url; ?>pages/tout_parcourir.php?categorie=Maison">
-                                    <i class="bi bi-house-heart" style="background: rgba(25,135,84,0.1); color: #198754;"></i>
-                                    <div>
-                                        <strong>Maison</strong>
-                                        <small class="d-block text-muted">Déco, meubles, électroménager</small>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-6">
-                                <h6 class="text-uppercase text-muted small fw-bold mb-3">&nbsp;</h6>
-                                <a class="mega-menu-category" href="<?php echo $base_url; ?>pages/tout_parcourir.php?categorie=Livres">
-                                    <i class="bi bi-book" style="background: rgba(253,126,20,0.1); color: #fd7e14;"></i>
-                                    <div>
-                                        <strong>Livres</strong>
-                                        <small class="d-block text-muted">Manuels, romans, BD</small>
-                                    </div>
-                                </a>
-                                <a class="mega-menu-category" href="<?php echo $base_url; ?>pages/tout_parcourir.php?categorie=Sports">
-                                    <i class="bi bi-dribbble" style="background: rgba(220,53,69,0.1); color: #dc3545;"></i>
-                                    <div>
-                                        <strong>Sports</strong>
-                                        <small class="d-block text-muted">Équipements, vêtements sport</small>
-                                    </div>
-                                </a>
-                                <a class="mega-menu-category" href="<?php echo $base_url; ?>pages/tout_parcourir.php?categorie=Divers">
-                                    <i class="bi bi-three-dots" style="background: rgba(108,117,125,0.1); color: #6c757d;"></i>
-                                    <div>
-                                        <strong>Divers</strong>
-                                        <small class="d-block text-muted">Tout le reste</small>
-                                    </div>
-                                </a>
-                            </div>
+                        <h6 class="text-uppercase text-muted small fw-bold mb-3">Catégories</h6>
+                        <div class="mega-menu-grid">
+                            <a class="mega-menu-category" href="<?php echo $base_url; ?>pages/tout_parcourir.php?categorie=Électronique">
+                                <i class="bi bi-laptop" style="background: rgba(107,63,190,0.1); color: #6B3FBE;"></i>
+                                <div>
+                                    <strong>Électronique</strong>
+                                    <small class="d-block text-muted">PC, smartphones, accessoires</small>
+                                </div>
+                            </a>
+                            <a class="mega-menu-category" href="<?php echo $base_url; ?>pages/tout_parcourir.php?categorie=Livres">
+                                <i class="bi bi-book" style="background: rgba(253,126,20,0.1); color: #fd7e14;"></i>
+                                <div>
+                                    <strong>Livres</strong>
+                                    <small class="d-block text-muted">Manuels, romans, BD</small>
+                                </div>
+                            </a>
+                            <a class="mega-menu-category" href="<?php echo $base_url; ?>pages/tout_parcourir.php?categorie=Vêtements">
+                                <i class="bi bi-bag" style="background: rgba(111,66,193,0.1); color: #6f42c1;"></i>
+                                <div>
+                                    <strong>Vêtements</strong>
+                                    <small class="d-block text-muted">Mode, chaussures, accessoires</small>
+                                </div>
+                            </a>
+                            <a class="mega-menu-category" href="<?php echo $base_url; ?>pages/tout_parcourir.php?categorie=Sports">
+                                <i class="bi bi-dribbble" style="background: rgba(220,53,69,0.1); color: #dc3545;"></i>
+                                <div>
+                                    <strong>Sports</strong>
+                                    <small class="d-block text-muted">Équipements, vêtements sport</small>
+                                </div>
+                            </a>
+                            <a class="mega-menu-category" href="<?php echo $base_url; ?>pages/tout_parcourir.php?categorie=Maison">
+                                <i class="bi bi-house-heart" style="background: rgba(25,135,84,0.1); color: #198754;"></i>
+                                <div>
+                                    <strong>Maison</strong>
+                                    <small class="d-block text-muted">Déco, meubles, électroménager</small>
+                                </div>
+                            </a>
+                            <a class="mega-menu-category" href="<?php echo $base_url; ?>pages/tout_parcourir.php?categorie=Divers">
+                                <i class="bi bi-three-dots" style="background: rgba(108,117,125,0.1); color: #6c757d;"></i>
+                                <div>
+                                    <strong>Divers</strong>
+                                    <small class="d-block text-muted">Tout le reste</small>
+                                </div>
+                            </a>
                         </div>
                         <hr class="my-3">
                         <div class="text-center">
@@ -125,9 +120,15 @@ $panier_url = isset($_SESSION['user_id'])
                                 <li><a class="dropdown-item" href="<?php echo $base_url; ?>pages/vendeur/dashboard.php">
                                     <i class="bi bi-speedometer2"></i> Tableau de bord
                                 </a></li>
+                                <li><a class="dropdown-item" href="<?php echo $base_url; ?>pages/vendeur/negociations.php">
+                                    <i class="bi bi-chat-dots"></i> Mes négociations
+                                </a></li>
                             <?php elseif ($_SESSION['user_role'] === 'administrateur'): ?>
                                 <li><a class="dropdown-item" href="<?php echo $base_url; ?>pages/admin/dashboard.php">
                                     <i class="bi bi-gear"></i> Administration
+                                </a></li>
+                                <li><a class="dropdown-item" href="<?php echo $base_url; ?>pages/admin/gestion_encheres.php">
+                                    <i class="bi bi-hammer"></i> Gestion des enchères
                                 </a></li>
                             <?php endif; ?>
                             <li><a class="dropdown-item" href="<?php echo $base_url; ?>pages/notifications.php">

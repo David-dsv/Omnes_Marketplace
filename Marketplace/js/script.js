@@ -218,23 +218,49 @@ $(document).ready(function () {
         e.preventDefault();
         var $btn = $(this);
         var articleId = $btn.data('article-id');
+        var relistOnRemove = Number($btn.data('relist-on-remove') || 0) === 1;
         var $cartItem = $btn.closest('.cart-item');
 
-        $cartItem.addClass('removing');
-        setTimeout(function() {
-            $.ajax({
-                url: getBaseUrl() + 'php/panier_actions.php',
-                method: 'POST',
-                data: { action: 'remove', article_id: articleId },
-                dataType: 'json',
-                success: function (response) {
-                    if (response.success) {
-                        updateCartCount();
-                        location.reload();
+        var runRemove = function () {
+            $cartItem.addClass('removing');
+            setTimeout(function() {
+                $.ajax({
+                    url: getBaseUrl() + 'php/panier_actions.php',
+                    method: 'POST',
+                    data: { action: 'remove', article_id: articleId },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.success) {
+                            updateCartCount();
+                            if (response.message) {
+                                showToast(response.message, 'info');
+                            }
+                            location.reload();
+                        } else {
+                            $cartItem.removeClass('removing');
+                            showToast(response.message || 'Erreur lors de la suppression.', 'danger');
+                        }
+                    },
+                    error: function () {
+                        $cartItem.removeClass('removing');
+                        showToast('Erreur de connexion.', 'danger');
                     }
+                });
+            }, 400);
+        };
+
+        if (relistOnRemove) {
+            showConfirmModal(
+                'Annuler la négociation',
+                'Retirer cet article va annuler l\'accord et remettre l\'article en vente. Continuer ?',
+                function () {
+                    runRemove();
                 }
-            });
-        }, 400);
+            );
+            return;
+        }
+
+        runRemove();
     });
 
     // ========================
@@ -264,7 +290,7 @@ $(document).ready(function () {
     });
 
     // ========================
-    // Négociation - Envoi d'offre
+    // Négociation + Enchères
     // ========================
     $('#negotiation-form').on('submit', function (e) {
         e.preventDefault();
@@ -291,6 +317,218 @@ $(document).ready(function () {
             }
         });
     });
+
+    $(document).on('click', '.btn-respond-offer', function () {
+        var messageId = $(this).data('message-id');
+        var response = $(this).data('response');
+        var actionLabel = response === 'accepte' ? 'accepter' : 'refuser';
+
+        showConfirmModal('Confirmer', 'Voulez-vous vraiment ' + actionLabel + ' cette offre ?', function () {
+            $.ajax({
+                url: getBaseUrl() + 'php/negociation_actions.php',
+                method: 'POST',
+                data: { action: 'respond', message_id: messageId, response: response },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.success) {
+                        showToast('Action enregistrée.', 'success');
+                        setTimeout(function () { location.reload(); }, 600);
+                    } else {
+                        showToast(res.message || 'Erreur.', 'danger');
+                    }
+                },
+                error: function () {
+                    showToast('Erreur de connexion.', 'danger');
+                }
+            });
+        });
+    });
+
+    $('#counter-offer-form').on('submit', function (e) {
+        e.preventDefault();
+        var form = $(this);
+        var $btn = form.find('button[type="submit"]');
+        $btn.prop('disabled', true).html('<span class="loading-spinner" style="width:16px;height:16px;border-width:2px;"></span>');
+
+        $.ajax({
+            url: getBaseUrl() + 'php/negociation_actions.php',
+            method: 'POST',
+            data: form.serialize(),
+            dataType: 'json',
+            success: function (res) {
+                if (res.success) {
+                    showToast('Contre-offre envoyée.', 'success');
+                    setTimeout(function () { location.reload(); }, 600);
+                } else {
+                    showToast(res.message || 'Erreur.', 'danger');
+                    $btn.prop('disabled', false).html('<i class="bi bi-send-fill"></i> Envoyer');
+                }
+            },
+            error: function () {
+                showToast('Erreur de connexion.', 'danger');
+                $btn.prop('disabled', false).html('<i class="bi bi-send-fill"></i> Envoyer');
+            }
+        });
+    });
+
+    $(document).on('click', '.btn-accept-counter-offer', function () {
+        var messageId = $(this).data('message-id');
+        showConfirmModal('Confirmer', 'En acceptant cette contre-offre, vous vous engagez à acheter l\'article.', function () {
+            $.ajax({
+                url: getBaseUrl() + 'php/negociation_actions.php',
+                method: 'POST',
+                data: { action: 'accept_counter_offer', message_id: messageId },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.success) {
+                        showToast('Contre-offre acceptée.', 'success');
+                        setTimeout(function () { location.reload(); }, 600);
+                    } else {
+                        showToast(res.message || 'Erreur.', 'danger');
+                    }
+                },
+                error: function () {
+                    showToast('Erreur de connexion.', 'danger');
+                }
+            });
+        });
+    });
+
+    $(document).on('click', '.btn-add-negotiated-to-cart', function () {
+        var $btn = $(this);
+        var articleId = $btn.data('article-id');
+        var negotiationId = $btn.data('negotiation-id');
+        var originalHtml = $btn.html();
+        $btn.prop('disabled', true).html('<span class="loading-spinner" style="width:16px;height:16px;border-width:2px;"></span>');
+
+        $.ajax({
+            url: getBaseUrl() + 'php/panier_actions.php',
+            method: 'POST',
+            data: { action: 'add', article_id: articleId, negotiation_id: negotiationId },
+            dataType: 'json',
+            success: function (res) {
+                if (res.success) {
+                    updateCartCount();
+                    showToast('Article ajouté au panier.', 'success');
+                    setTimeout(function () {
+                        window.location.href = getBaseUrl() + 'pages/panier.php';
+                    }, 500);
+                } else {
+                    showToast(res.message || 'Erreur.', 'danger');
+                    $btn.prop('disabled', false).html(originalHtml);
+                }
+            },
+            error: function () {
+                showToast('Erreur de connexion.', 'danger');
+                $btn.prop('disabled', false).html(originalHtml);
+            }
+        });
+    });
+
+    $('#submit-bid-btn').on('click', function () {
+        var $btn = $(this);
+        var $form = $('#bid-form');
+        if (!$form.length) return;
+
+        var originalHtml = $btn.html();
+        $btn.prop('disabled', true).html('<span class="loading-spinner" style="width:16px;height:16px;border-width:2px;"></span>');
+
+        $.ajax({
+            url: getBaseUrl() + 'php/enchere_actions.php',
+            method: 'POST',
+            data: $form.serialize(),
+            dataType: 'json',
+            success: function (res) {
+                if (res.success) {
+                    showToast(res.message || 'Enchère enregistrée.', 'success');
+                    setTimeout(function () { location.reload(); }, 700);
+                } else {
+                    showToast(res.message || 'Erreur.', 'danger');
+                    $btn.prop('disabled', false).html(originalHtml);
+                }
+            },
+            error: function () {
+                showToast('Erreur de connexion.', 'danger');
+                $btn.prop('disabled', false).html(originalHtml);
+            }
+        });
+    });
+
+    var $countdown = $('#countdown-timer');
+    if ($countdown.length) {
+        var endTimeRaw = ($countdown.data('end-time') || '').toString().trim();
+        var $display = $('#countdown-display');
+        var endTime = endTimeRaw ? new Date(endTimeRaw.replace(' ', 'T')) : null;
+
+        if (endTime && !isNaN(endTime.getTime())) {
+            var tickCountdown = function () {
+                var now = new Date();
+                var diffMs = endTime.getTime() - now.getTime();
+
+                if (diffMs <= 0) {
+                    $display.text('00:00:00');
+                    clearInterval(countdownInterval);
+                    setTimeout(function () { location.reload(); }, 1200);
+                    return;
+                }
+
+                var totalSeconds = Math.floor(diffMs / 1000);
+                var hours = Math.floor(totalSeconds / 3600);
+                var minutes = Math.floor((totalSeconds % 3600) / 60);
+                var seconds = totalSeconds % 60;
+
+                $display.text(
+                    String(hours).padStart(2, '0') + ':' +
+                    String(minutes).padStart(2, '0') + ':' +
+                    String(seconds).padStart(2, '0')
+                );
+
+                if (totalSeconds <= 3600) {
+                    $countdown.addClass('is-urgent');
+                }
+            };
+
+            tickCountdown();
+            var countdownInterval = setInterval(tickCountdown, 1000);
+        }
+    }
+
+    window.resolveAuction = function (articleId) {
+        showConfirmModal('Clôturer l\'enchère', 'Confirmer la clôture de cette enchère et la désignation du gagnant ?', function () {
+            $.ajax({
+                url: getBaseUrl() + 'php/enchere_actions.php',
+                method: 'POST',
+                data: { action: 'resolve_auction', article_id: articleId },
+                dataType: 'json',
+                success: function (res) {
+                    var $result = $('#result-' + articleId);
+                    if (res.success) {
+                        if (res.no_bids) {
+                            $result.html('<span class=\"text-muted\">Aucune enchère à clôturer.</span>');
+                            showToast(res.message || 'Aucune enchère.', 'info');
+                        } else {
+                            var price = Number(res.winning_price || 0).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            $result.html('<span class=\"text-success\">Clôturée: ' + (res.winner_name || 'N/A') + ' à ' + price + ' €.</span>');
+                            showToast(res.message || 'Enchère clôturée.', 'success');
+                        }
+                        setTimeout(function () { location.reload(); }, 1200);
+                    } else {
+                        $result.html('<span class=\"text-danger\">' + (res.message || 'Erreur.') + '</span>');
+                        showToast(res.message || 'Erreur.', 'danger');
+                    }
+                },
+                error: function () {
+                    showToast('Erreur de connexion.', 'danger');
+                }
+            });
+        });
+    };
+
+    // Ensure auction modal is attached to body to avoid z-index/transform stacking issues
+    var $bidModal = $('#bidModal');
+    if ($bidModal.length) {
+        $bidModal.appendTo('body');
+    }
 
     // Auto-scroll negotiation chat to bottom
     var $chatBox = $('.negotiation-chat');
@@ -401,10 +639,17 @@ $(document).ready(function () {
     // ========================
     $(document).on('blur', 'input[required], textarea[required]', function () {
         var $input = $(this);
-        if ($input.val().trim() === '') {
+        var value = ($input.val() || '').toString().trim();
+
+        if (value === '') {
             $input.addClass('is-invalid').removeClass('is-valid');
-        } else {
+            return;
+        }
+
+        if (this.checkValidity()) {
             $input.addClass('is-valid').removeClass('is-invalid');
+        } else {
+            $input.addClass('is-invalid').removeClass('is-valid');
         }
     });
 
@@ -434,8 +679,13 @@ $(document).ready(function () {
     // ========================
     $(document).on('input', 'input[name="numero_carte"]', function () {
         var val = $(this).val().replace(/\D/g, '').substring(0, 16);
-        var formatted = val.replace(/(\d{4})(?=\d)/g, '$1 ');
-        $(this).val(formatted);
+        if (this.id === 'card-number-input') {
+            // Sur la page paiement, on garde 16 chiffres bruts (sans espaces).
+            $(this).val(val);
+        } else {
+            var formatted = val.replace(/(\d{4})(?=\d)/g, '$1 ');
+            $(this).val(formatted);
+        }
 
         // Detect card type
         var cardIcons = $(this).closest('.card, .mb-3').find('.card-type-icons i');

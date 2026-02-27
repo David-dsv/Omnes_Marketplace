@@ -93,7 +93,7 @@ include $base_url . 'includes/navbar.php';
         <!-- Quick actions -->
         <h5 class="fw-bold mb-3">Actions rapides</h5>
         <div class="row g-4 animate-on-scroll">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="action-card h-100">
                     <div class="action-icon" style="background: rgba(var(--omnes-primary-rgb),0.1); color: var(--omnes-primary);">
                         <i class="bi bi-people-fill"></i>
@@ -103,7 +103,7 @@ include $base_url . 'includes/navbar.php';
                     <a href="gestion_vendeurs.php" class="btn btn-primary"><i class="bi bi-arrow-right me-1"></i>Gérer</a>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="action-card h-100">
                     <div class="action-icon" style="background: rgba(253,126,20,0.1); color: var(--omnes-orange);">
                         <i class="bi bi-box-seam-fill"></i>
@@ -111,6 +111,16 @@ include $base_url . 'includes/navbar.php';
                     <h5 class="fw-bold">Gestion des articles</h5>
                     <p class="text-muted">Modérer et gérer les articles du site.</p>
                     <a href="gestion_articles.php" class="btn btn-primary"><i class="bi bi-arrow-right me-1"></i>Gérer</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="action-card h-100">
+                    <div class="action-icon" style="background: rgba(13,110,253,0.1); color: #0d6efd;">
+                        <i class="bi bi-hammer"></i>
+                    </div>
+                    <h5 class="fw-bold">Gestion des enchères</h5>
+                    <p class="text-muted">Clôturez les enchères et attribuez les gagnants.</p>
+                    <a href="gestion_encheres.php" class="btn btn-primary"><i class="bi bi-arrow-right me-1"></i>Gérer</a>
                 </div>
             </div>
         </div>

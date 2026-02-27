@@ -35,6 +35,7 @@ try {
 }
 
 $success = $_GET['success'] ?? '';
+$active_tab = ($_GET['tab'] ?? '') === 'orders' ? 'orders' : 'profile';
 $initials = strtoupper(substr($user['prenom'], 0, 1) . substr($user['nom'], 0, 1));
 ?>
 
@@ -96,12 +97,12 @@ $initials = strtoupper(substr($user['prenom'], 0, 1) . substr($user['nom'], 0, 1
             <div class="col-lg-8 animate-on-scroll animate-delay-1">
                 <ul class="nav account-tabs mb-4" role="tablist">
                     <li class="nav-item">
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-profile">
+                        <button class="nav-link <?php echo $active_tab === 'profile' ? 'active' : ''; ?>" data-bs-toggle="tab" data-bs-target="#tab-profile">
                             <i class="bi bi-person me-1"></i> Profil
                         </button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-orders">
+                        <button class="nav-link <?php echo $active_tab === 'orders' ? 'active' : ''; ?>" data-bs-toggle="tab" data-bs-target="#tab-orders">
                             <i class="bi bi-bag me-1"></i> Commandes
                         </button>
                     </li>
@@ -109,7 +110,7 @@ $initials = strtoupper(substr($user['prenom'], 0, 1) . substr($user['nom'], 0, 1
 
                 <div class="tab-content">
                     <!-- Profile tab -->
-                    <div class="tab-pane fade show active" id="tab-profile">
+                    <div class="tab-pane fade <?php echo $active_tab === 'profile' ? 'show active' : ''; ?>" id="tab-profile">
                         <div class="card p-4 shadow-sm" style="border-radius: 16px;">
                             <h5 class="fw-bold mb-3"><i class="bi bi-pencil-square me-2"></i>Modifier mes informations</h5>
                             <form method="POST" action="<?php echo $base_url; ?>php/auth.php">
@@ -140,7 +141,7 @@ $initials = strtoupper(substr($user['prenom'], 0, 1) . substr($user['nom'], 0, 1
                     </div>
 
                     <!-- Orders tab -->
-                    <div class="tab-pane fade" id="tab-orders">
+                    <div class="tab-pane fade <?php echo $active_tab === 'orders' ? 'show active' : ''; ?>" id="tab-orders">
                         <?php if (!empty($commandes)):
                             foreach ($commandes as $commande): ?>
                                 <div class="order-card">
@@ -148,6 +149,7 @@ $initials = strtoupper(substr($user['prenom'], 0, 1) . substr($user['nom'], 0, 1
                                         <div>
                                             <h6 class="fw-bold mb-1">Commande #<?php echo $commande['id']; ?></h6>
                                             <p class="text-muted small mb-1"><?php echo htmlspecialchars($commande['articles'] ?? 'N/A'); ?></p>
+                                            <small class="text-muted d-block mb-1"><i class="bi bi-truck"></i> <?php echo htmlspecialchars($commande['adresse_livraison']); ?></small>
                                             <small class="text-muted"><i class="bi bi-calendar"></i> <?php echo date('d/m/Y', strtotime($commande['date_creation'])); ?></small>
                                         </div>
                                         <div class="text-end">

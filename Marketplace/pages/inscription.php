@@ -1,15 +1,16 @@
 <?php
 session_start();
 $base_url = '../';
-$page_title = 'Inscription';
-require_once $base_url . 'config/database.php';
-include $base_url . 'includes/header.php';
-include $base_url . 'includes/navbar.php';
 
 if (isset($_SESSION['user_id'])) {
     header('Location: compte.php');
     exit;
 }
+
+$page_title = 'Inscription';
+require_once $base_url . 'config/database.php';
+include $base_url . 'includes/header.php';
+include $base_url . 'includes/navbar.php';
 
 $error = $_GET['error'] ?? '';
 ?>

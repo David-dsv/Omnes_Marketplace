@@ -13,7 +13,8 @@ include $base_url . 'includes/header.php';
 include $base_url . 'includes/navbar.php';
 
 try {
-    $stmt = $pdo->prepare("SELECT p.*, a.titre, a.prix, a.image_url, a.vendeur_id,
+    $stmt = $pdo->prepare("SELECT p.*, a.titre, a.prix, a.type_vente, a.image_url, a.vendeur_id,
+                                  COALESCE(p.prix_negocie, a.prix) AS prix_final,
                                   u.prenom AS vendeur_prenom, u.nom AS vendeur_nom
                            FROM panier p
                            JOIN articles a ON p.article_id = a.id
@@ -27,13 +28,20 @@ try {
 
 $total = 0;
 foreach ($panier_items as $item) {
-    $total += $item['prix'] * $item['quantite'];
+    $total += (float)$item['prix_final'] * (int)$item['quantite'];
 }
+$error_message = trim((string)($_GET['error'] ?? ''));
 ?>
 
 <main class="py-4">
     <div class="container">
         <h1 class="h3 mb-4"><i class="bi bi-cart3 me-2"></i>Mon Panier</h1>
+        <?php if ($error_message !== ''): ?>
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <?php echo htmlspecialchars($error_message); ?>
+            </div>
+        <?php endif; ?>
 
         <?php if (!empty($panier_items)): ?>
             <div class="row g-4">
@@ -57,12 +65,42 @@ foreach ($panier_items as $item) {
                                     <p class="text-muted mb-1 small">
                                         <i class="bi bi-person"></i> <?php echo htmlspecialchars($item['vendeur_prenom'] . ' ' . $item['vendeur_nom']); ?>
                                     </p>
-                                    <button class="btn btn-sm btn-outline-danger btn-remove-cart" data-article-id="<?php echo $item['article_id']; ?>">
-                                        <i class="bi bi-trash3"></i> Retirer
-                                    </button>
+                                    <?php
+                                        $type_label = match ($item['type_vente']) {
+                                            'achat_immediat' => 'Achat immédiat',
+                                            'negociation' => 'Négociation',
+                                            'meilleure_offre' => 'Enchère gagnée',
+                                            default => ucfirst((string)$item['type_vente']),
+                                        };
+                                        $type_badge_class = match ($item['type_vente']) {
+                                            'achat_immediat' => 'bg-primary-subtle text-primary',
+                                            'negociation' => 'bg-warning-subtle text-warning-emphasis',
+                                            'meilleure_offre' => 'bg-info-subtle text-info-emphasis',
+                                            default => 'bg-light text-dark',
+                                        };
+                                    ?>
+                                    <span class="badge <?php echo $type_badge_class; ?> mb-2"><?php echo htmlspecialchars($type_label); ?></span>
+                                    <?php if (!empty($item['enchere_id'])): ?>
+                                        <span class="text-muted small d-block">Retrait désactivé pour un article remporté aux enchères.</span>
+                                    <?php elseif (!empty($item['negociation_id'])): ?>
+                                        <span class="text-muted small d-block">Retirer cet article annulera l'accord et le remettra en vente.</span>
+                                        <button class="btn btn-sm btn-outline-danger btn-remove-cart mt-1"
+                                                data-article-id="<?php echo $item['article_id']; ?>"
+                                                data-relist-on-remove="1">
+                                            <i class="bi bi-trash3"></i> Retirer (remise en vente)
+                                        </button>
+                                    <?php else: ?>
+                                        <button class="btn btn-sm btn-outline-danger btn-remove-cart" data-article-id="<?php echo $item['article_id']; ?>">
+                                            <i class="bi bi-trash3"></i> Retirer
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="text-end">
-                                    <p class="fw-bold text-primary fs-5 mb-0"><?php echo number_format($item['prix'], 2, ',', ' '); ?> &euro;</p>
+                                    <?php $prix_affiche = (float)$item['prix_final']; ?>
+                                    <p class="fw-bold text-primary fs-5 mb-0"><?php echo number_format($prix_affiche, 2, ',', ' '); ?> &euro;</p>
+                                    <?php if ($item['prix_negocie'] !== null): ?>
+                                        <small class="text-muted">Prix validé</small>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         <?php endforeach; ?>

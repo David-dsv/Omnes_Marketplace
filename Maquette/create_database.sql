@@ -35,10 +35,12 @@ CREATE TABLE articles (
     description TEXT NOT NULL,
     prix DECIMAL(10, 2) NOT NULL,
     categorie ENUM('Électronique', 'Vêtements', 'Maison', 'Livres', 'Sports', 'Divers') NOT NULL,
-    type_vente ENUM('achat_immediat', 'negociation') NOT NULL,
+    type_vente ENUM('achat_immediat', 'negociation', 'meilleure_offre') NOT NULL,
     gamme ENUM('regulier', 'haut_de_gamme', 'rare') NOT NULL DEFAULT 'regulier',
     image_url VARCHAR(500) DEFAULT 'images/articles/placeholder.png',
     statut ENUM('disponible', 'vendu', 'retire') NOT NULL DEFAULT 'disponible',
+    date_debut_enchere DATETIME DEFAULT NULL,
+    date_fin_enchere DATETIME DEFAULT NULL,
     date_creation DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (vendeur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -51,6 +53,9 @@ CREATE TABLE panier (
     utilisateur_id INT NOT NULL,
     article_id INT NOT NULL,
     quantite INT NOT NULL DEFAULT 1,
+    prix_negocie DECIMAL(10, 2) DEFAULT NULL,
+    negociation_id INT DEFAULT NULL,
+    enchere_id INT DEFAULT NULL,
     date_ajout DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UNIQUE KEY unique_panier (utilisateur_id, article_id),
     FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE,
@@ -91,7 +96,10 @@ CREATE TABLE negociations (
     acheteur_id INT NOT NULL,
     vendeur_id INT NOT NULL,
     statut ENUM('en_cours', 'accepte', 'refuse', 'expire') NOT NULL DEFAULT 'en_cours',
+    prix_accorde DECIMAL(10, 2) DEFAULT NULL,
+    date_resolution DATETIME DEFAULT NULL,
     date_creation DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    KEY idx_negociations_article_statut (article_id, statut),
     FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
     FOREIGN KEY (acheteur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE,
     FOREIGN KEY (vendeur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
@@ -108,6 +116,7 @@ CREATE TABLE negociation_messages (
     message TEXT DEFAULT NULL,
     statut ENUM('en_attente', 'accepte', 'refuse') NOT NULL DEFAULT 'en_attente',
     date_creation DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    KEY idx_negociation_messages_nego_date (negociation_id, date_creation),
     FOREIGN KEY (negociation_id) REFERENCES negociations(id) ON DELETE CASCADE,
     FOREIGN KEY (auteur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -177,6 +186,29 @@ CREATE TABLE cartes_reduction (
     FOREIGN KEY (commande_id) REFERENCES commandes(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+
+-- =============================================
+-- Table : encheres (meilleure offre)
+-- =============================================
+CREATE TABLE encheres (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    article_id INT NOT NULL,
+    acheteur_id INT NOT NULL,
+    montant_max DECIMAL(10, 2) NOT NULL,
+    prix_paye DECIMAL(10, 2) DEFAULT NULL,
+    statut ENUM('en_attente', 'gagnant', 'perdant') NOT NULL DEFAULT 'en_attente',
+    date_creation DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_enchere (article_id, acheteur_id),
+    KEY idx_encheres_article_montant_date (article_id, montant_max, date_creation),
+    FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
+    FOREIGN KEY (acheteur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+ALTER TABLE panier
+    ADD CONSTRAINT fk_panier_negociation
+        FOREIGN KEY (negociation_id) REFERENCES negociations(id) ON DELETE SET NULL,
+    ADD CONSTRAINT fk_panier_enchere
+        FOREIGN KEY (enchere_id) REFERENCES encheres(id) ON DELETE SET NULL;
 -- =============================================
 -- DONNÉES D'EXEMPLE
 -- =============================================
@@ -269,6 +301,12 @@ INSERT INTO articles (vendeur_id, titre, description, prix, categorie, type_vent
 (8, 'BD Où est Charlie ?', 'Bande dessinée Où est Charlie ?, exemplaire en bon état.', 12.00, 'Livres', 'achat_immediat', 'regulier', 'images/articles/livre bd - ou est charlie.png'),
 (9, 'Lot de livres policiers', 'Lot de romans policiers, parfait pour amateurs de suspense.', 28.00, 'Livres', 'achat_immediat', 'regulier', 'images/articles/livres policiers lot.png'),
 (10, 'Raquette de tennis', 'Raquette de tennis en bon état pour entraînement et matchs loisirs.', 58.00, 'Sports', 'achat_immediat', 'regulier', 'images/articles/raquette tennis.png');
+
+-- Articles meilleure offre (enchères)
+INSERT INTO articles (vendeur_id, titre, description, prix, categorie, type_vente, gamme, image_url, date_debut_enchere, date_fin_enchere) VALUES
+(2, 'Bague Cartier 18 carats or jaune', 'Bague de marque Cartier, 18 carats d''or jaune, pesant 4.8 grammes. Pièce rare et authentique avec certificat.', 500.00, 'Divers', 'meilleure_offre', 'rare', 'images/articles/baguecartier.png', '2026-03-01 09:00:00', '2026-03-15 17:00:00'),
+(3, 'Montre Omega Seamaster vintage', 'Montre Omega Seamaster des années 70, mouvement automatique, cadran bleu. Pièce de collection en état remarquable.', 1200.00, 'Divers', 'meilleure_offre', 'rare', 'images/articles/montreomega.png', DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_ADD(NOW(), INTERVAL 7 DAY)),
+(7, 'Premier tirage Harry Potter français', 'Harry Potter à l''école des sorciers, premier tirage Gallimard 1998. Couverture rigide, état quasi neuf.', 300.00, 'Livres', 'meilleure_offre', 'rare', 'images/articles/harrypotterfolio.png', '2026-02-27 00:00:00', '2026-03-10 23:59:00');
 
 -- Cartes bancaires de test (simulation)
 INSERT INTO cartes_bancaires (numero_carte, expiration, cvv, titulaire) VALUES

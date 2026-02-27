@@ -343,9 +343,15 @@ img {
     box-shadow: var(--omnes-shadow-lg);
     animation: fadeInDown 0.3s ease;
 }
+.mega-menu .mega-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.25rem 0.5rem;
+}
 .mega-menu .mega-menu-category {
     display: flex;
     align-items: center;
+    height: 100%;
     padding: 0.75rem 1rem;
     border-radius: 10px;
     transition: var(--omnes-transition);
@@ -388,6 +394,21 @@ img {
     margin-right: 0.5rem;
     width: 20px;
     text-align: center;
+}
+
+/* "Tout Parcourir" opens on hover (desktop), click keeps normal navigation */
+@media (min-width: 992px) {
+    .nav-hover-categories:hover > .dropdown-menu {
+        display: block;
+    }
+    .nav-hover-categories > .dropdown-menu {
+        margin-top: 0;
+    }
+}
+@media (max-width: 991.98px) {
+    .mega-menu .mega-menu-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ============================================
@@ -574,6 +595,29 @@ img {
     right: 12px;
     z-index: 2;
     animation: pulse 2s infinite;
+}
+
+/* Pagination - page Tout Parcourir */
+.browse-pagination {
+    --bs-pagination-color: var(--omnes-primary);
+    --bs-pagination-hover-color: var(--omnes-primary-dark);
+    --bs-pagination-focus-color: var(--omnes-primary-dark);
+    --bs-pagination-active-color: var(--omnes-white);
+    --bs-pagination-active-bg: var(--omnes-primary);
+    --bs-pagination-active-border-color: var(--omnes-primary);
+    --bs-pagination-border-color: rgba(var(--omnes-primary-rgb), 0.28);
+    --bs-pagination-hover-bg: rgba(var(--omnes-primary-rgb), 0.08);
+    --bs-pagination-hover-border-color: rgba(var(--omnes-primary-rgb), 0.45);
+    --bs-pagination-focus-bg: rgba(var(--omnes-primary-rgb), 0.12);
+    --bs-pagination-focus-box-shadow: 0 0 0 0.2rem rgba(var(--omnes-primary-rgb), 0.2);
+    --bs-pagination-disabled-color: #a8a3ba;
+    --bs-pagination-disabled-bg: var(--omnes-white);
+    --bs-pagination-disabled-border-color: rgba(var(--omnes-primary-rgb), 0.16);
+}
+
+.browse-pagination .page-link {
+    min-width: 42px;
+    text-align: center;
 }
 
 /* Category cards */
@@ -1238,6 +1282,27 @@ section h2 {
     background: rgba(255, 193, 7, 0.15);
     color: #b78300;
     font-weight: 600;
+}
+.badge-meilleure_offre {
+    background: rgba(13, 110, 253, 0.14);
+    color: #0a58ca;
+    font-weight: 600;
+}
+
+/* Auction UI */
+.countdown-timer {
+    background: rgba(13, 110, 253, 0.08);
+    border: 1px solid rgba(13, 110, 253, 0.2);
+    border-radius: 10px;
+    padding: 0.55rem 0.75rem;
+}
+.countdown-timer.is-urgent #countdown-display {
+    color: var(--omnes-danger) !important;
+    animation: timerPulse 1s infinite;
+}
+.result-area {
+    min-height: 1.5rem;
+    font-size: 0.9rem;
 }
 
 /* ============================================

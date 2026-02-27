@@ -75,7 +75,7 @@ include $base_url . 'includes/navbar.php';
         <!-- Quick actions -->
         <h5 class="fw-bold mb-3">Actions rapides</h5>
         <div class="row g-4 animate-on-scroll">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="action-card h-100">
                     <div class="action-icon" style="background: rgba(var(--omnes-primary-rgb),0.1); color: var(--omnes-primary);">
                         <i class="bi bi-plus-circle-fill"></i>
@@ -85,7 +85,7 @@ include $base_url . 'includes/navbar.php';
                     <a href="ajouter_article.php" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Ajouter</a>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="action-card h-100">
                     <div class="action-icon" style="background: rgba(253,126,20,0.1); color: var(--omnes-orange);">
                         <i class="bi bi-list-ul"></i>
@@ -93,6 +93,16 @@ include $base_url . 'includes/navbar.php';
                     <h5 class="fw-bold">Mes articles</h5>
                     <p class="text-muted">Gérez vos articles en vente, modifiez ou supprimez-les.</p>
                     <a href="mes_articles.php" class="btn btn-outline-primary"><i class="bi bi-arrow-right me-1"></i>Voir</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="action-card h-100">
+                    <div class="action-icon" style="background: rgba(255,193,7,0.16); color: #b78300;">
+                        <i class="bi bi-chat-dots-fill"></i>
+                    </div>
+                    <h5 class="fw-bold">Mes négociations</h5>
+                    <p class="text-muted">Répondez aux offres et suivez vos transactions en cours.</p>
+                    <a href="negociations.php" class="btn btn-outline-primary"><i class="bi bi-arrow-right me-1"></i>Voir</a>
                 </div>
             </div>
         </div>

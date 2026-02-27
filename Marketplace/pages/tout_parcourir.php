@@ -72,10 +72,17 @@ try {
     $articles = [];
 }
 
+// Labels lisibles
+$type_vente_labels = [
+    'achat_immediat' => 'Achat immédiat',
+    'negociation' => 'Négociation',
+    'meilleure_offre' => 'Meilleure offre',
+];
+
 // Active filters for chips
 $active_filters = [];
 if ($categorie) $active_filters[] = ['label' => $categorie, 'param' => 'categorie'];
-if ($type_vente) $active_filters[] = ['label' => $type_vente, 'param' => 'type_vente'];
+if ($type_vente) $active_filters[] = ['label' => $type_vente_labels[$type_vente] ?? $type_vente, 'param' => 'type_vente'];
 if ($gamme) $active_filters[] = ['label' => $gamme, 'param' => 'gamme'];
 if ($recherche) $active_filters[] = ['label' => '"' . $recherche . '"', 'param' => 'q'];
 ?>
@@ -144,6 +151,7 @@ if ($recherche) $active_filters[] = ['label' => '"' . $recherche . '"', 'param' 
                                 <option value="">Tous</option>
                                 <option value="achat_immediat" <?php echo $type_vente === 'achat_immediat' ? 'selected' : ''; ?>>Achat immédiat</option>
                                 <option value="negociation" <?php echo $type_vente === 'negociation' ? 'selected' : ''; ?>>Négociation</option>
+                                <option value="meilleure_offre" <?php echo $type_vente === 'meilleure_offre' ? 'selected' : ''; ?>>Meilleure offre</option>
                             </select>
                         </div>
                         <!-- Gamme -->
@@ -196,7 +204,9 @@ if ($recherche) $active_filters[] = ['label' => '"' . $recherche . '"', 'param' 
                                         </p>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <span class="price-tag"><?php echo number_format($article['prix'], 2, ',', ' '); ?> &euro;</span>
-                                            <span class="badge badge-<?php echo $article['type_vente']; ?>"><?php echo htmlspecialchars($article['type_vente']); ?></span>
+                                            <span class="badge badge-<?php echo $article['type_vente']; ?>">
+                                                <?php echo htmlspecialchars($type_vente_labels[$article['type_vente']] ?? $article['type_vente']); ?>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="card-footer">
@@ -218,7 +228,7 @@ if ($recherche) $active_filters[] = ['label' => '"' . $recherche . '"', 'param' 
                 <!-- Pagination -->
                 <?php if ($total_pages > 1): ?>
                     <nav aria-label="Pagination" class="mt-4">
-                        <ul class="pagination justify-content-center">
+                        <ul class="pagination justify-content-center browse-pagination">
                             <li class="page-item <?php echo $page_num <= 1 ? 'disabled' : ''; ?>">
                                 <a class="page-link" href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page_num - 1])); ?>">
                                     <i class="bi bi-chevron-left"></i>
