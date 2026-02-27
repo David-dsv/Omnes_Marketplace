@@ -2,6 +2,9 @@
 -- Omnes MarketPlace - Script de création BDD
 -- =============================================
 
+-- Force l'encodage de la session d'import pour éviter la corruption des accents.
+SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 DROP DATABASE IF EXISTS omnes_marketplace;
 CREATE DATABASE omnes_marketplace CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE omnes_marketplace;
