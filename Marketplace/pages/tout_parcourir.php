@@ -33,8 +33,11 @@ if ($gamme) {
     $params[':gamme'] = $gamme;
 }
 if ($recherche) {
-    $where[] = "(a.titre LIKE :recherche OR a.description LIKE :recherche)";
-    $params[':recherche'] = '%' . $recherche . '%';
+    // Recherche sur titre et description - utiliser des paramètres séparés pour éviter les conflits PDO
+    $where[] = "(a.titre LIKE :recherche_titre OR a.description LIKE :recherche_desc)";
+    $search_term = '%' . addslashes($recherche) . '%';
+    $params[':recherche_titre'] = $search_term;
+    $params[':recherche_desc'] = $search_term;
 }
 
 $orderBy = match ($tri) {
@@ -64,11 +67,17 @@ $sql = "SELECT a.*, u.prenom AS vendeur_prenom, u.nom AS vendeur_nom
         ORDER BY " . $orderBy . "
         LIMIT " . $per_page . " OFFSET " . $offset;
 
+// Debug logging
+error_log("Search Query: " . $sql);
+error_log("Search params: " . json_encode($params));
+
 try {
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
     $articles = $stmt->fetchAll();
+    error_log("Articles found: " . count($articles));
 } catch (PDOException $e) {
+    error_log("Search error: " . $e->getMessage());
     $articles = [];
 }
 
