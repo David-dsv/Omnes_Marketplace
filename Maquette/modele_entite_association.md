@@ -30,6 +30,7 @@ erDiagram
         ENUM gamme
         VARCHAR image_url
         ENUM statut
+        DATETIME date_debut_enchere
         DATETIME date_fin_enchere
         DATETIME date_creation
     }
@@ -39,6 +40,9 @@ erDiagram
         INT utilisateur_id FK
         INT article_id FK
         INT quantite
+        DECIMAL prix_negocie
+        INT negociation_id FK
+        INT enchere_id FK
         DATETIME date_ajout
     }
 
@@ -62,8 +66,9 @@ erDiagram
         INT id PK
         INT article_id FK
         INT acheteur_id FK
-        DECIMAL montant
         DECIMAL montant_max
+        DECIMAL prix_paye
+        ENUM statut
         DATETIME date_creation
     }
 
@@ -73,6 +78,8 @@ erDiagram
         INT acheteur_id FK
         INT vendeur_id FK
         ENUM statut
+        DECIMAL prix_accorde
+        DATETIME date_resolution
         DATETIME date_creation
     }
 
@@ -147,16 +154,28 @@ erDiagram
     COMMANDES ||--o{ COMMANDE_ARTICLES : "contient"
     COMMANDES ||--o{ CARTES_REDUCTION : "genere"
     NEGOCIATIONS ||--o{ NEGOCIATION_MESSAGES : "contient"
+    NEGOCIATIONS ||--o{ PANIER : "lie-panier"
+    ENCHERES ||--o{ PANIER : "lie-panier"
 ```
 
 ## Legende des ENUM
 
 - **UTILISATEURS.role** : acheteur, vendeur, administrateur
 - **ARTICLES.categorie** : Electronique, Vetements, Maison, Livres, Sports, Divers
-- **ARTICLES.type_vente** : achat_immediat, negociation, enchere
+- **ARTICLES.type_vente** : achat_immediat, negociation, meilleure_offre
 - **ARTICLES.gamme** : regulier, haut_de_gamme, rare
 - **ARTICLES.statut** : disponible, vendu, retire
+- **ENCHERES.statut** : en_attente, gagnant, perdant
 - **COMMANDES.statut** : en_attente, confirmee, expediee, livree, annulee
 - **NEGOCIATIONS.statut** : en_cours, accepte, refuse, expire
 - **NEGOCIATION_MESSAGES.statut** : en_attente, accepte, refuse
 - **AVIS.note** : CHECK 1 a 5
+
+## Contraintes notables
+
+- **PANIER** : UNIQUE (utilisateur_id, article_id)
+- **ENCHERES** : UNIQUE (article_id, acheteur_id)
+- **AVIS** : UNIQUE (article_id, auteur_id)
+- **PANIER.negociation_id** : FK vers NEGOCIATIONS, ON DELETE SET NULL
+- **PANIER.enchere_id** : FK vers ENCHERES, ON DELETE SET NULL
+- Toutes les FK principales : ON DELETE CASCADE

@@ -13,11 +13,16 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      mailhog:
+        condition: service_started
     environment:
       - DB_HOST=db
       - DB_NAME=omnes_marketplace
       - DB_USER=root
       - DB_PASS=root_password
+      - SMTP_HOST=mailhog
+      - SMTP_PORT=1025
+      - MAIL_FROM=no-reply@marketplace.local
     networks:
       - omnes-network
 
@@ -40,6 +45,15 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - omnes-network
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: omnes-marketplace-mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
     networks:
       - omnes-network
 

@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/mail_service.php';
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../pages/connexion.php');
@@ -254,6 +255,9 @@ try {
     }
 
     $pdo->commit();
+
+    // Envoi de l'email de confirmation via MailHog
+    envoyer_email_confirmation_commande($pdo, $commande_id, $uid);
 
     header('Location: ../pages/compte.php?tab=orders&success=' . urlencode("Commande #$commande_id confirmée ! Merci pour votre achat."));
     exit;
