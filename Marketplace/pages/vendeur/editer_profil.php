@@ -15,13 +15,8 @@ try {
     $user = $pdo->prepare("SELECT prenom, nom, photo_url, background_url FROM utilisateurs WHERE id = :uid");
     $user->execute([':uid' => $uid]);
     $user_data = $user->fetch();
-    
-    // Logging pour déboguer
-    error_log("User data loaded for ID $uid: " . json_encode($user_data));
-    
-    // Si pas de données, créer une structure par défaut
+
     if (!$user_data) {
-        error_log("No user data found, using defaults");
         $user_data = [
             'prenom' => $_SESSION['user_prenom'] ?? 'Vendeur',
             'nom' => $_SESSION['user_nom'] ?? '',
@@ -30,7 +25,6 @@ try {
         ];
     }
 } catch (PDOException $e) {
-    error_log("Error loading user data: " . $e->getMessage());
     $user_data = [
         'prenom' => $_SESSION['user_prenom'] ?? 'Vendeur',
         'nom' => $_SESSION['user_nom'] ?? '',
@@ -289,16 +283,12 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             progressDiv.style.display = 'none';
-            console.log('Upload response:', data);
             if (data.success) {
-                showAlert('success', '✓ ' + data.message);
-                // Rafraîchir l'image
+                showAlert('success', data.message);
                 if (type === 'photo') {
-                    console.log('Updating photo preview with URL:', data.photo_url);
                     updatePhotoPreview(data.photo_url);
                     photoInput.value = '';
                 } else {
-                    console.log('Updating background preview with URL:', data.background_url);
                     updateBackgroundPreview(data.background_url);
                     backgroundInput.value = '';
                 }
@@ -342,56 +332,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updatePhotoPreview(url) {
-        // Ajouter un timestamp pour éviter le cache
-        const cacheBuster = '?t=' + Date.now();
-        const fullUrl = url + cacheBuster;
-        console.log('Loading photo preview from URL:', fullUrl);
-        
-        // Vérifier que les éléments existent
+        const fullUrl = url + '?t=' + Date.now();
         const preview = document.getElementById('photoPreview');
         const previewPhoto = document.getElementById('previewPhoto');
-        
-        if (!preview || !previewPhoto) {
-            console.error('Éléments de prévisualisation non trouvés');
-            return;
-        }
-        
+
+        if (!preview || !previewPhoto) return;
+
         const img = new Image();
         img.onload = function() {
-            console.log('Image loaded successfully:', fullUrl);
             preview.innerHTML = '<img src="' + fullUrl + '" alt="Photo profil" style="width: 100%; height: 100%; object-fit: cover;">';
             previewPhoto.innerHTML = '<img src="' + fullUrl + '" alt="Photo" style="width: 100%; height: 100%; object-fit: cover;">';
         };
         img.onerror = function() {
-            console.error('Impossible de charger l\'image: ' + fullUrl);
             showAlert('danger', 'Erreur: Impossible de charger l\'image');
         };
         img.src = fullUrl;
     }
 
     function updateBackgroundPreview(url) {
-        // Ajouter un timestamp pour éviter le cache
-        const cacheBuster = '?t=' + Date.now();
-        const fullUrl = url + cacheBuster;
-        console.log('Loading background preview from URL:', fullUrl);
-        
-        // Vérifier que les éléments existent
+        const fullUrl = url + '?t=' + Date.now();
         const preview = document.getElementById('backgroundPreview');
         const previewBg = document.getElementById('previewBackground');
-        
-        if (!preview || !previewBg) {
-            console.error('Éléments de prévisualisation non trouvés');
-            return;
-        }
-        
+
+        if (!preview || !previewBg) return;
+
         const img = new Image();
         img.onload = function() {
-            console.log('Background image loaded successfully:', fullUrl);
             preview.innerHTML = '<img src="' + fullUrl + '" alt="Image fond" style="width: 100%; height: 100%; object-fit: cover;">';
             previewBg.innerHTML = '<img src="' + fullUrl + '" alt="Background" style="width: 100%; height: 100%; object-fit: cover;">';
         };
         img.onerror = function() {
-            console.error('Impossible de charger l\'image: ' + fullUrl);
             showAlert('danger', 'Erreur: Impossible de charger l\'image');
         };
         img.src = fullUrl;

@@ -60,24 +60,19 @@ try {
     $total_pages = 1;
 }
 
-$sql = "SELECT a.*, u.prenom AS vendeur_prenom, u.nom AS vendeur_nom
+$sql = "SELECT a.id, a.titre, a.prix, a.type_vente, a.gamme, a.image_url,
+               u.prenom AS vendeur_prenom, u.nom AS vendeur_nom
         FROM articles a
         JOIN utilisateurs u ON a.vendeur_id = u.id
         WHERE " . $whereClause . "
         ORDER BY " . $orderBy . "
         LIMIT " . $per_page . " OFFSET " . $offset;
 
-// Debug logging
-error_log("Search Query: " . $sql);
-error_log("Search params: " . json_encode($params));
-
 try {
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
     $articles = $stmt->fetchAll();
-    error_log("Articles found: " . count($articles));
 } catch (PDOException $e) {
-    error_log("Search error: " . $e->getMessage());
     $articles = [];
 }
 

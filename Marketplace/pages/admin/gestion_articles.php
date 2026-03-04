@@ -10,7 +10,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'administrateur')
 }
 
 try {
-    $stmt = $pdo->query("SELECT a.*, u.prenom AS vendeur_prenom, u.nom AS vendeur_nom
+    $stmt = $pdo->query("SELECT a.id, a.titre, a.prix, a.type_vente, a.gamme, a.statut, a.categorie,
+                                u.prenom AS vendeur_prenom, u.nom AS vendeur_nom
                          FROM articles a
                          JOIN utilisateurs u ON a.vendeur_id = u.id
                          ORDER BY a.date_creation DESC");

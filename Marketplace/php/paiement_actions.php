@@ -81,6 +81,7 @@ try {
         exit;
     }
 
+    $total = 0.0;
     foreach ($items as $item) {
         $article_id = (int)$item['article_id'];
         $prix_final = (float)$item['prix_final'];
@@ -90,10 +91,7 @@ try {
                 header('Location: ../pages/panier.php?error=' . urlencode('Un article de votre panier n\'est plus disponible.'));
                 exit;
             }
-            continue;
-        }
-
-        if ($item['type_vente'] === 'negociation') {
+        } elseif ($item['type_vente'] === 'negociation') {
             if (empty($item['negociation_id']) || $item['prix_negocie'] === null) {
                 header('Location: ../pages/panier.php?error=' . urlencode('Panier incohérent pour un article négocié.'));
                 exit;
@@ -121,10 +119,7 @@ try {
                 header('Location: ../pages/panier.php?error=' . urlencode('Un article négocié n\'est pas verrouillé correctement.'));
                 exit;
             }
-            continue;
-        }
-
-        if ($item['type_vente'] === 'meilleure_offre') {
+        } elseif ($item['type_vente'] === 'meilleure_offre') {
             if (empty($item['enchere_id']) || $item['prix_negocie'] === null) {
                 header('Location: ../pages/panier.php?error=' . urlencode('Panier incohérent pour un article aux enchères.'));
                 exit;
@@ -152,16 +147,12 @@ try {
                 header('Location: ../pages/panier.php?error=' . urlencode('Un article remporté aux enchères n\'est pas verrouillé correctement.'));
                 exit;
             }
-            continue;
+        } else {
+            header('Location: ../pages/panier.php?error=' . urlencode('Type d\'article non pris en charge.'));
+            exit;
         }
 
-        header('Location: ../pages/panier.php?error=' . urlencode('Type d\'article non pris en charge.'));
-        exit;
-    }
-
-    $total = 0.0;
-    foreach ($items as $item) {
-        $total += ((float)$item['prix_final']) * (int)$item['quantite'];
+        $total += $prix_final * (int)$item['quantite'];
     }
 
     if ($total <= 0) {
@@ -204,30 +195,30 @@ try {
     ]);
     $commande_id = (int)$pdo->lastInsertId();
 
+    $insertItem = $pdo->prepare("INSERT INTO commande_articles (commande_id, article_id, prix)
+                                  VALUES (:cid, :aid, :prix)");
+    $markSold = $pdo->prepare("UPDATE articles SET statut = 'vendu'
+                                WHERE id = :id AND statut = 'disponible'");
+    $checkSold = $pdo->prepare('SELECT statut FROM articles WHERE id = :id FOR UPDATE');
+
     foreach ($items as $item) {
         $article_id = (int)$item['article_id'];
         $prix_final = (float)$item['prix_final'];
 
-        $stmt = $pdo->prepare("INSERT INTO commande_articles (commande_id, article_id, prix)
-                               VALUES (:cid, :aid, :prix)");
-        $stmt->execute([
+        $insertItem->execute([
             ':cid' => $commande_id,
             ':aid' => $article_id,
             ':prix' => $prix_final,
         ]);
 
         if ($item['type_vente'] === 'achat_immediat') {
-            $stmt = $pdo->prepare("UPDATE articles
-                                   SET statut = 'vendu'
-                                   WHERE id = :id AND statut = 'disponible'");
-            $stmt->execute([':id' => $article_id]);
-            if ($stmt->rowCount() === 0) {
+            $markSold->execute([':id' => $article_id]);
+            if ($markSold->rowCount() === 0) {
                 throw new RuntimeException('Article déjà vendu.');
             }
         } else {
-            $stmt = $pdo->prepare('SELECT statut FROM articles WHERE id = :id FOR UPDATE');
-            $stmt->execute([':id' => $article_id]);
-            $statut = $stmt->fetchColumn();
+            $checkSold->execute([':id' => $article_id]);
+            $statut = $checkSold->fetchColumn();
             if ($statut !== 'vendu') {
                 throw new RuntimeException('État d\'article invalide pour finalisation.');
             }

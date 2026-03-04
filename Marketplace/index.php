@@ -8,10 +8,15 @@ include 'includes/navbar.php';
 
 // Stats for counters
 try {
-    $nb_articles = $pdo->query("SELECT COUNT(*) FROM articles WHERE statut = 'disponible'")->fetchColumn();
-    $nb_vendeurs = $pdo->query("SELECT COUNT(*) FROM utilisateurs WHERE role = 'vendeur'")->fetchColumn();
-    $nb_acheteurs = $pdo->query("SELECT COUNT(*) FROM utilisateurs WHERE role = 'acheteur'")->fetchColumn();
-    $nb_commandes = $pdo->query("SELECT COUNT(*) FROM commandes")->fetchColumn();
+    $stats = $pdo->query("SELECT
+        (SELECT COUNT(*) FROM articles WHERE statut = 'disponible') AS nb_articles,
+        (SELECT COUNT(*) FROM utilisateurs WHERE role = 'vendeur') AS nb_vendeurs,
+        (SELECT COUNT(*) FROM utilisateurs WHERE role = 'acheteur') AS nb_acheteurs,
+        (SELECT COUNT(*) FROM commandes) AS nb_commandes")->fetch();
+    $nb_articles = (int)$stats['nb_articles'];
+    $nb_vendeurs = (int)$stats['nb_vendeurs'];
+    $nb_acheteurs = (int)$stats['nb_acheteurs'];
+    $nb_commandes = (int)$stats['nb_commandes'];
 } catch (PDOException $e) {
     $nb_articles = 150; $nb_vendeurs = 25; $nb_acheteurs = 500; $nb_commandes = 300;
 }
@@ -122,7 +127,8 @@ try {
             <div class="row g-4" id="selection-jour">
                 <?php
                 try {
-                    $stmt = $pdo->query("SELECT a.*, u.prenom AS vendeur_prenom, u.nom AS vendeur_nom
+                    $stmt = $pdo->query("SELECT a.id, a.titre, a.prix, a.type_vente, a.gamme, a.image_url,
+                                                u.prenom AS vendeur_prenom, u.nom AS vendeur_nom
                                          FROM articles a
                                          JOIN utilisateurs u ON a.vendeur_id = u.id
                                          WHERE a.statut = 'disponible'
@@ -229,7 +235,8 @@ try {
             <div class="row g-4" id="ventes-flash">
                 <?php
                 try {
-                    $stmt = $pdo->query("SELECT a.*, u.prenom AS vendeur_prenom, u.nom AS vendeur_nom
+                    $stmt = $pdo->query("SELECT a.id, a.titre, a.prix, a.type_vente, a.gamme, a.image_url,
+                                                u.prenom AS vendeur_prenom, u.nom AS vendeur_nom
                                          FROM articles a
                                          JOIN utilisateurs u ON a.vendeur_id = u.id
                                          WHERE a.statut = 'disponible' AND a.gamme IN ('rare', 'haut_de_gamme')

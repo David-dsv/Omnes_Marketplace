@@ -13,7 +13,7 @@ include $base_url . 'includes/header.php';
 include $base_url . 'includes/navbar.php';
 
 try {
-    $stmt = $pdo->prepare("SELECT * FROM notifications WHERE utilisateur_id = :uid ORDER BY date_creation DESC");
+    $stmt = $pdo->prepare("SELECT id, message, lu, date_creation FROM notifications WHERE utilisateur_id = :uid ORDER BY date_creation DESC");
     $stmt->execute([':uid' => $_SESSION['user_id']]);
     $notifications = $stmt->fetchAll();
 } catch (PDOException $e) {

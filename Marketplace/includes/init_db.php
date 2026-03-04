@@ -22,6 +22,5 @@ try {
     // Silencieusement continuer - pas d'erreur si les colonnes existent déjà
 } catch (PDOException $e) {
     // Les colonnes existent probablement déjà, ignorer l'erreur
-    error_log("Database initialization: " . $e->getMessage());
 }
 ?>

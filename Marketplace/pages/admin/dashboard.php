@@ -10,11 +10,17 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'administrateur')
 }
 
 try {
-    $nb_users = $pdo->query("SELECT COUNT(*) FROM utilisateurs")->fetchColumn();
-    $nb_vendeurs = $pdo->query("SELECT COUNT(*) FROM utilisateurs WHERE role = 'vendeur'")->fetchColumn();
-    $nb_articles = $pdo->query("SELECT COUNT(*) FROM articles")->fetchColumn();
-    $nb_commandes = $pdo->query("SELECT COUNT(*) FROM commandes")->fetchColumn();
-    $chiffre_affaires = $pdo->query("SELECT COALESCE(SUM(total), 0) FROM commandes")->fetchColumn();
+    $stats = $pdo->query("SELECT
+        (SELECT COUNT(*) FROM utilisateurs) AS nb_users,
+        (SELECT COUNT(*) FROM utilisateurs WHERE role = 'vendeur') AS nb_vendeurs,
+        (SELECT COUNT(*) FROM articles) AS nb_articles,
+        (SELECT COUNT(*) FROM commandes) AS nb_commandes,
+        (SELECT COALESCE(SUM(total), 0) FROM commandes) AS chiffre_affaires")->fetch();
+    $nb_users = (int)$stats['nb_users'];
+    $nb_vendeurs = (int)$stats['nb_vendeurs'];
+    $nb_articles = (int)$stats['nb_articles'];
+    $nb_commandes = (int)$stats['nb_commandes'];
+    $chiffre_affaires = (float)$stats['chiffre_affaires'];
 } catch (PDOException $e) {
     $nb_users = $nb_vendeurs = $nb_articles = $nb_commandes = $chiffre_affaires = 0;
 }

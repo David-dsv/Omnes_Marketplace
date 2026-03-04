@@ -17,12 +17,8 @@ try {
     $vendor->execute([':uid' => $uid]);
     $vendor_data = $vendor->fetch();
     
-    // Logging pour déboguer
-    error_log("Vendor data loaded for ID $uid: " . json_encode($vendor_data));
-    
     // Si pas de données en BDD, créer une structure par défaut
     if (!$vendor_data) {
-        error_log("No vendor data found, using defaults");
         $vendor_data = [
             'prenom' => $_SESSION['user_prenom'] ?? 'Vendeur',
             'nom' => $_SESSION['user_nom'] ?? '',
@@ -31,17 +27,15 @@ try {
         ];
     }
     
-    $nb_articles = $pdo->prepare("SELECT COUNT(*) FROM articles WHERE vendeur_id = :uid");
-    $nb_articles->execute([':uid' => $uid]);
-    $nb_articles = $nb_articles->fetchColumn();
-
-    $nb_vendus = $pdo->prepare("SELECT COUNT(*) FROM articles WHERE vendeur_id = :uid AND statut = 'vendu'");
-    $nb_vendus->execute([':uid' => $uid]);
-    $nb_vendus = $nb_vendus->fetchColumn();
-
-    $chiffre_affaires = $pdo->prepare("SELECT COALESCE(SUM(prix), 0) FROM articles WHERE vendeur_id = :uid AND statut = 'vendu'");
-    $chiffre_affaires->execute([':uid' => $uid]);
-    $chiffre_affaires = $chiffre_affaires->fetchColumn();
+    $stats_stmt = $pdo->prepare("SELECT COUNT(*) AS nb_articles,
+                                        SUM(CASE WHEN statut = 'vendu' THEN 1 ELSE 0 END) AS nb_vendus,
+                                        COALESCE(SUM(CASE WHEN statut = 'vendu' THEN prix ELSE 0 END), 0) AS chiffre_affaires
+                                 FROM articles WHERE vendeur_id = :uid");
+    $stats_stmt->execute([':uid' => $uid]);
+    $stats = $stats_stmt->fetch();
+    $nb_articles = (int)$stats['nb_articles'];
+    $nb_vendus = (int)$stats['nb_vendus'];
+    $chiffre_affaires = (float)$stats['chiffre_affaires'];
 
 } catch (PDOException $e) {
     $nb_articles = $nb_vendus = $chiffre_affaires = 0;

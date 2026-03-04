@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'vendeur') {
 }
 
 try {
-    $stmt = $pdo->prepare("SELECT * FROM articles WHERE vendeur_id = :uid ORDER BY date_creation DESC");
+    $stmt = $pdo->prepare("SELECT id, titre, prix, type_vente, gamme, statut, image_url FROM articles WHERE vendeur_id = :uid ORDER BY date_creation DESC");
     $stmt->execute([':uid' => $_SESSION['user_id']]);
     $articles = $stmt->fetchAll();
 } catch (PDOException $e) {
