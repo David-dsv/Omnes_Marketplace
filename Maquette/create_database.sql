@@ -22,6 +22,8 @@ CREATE TABLE utilisateurs (
     adresse TEXT DEFAULT NULL,
     role ENUM('acheteur', 'vendeur', 'administrateur') NOT NULL DEFAULT 'acheteur',
     actif TINYINT(1) NOT NULL DEFAULT 1,
+    photo_url VARCHAR(500) DEFAULT NULL,
+    background_url VARCHAR(500) DEFAULT NULL,
     date_creation DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 

@@ -101,3 +101,21 @@ Accueil | Tout Parcourir | Notifications | Panier | Votre Compte
 - Payment validation checks credentials exist in DB (no real bank API)
 - Purchase confirmation sent via email/SMS simulation
 - **No auction system** — only achat immédiat and négociation are supported
+
+## Recent Features Added (Vendor Profile Wall)
+
+### 04/03/2026 - Vendor Profile Wall Feature
+- **Database**: Added `photo_url` and `background_url` columns to `utilisateurs` table
+- **New Files**:
+  - `pages/vendeur/editer_profil.php` — Profile editing page with image upload interface
+  - `php/vendeur_actions.php` — Backend image upload/deletion handler
+  - Image directories: `images/vendeurs/photos/` and `images/vendeurs/backgrounds/`
+- **Updated Files**:
+  - `pages/vendeur/dashboard.php` — Displays vendor wall with profile photo and background at the top
+  - `includes/navbar.php` — Added "Mon profil" link in vendor dropdown menu
+- **Features**:
+  - Vendors can upload profile photo (max 5 MB, JPEG/PNG/GIF/WebP)
+  - Vendors can upload background image (max 10 MB, JPEG/PNG/GIF/WebP)
+  - Auto-deletion of old images when uploading new ones
+  - Real-time preview in edit page
+  - Vendor wall displays name, photo, and background on dashboard
