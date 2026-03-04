@@ -11,6 +11,26 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'vendeur') {
 
 try {
     $uid = $_SESSION['user_id'];
+    
+    // Récupérer les informations du vendeur (photo et background)
+    $vendor = $pdo->prepare("SELECT prenom, nom, photo_url, background_url FROM utilisateurs WHERE id = :uid");
+    $vendor->execute([':uid' => $uid]);
+    $vendor_data = $vendor->fetch();
+    
+    // Logging pour déboguer
+    error_log("Vendor data loaded for ID $uid: " . json_encode($vendor_data));
+    
+    // Si pas de données en BDD, créer une structure par défaut
+    if (!$vendor_data) {
+        error_log("No vendor data found, using defaults");
+        $vendor_data = [
+            'prenom' => $_SESSION['user_prenom'] ?? 'Vendeur',
+            'nom' => $_SESSION['user_nom'] ?? '',
+            'photo_url' => null,
+            'background_url' => null
+        ];
+    }
+    
     $nb_articles = $pdo->prepare("SELECT COUNT(*) FROM articles WHERE vendeur_id = :uid");
     $nb_articles->execute([':uid' => $uid]);
     $nb_articles = $nb_articles->fetchColumn();
@@ -25,6 +45,12 @@ try {
 
 } catch (PDOException $e) {
     $nb_articles = $nb_vendus = $chiffre_affaires = 0;
+    $vendor_data = [
+        'prenom' => $_SESSION['user_prenom'] ?? 'Vendeur',
+        'nom' => $_SESSION['user_nom'] ?? '',
+        'photo_url' => null,
+        'background_url' => null
+    ];
 }
 
 include $base_url . 'includes/header.php';
@@ -33,10 +59,46 @@ include $base_url . 'includes/navbar.php';
 
 <main class="py-4">
     <div class="container">
+        <!-- Profil Vendeur - Mur du vendeur -->
+        <div class="vendor-wall mb-5 animate-on-scroll" style="border-radius: 12px; overflow: hidden; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            <!-- Arrière-plan -->
+            <div class="vendor-background" style="height: 180px; overflow: hidden; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <?php if ($vendor_data['background_url']): ?>
+                    <img src="<?php echo htmlspecialchars($vendor_data['background_url']); ?>" alt="Background" style="width: 100%; height: 100%; object-fit: cover;">
+                <?php endif; ?>
+            </div>
+
+            <!-- Profil info - Entièrement sur fond blanc -->
+            <div style="padding: 1rem 2rem 2rem; background: white; position: relative; margin-top: -50px;">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div style="border: 5px solid white; border-radius: 50%; overflow: hidden; width: 100px; height: 100px; background-color: #e9ecef; box-shadow: 0 4px 12px rgba(0,0,0,0.15); flex-shrink: 0;">
+                            <?php if ($vendor_data['photo_url']): ?>
+                                <img src="<?php echo htmlspecialchars($vendor_data['photo_url']); ?>" alt="Photo profil" style="width: 100%; height: 100%; object-fit: cover;">
+                            <?php else: ?>
+                                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: #e9ecef;">
+                                    <i class="bi bi-person" style="font-size: 2.5rem; color: #999;"></i>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="col ms-3">
+                        <h2 class="fw-bold mb-0" style="color: #333;">
+                            <?php echo htmlspecialchars($vendor_data['prenom'] . ' ' . $vendor_data['nom']); ?>
+                        </h2>
+                        <p class="text-muted mb-3"><i class="bi bi-shop me-1"></i>Vendeur</p>
+                        <a href="editer_profil.php" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-pencil me-1"></i>Éditer mon profil
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h1 class="h3 mb-1"><i class="bi bi-speedometer2 me-2"></i>Tableau de bord vendeur</h1>
-                <p class="text-muted mb-0">Bienvenue, <?php echo htmlspecialchars($_SESSION['user_prenom']); ?> !</p>
+                <h3 class="h5 mb-1"><i class="bi bi-speedometer2 me-2"></i>Tableau de bord</h3>
+                <p class="text-muted mb-0">Suivez vos ventes et gérez vos articles</p>
             </div>
             <a href="ajouter_article.php" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Nouvel article</a>
         </div>

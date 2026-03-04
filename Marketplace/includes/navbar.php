@@ -120,6 +120,9 @@ $panier_url = isset($_SESSION['user_id'])
                                 <li><a class="dropdown-item" href="<?php echo $base_url; ?>pages/vendeur/dashboard.php">
                                     <i class="bi bi-speedometer2"></i> Tableau de bord
                                 </a></li>
+                                <li><a class="dropdown-item" href="<?php echo $base_url; ?>pages/vendeur/editer_profil.php">
+                                    <i class="bi bi-person-circle"></i> Mon profil
+                                </a></li>
                                 <li><a class="dropdown-item" href="<?php echo $base_url; ?>pages/vendeur/negociations.php">
                                     <i class="bi bi-chat-dots"></i> Mes négociations
                                 </a></li>
