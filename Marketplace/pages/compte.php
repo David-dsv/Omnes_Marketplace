@@ -174,6 +174,25 @@ $initials = strtoupper(substr($user['prenom'], 0, 1) . substr($user['nom'], 0, 1
                                 </button>
                             </form>
                         </div>
+
+                        <div class="card p-4 shadow-sm mt-4" style="border-radius: 16px;">
+                            <h5 class="fw-bold mb-3"><i class="bi bi-shield-check me-2"></i>Clause légale</h5>
+                            <div class="small text-muted">
+                                <p class="mb-2">
+                                    En utilisant la plateforme Omnes MarketPlace, vous acceptez les conditions suivantes :
+                                </p>
+                                <ul class="mb-2">
+                                    <li><strong>Engagement contractuel :</strong> Toute offre acceptée par le vendeur dans le cadre d'une négociation constitue un engagement ferme et définitif de la part de l'acheteur. L'acheteur est juridiquement tenu d'honorer la transaction.</li>
+                                    <li><strong>Négociations :</strong> Les négociations sont limitées à 5 allers-retours maximum. Passé ce nombre, la transaction est automatiquement annulée.</li>
+                                    <li><strong>Achat immédiat :</strong> Tout achat immédiat validé et payé est considéré comme définitif. Aucun remboursement ne sera accordé sauf en cas de non-conformité avérée de l'article.</li>
+                                    <li><strong>Données personnelles :</strong> Vos informations personnelles sont traitées conformément au RGPD et ne sont utilisées que dans le cadre du fonctionnement de la plateforme.</li>
+                                    <li><strong>Responsabilité :</strong> Omnes MarketPlace agit en tant qu'intermédiaire et ne peut être tenu responsable de la qualité des articles vendus entre particuliers.</li>
+                                </ul>
+                                <p class="mb-0 fst-italic">
+                                    Pour toute question, contactez l'administration via la page <a href="contact.php">Contact</a>.
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Orders tab -->
