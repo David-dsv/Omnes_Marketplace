@@ -19,6 +19,16 @@ try {
     $user = null;
 }
 
+// Fetch user's saved credit cards (matched by titulaire name)
+try {
+    $fullname = $user['prenom'] . ' ' . $user['nom'];
+    $stmt_cb = $pdo->prepare("SELECT numero_carte, expiration, titulaire FROM cartes_bancaires WHERE titulaire = :titulaire");
+    $stmt_cb->execute([':titulaire' => $fullname]);
+    $cartes = $stmt_cb->fetchAll();
+} catch (PDOException $e) {
+    $cartes = [];
+}
+
 try {
     $stmt = $pdo->prepare("SELECT c.*, GROUP_CONCAT(a.titre SEPARATOR ', ') AS articles
                            FROM commandes c
@@ -90,6 +100,32 @@ $initials = strtoupper(substr($user['prenom'], 0, 1) . substr($user['nom'], 0, 1
                             <span>Membre depuis <?php echo date('d/m/Y', strtotime($user['date_creation'])); ?></span>
                         </li>
                     </ul>
+
+                    <?php if (!empty($cartes)): ?>
+                        <hr>
+                        <h6 class="fw-semibold mb-3"><i class="bi bi-credit-card me-2"></i>Carte(s) bancaire(s) enregistrée(s)</h6>
+                        <?php foreach ($cartes as $carte):
+                            $num = $carte['numero_carte'];
+                            $last4 = substr($num, -4);
+                            $masked = '**** **** **** ' . $last4;
+                            // Detect card type from first digit
+                            $first = substr($num, 0, 1);
+                            $card_type = match($first) {
+                                '4' => 'Visa',
+                                '5' => 'Mastercard',
+                                '3' => 'American Express',
+                                default => 'Carte'
+                            };
+                        ?>
+                            <div class="d-flex align-items-center gap-3 mb-2 p-2 rounded" style="background:rgba(var(--omnes-primary-rgb),0.05);">
+                                <i class="bi bi-credit-card-2-front fs-4 text-primary"></i>
+                                <div>
+                                    <span class="fw-semibold d-block"><?php echo $card_type; ?> <?php echo $masked; ?></span>
+                                    <small class="text-muted">Exp. <?php echo htmlspecialchars($carte['expiration']); ?></small>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </div>
 
