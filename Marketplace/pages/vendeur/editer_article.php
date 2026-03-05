@@ -132,13 +132,21 @@ include $base_url . 'includes/navbar.php';
                         </div>
                     </div>
 
-                    <div class="col-12">
-                        <label class="form-label fw-semibold">Description</label>
-                        <textarea name="description"
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Description — Qualités</label>
+                        <textarea name="description_qualite"
                                   class="form-control <?php echo $is_sold ? 'article-edit-field-locked' : ''; ?>"
-                                  rows="4"
+                                  rows="3"
                                   required
-                                  <?php echo $is_sold ? 'disabled' : ''; ?>><?php echo htmlspecialchars($article['description']); ?></textarea>
+                                  <?php echo $is_sold ? 'disabled' : ''; ?>><?php echo htmlspecialchars($article['description_qualite'] ?? $article['description']); ?></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Description — Défauts</label>
+                        <textarea name="description_defaut"
+                                  class="form-control <?php echo $is_sold ? 'article-edit-field-locked' : ''; ?>"
+                                  rows="3"
+                                  <?php echo $is_sold ? 'disabled' : ''; ?>><?php echo htmlspecialchars($article['description_defaut'] ?? ''); ?></textarea>
+                        <small class="text-muted">Laisser vide si aucun défaut</small>
                     </div>
 
                     <div class="col-md-4">
@@ -225,7 +233,7 @@ include $base_url . 'includes/navbar.php';
 
                     <div class="col-12 mt-2">
                         <div class="article-edit-image-wrap">
-                            <h6 class="fw-semibold mb-3"><i class="bi bi-image me-1"></i>Image de l'article</h6>
+                            <h6 class="fw-semibold mb-3"><i class="bi bi-image me-1"></i>Photos de l'article</h6>
                             <div class="row g-3 align-items-center">
                                 <div class="col-md-4">
                                     <img src="<?php echo $base_url . htmlspecialchars($article['image_url'] ?? 'images/articles/placeholder.png'); ?>"
@@ -233,12 +241,46 @@ include $base_url . 'includes/navbar.php';
                                          alt="<?php echo htmlspecialchars($article['titre']); ?>">
                                 </div>
                                 <div class="col-md-8">
-                                    <label class="form-label fw-semibold">Remplacer l'image</label>
+                                    <label class="form-label fw-semibold">Remplacer la photo principale</label>
                                     <input type="file" name="image" class="form-control <?php echo $is_sold ? 'article-edit-field-locked' : ''; ?>" accept="image/*" <?php echo $is_sold ? 'disabled' : ''; ?>>
                                     <small class="text-muted d-block mt-2">Laisser vide pour conserver l'image actuelle.</small>
                                 </div>
                             </div>
+                            <?php
+                            // Photos supplémentaires existantes
+                            try {
+                                $stmt_imgs = $pdo->prepare("SELECT id, image_url FROM article_images WHERE article_id = :aid ORDER BY position");
+                                $stmt_imgs->execute([':aid' => $article_id]);
+                                $extra_images = $stmt_imgs->fetchAll();
+                            } catch (PDOException $e) {
+                                $extra_images = [];
+                            }
+                            ?>
+                            <?php if (!empty($extra_images)): ?>
+                                <div class="row g-2 mt-3">
+                                    <?php foreach ($extra_images as $ei): ?>
+                                        <div class="col-3">
+                                            <img src="<?php echo $base_url . htmlspecialchars($ei['image_url']); ?>" class="img-fluid rounded" alt="Photo supplémentaire" style="height:80px;object-fit:cover;width:100%;">
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+                            <div class="mt-3">
+                                <label class="form-label fw-semibold">Ajouter des photos supplémentaires</label>
+                                <input type="file" name="images_supplementaires[]" class="form-control <?php echo $is_sold ? 'article-edit-field-locked' : ''; ?>" accept="image/*" multiple <?php echo $is_sold ? 'disabled' : ''; ?>>
+                                <small class="text-muted">Jusqu'à 4 photos supplémentaires</small>
+                            </div>
                         </div>
+                    </div>
+
+                    <div class="col-12 mt-2">
+                        <label class="form-label fw-semibold"><i class="bi bi-camera-video me-1"></i>Vidéo (optionnel)</label>
+                        <input type="url" name="video_url"
+                               class="form-control <?php echo $is_sold ? 'article-edit-field-locked' : ''; ?>"
+                               value="<?php echo htmlspecialchars($article['video_url'] ?? ''); ?>"
+                               placeholder="https://www.youtube.com/watch?v=..."
+                               <?php echo $is_sold ? 'disabled' : ''; ?>>
+                        <small class="text-muted">Lien YouTube ou URL directe de la vidéo</small>
                     </div>
                 </div>
 

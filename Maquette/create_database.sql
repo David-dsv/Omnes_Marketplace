@@ -35,16 +35,31 @@ CREATE TABLE articles (
     vendeur_id INT NOT NULL,
     titre VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
+    description_qualite TEXT DEFAULT NULL,
+    description_defaut TEXT DEFAULT NULL,
     prix DECIMAL(10, 2) NOT NULL,
     categorie ENUM('Électronique', 'Vêtements', 'Maison', 'Livres', 'Sports', 'Divers') NOT NULL,
     type_vente ENUM('achat_immediat', 'negociation', 'meilleure_offre') NOT NULL,
     gamme ENUM('regulier', 'haut_de_gamme', 'rare') NOT NULL DEFAULT 'regulier',
     image_url VARCHAR(500) DEFAULT 'images/articles/placeholder.png',
+    video_url VARCHAR(500) DEFAULT NULL,
     statut ENUM('disponible', 'vendu', 'retire') NOT NULL DEFAULT 'disponible',
     date_debut_enchere DATETIME DEFAULT NULL,
     date_fin_enchere DATETIME DEFAULT NULL,
     date_creation DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (vendeur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- =============================================
+-- Table : article_images (photos supplémentaires)
+-- =============================================
+CREATE TABLE article_images (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    article_id INT NOT NULL,
+    image_url VARCHAR(500) NOT NULL,
+    position INT NOT NULL DEFAULT 0,
+    date_creation DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- =============================================

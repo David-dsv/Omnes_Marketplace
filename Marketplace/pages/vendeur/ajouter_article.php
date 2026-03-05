@@ -48,9 +48,14 @@ include $base_url . 'includes/navbar.php';
                         </div>
                     </div>
 
-                    <div class="col-12">
-                        <label class="form-label fw-semibold">Description</label>
-                        <textarea name="description" class="form-control" rows="4" placeholder="Décrivez votre article en détail (état, caractéristiques, raison de la vente...)" required></textarea>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Description — Qualités</label>
+                        <textarea name="description_qualite" class="form-control" rows="3" placeholder="Points forts, caractéristiques, état général..." required></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Description — Défauts</label>
+                        <textarea name="description_defaut" class="form-control" rows="3" placeholder="Défauts, usures, rayures, pièces manquantes..."></textarea>
+                        <small class="text-muted">Laisser vide si aucun défaut</small>
                     </div>
 
                     <div class="col-md-4">
@@ -107,9 +112,19 @@ include $base_url . 'includes/navbar.php';
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold">Image de l'article</label>
+                        <label class="form-label fw-semibold">Photo principale</label>
                         <input type="file" name="image" class="form-control" accept="image/*">
-                        <small class="text-muted">Formats acceptés : JPG, PNG, WEBP (max 5 Mo)</small>
+                        <small class="text-muted">Formats : JPG, PNG, WEBP (max 5 Mo)</small>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Photos supplémentaires</label>
+                        <input type="file" name="images_supplementaires[]" class="form-control" accept="image/*" multiple>
+                        <small class="text-muted">Jusqu'à 4 photos supplémentaires</small>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Vidéo (optionnel)</label>
+                        <input type="url" name="video_url" class="form-control" placeholder="https://www.youtube.com/watch?v=... ou lien direct vers la vidéo">
+                        <small class="text-muted">Lien YouTube ou URL directe de la vidéo</small>
                     </div>
                 </div>
 

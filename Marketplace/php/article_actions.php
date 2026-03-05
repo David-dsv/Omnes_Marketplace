@@ -19,13 +19,16 @@ switch ($action) {
         }
 
         $titre = trim($_POST['titre'] ?? '');
-        $description = trim($_POST['description'] ?? '');
+        $description_qualite = trim($_POST['description_qualite'] ?? '');
+        $description_defaut = trim($_POST['description_defaut'] ?? '');
+        $description = $description_qualite . ($description_defaut ? "\n\nDéfauts : " . $description_defaut : '');
         $prix = (float)($_POST['prix'] ?? 0);
         $categorie = $_POST['categorie'] ?? '';
         $type_vente = $_POST['type_vente'] ?? '';
         $gamme = $_POST['gamme'] ?? '';
+        $video_url = trim($_POST['video_url'] ?? '') ?: null;
 
-        if (!$titre || !$description || $prix <= 0 || !$categorie || !$type_vente || !$gamme) {
+        if (!$titre || !$description_qualite || $prix <= 0 || !$categorie || !$type_vente || !$gamme) {
             header('Location: ../pages/vendeur/ajouter_article.php?error=' . urlencode('Veuillez remplir tous les champs.'));
             exit;
         }
@@ -81,20 +84,65 @@ switch ($action) {
         }
 
         try {
-            $stmt = $pdo->prepare("INSERT INTO articles (vendeur_id, titre, description, prix, categorie, type_vente, gamme, image_url, statut, date_debut_enchere, date_fin_enchere)
-                                   VALUES (:vid, :titre, :desc, :prix, :cat, :type, :gamme, :img, 'disponible', :date_debut, :date_fin)");
+            $stmt = $pdo->prepare("INSERT INTO articles (vendeur_id, titre, description, description_qualite, description_defaut, prix, categorie, type_vente, gamme, image_url, video_url, statut, date_debut_enchere, date_fin_enchere)
+                                   VALUES (:vid, :titre, :desc, :desc_q, :desc_d, :prix, :cat, :type, :gamme, :img, :video, 'disponible', :date_debut, :date_fin)");
             $stmt->execute([
                 ':vid'        => $uid,
                 ':titre'      => $titre,
                 ':desc'       => $description,
+                ':desc_q'     => $description_qualite,
+                ':desc_d'     => $description_defaut ?: null,
                 ':prix'       => $prix,
                 ':cat'        => $categorie,
                 ':type'       => $type_vente,
                 ':gamme'      => $gamme,
                 ':img'        => $image_url,
+                ':video'      => $video_url,
                 ':date_debut' => $date_debut_enchere,
                 ':date_fin'   => $date_fin_enchere,
             ]);
+
+            $new_article_id = (int)$pdo->lastInsertId();
+
+            // Upload photos supplémentaires
+            if (!empty($_FILES['images_supplementaires']['name'][0])) {
+                $upload_dir = __DIR__ . '/../images/articles/';
+                $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                $position = 1;
+                foreach ($_FILES['images_supplementaires']['tmp_name'] as $i => $tmp) {
+                    if ($_FILES['images_supplementaires']['error'][$i] !== UPLOAD_ERR_OK || $position > 4) continue;
+                    $ext = strtolower(pathinfo($_FILES['images_supplementaires']['name'][$i], PATHINFO_EXTENSION));
+                    if (!in_array($ext, $allowed, true)) continue;
+                    $fn = uniqid('article_extra_') . '.' . $ext;
+                    if (move_uploaded_file($tmp, $upload_dir . $fn)) {
+                        $stmt_img = $pdo->prepare("INSERT INTO article_images (article_id, image_url, position) VALUES (:aid, :url, :pos)");
+                        $stmt_img->execute([':aid' => $new_article_id, ':url' => 'images/articles/' . $fn, ':pos' => $position]);
+                        $position++;
+                    }
+                }
+            }
+
+            // Vérifier les alertes de recherche
+            try {
+                $stmt_alerts = $pdo->query("SELECT id, utilisateur_id, mot_cle, categorie, prix_max FROM alertes_recherche");
+                $alerts = $stmt_alerts->fetchAll();
+                $notif_stmt = $pdo->prepare("INSERT INTO notifications (utilisateur_id, message) VALUES (:uid, :msg)");
+                foreach ($alerts as $alert) {
+                    if ((int)$alert['utilisateur_id'] === (int)$uid) continue;
+                    $match = true;
+                    if ($alert['mot_cle'] && stripos($titre . ' ' . $description, $alert['mot_cle']) === false) $match = false;
+                    if ($alert['categorie'] && $alert['categorie'] !== $categorie) $match = false;
+                    if ($alert['prix_max'] && $prix > (float)$alert['prix_max']) $match = false;
+                    if ($match) {
+                        $notif_stmt->execute([
+                            ':uid' => $alert['utilisateur_id'],
+                            ':msg' => "Un article correspondant à votre alerte est disponible : \"$titre\" à " . number_format($prix, 2, ',', ' ') . " €",
+                        ]);
+                    }
+                }
+            } catch (PDOException $e) {
+                // Silencieux — les alertes ne doivent pas bloquer la création
+            }
 
             header('Location: ../pages/vendeur/mes_articles.php?success=' . urlencode('Article publié avec succès !'));
             exit;
@@ -117,17 +165,20 @@ switch ($action) {
         }
 
         $titre = trim($_POST['titre'] ?? '');
-        $description = trim($_POST['description'] ?? '');
+        $description_qualite = trim($_POST['description_qualite'] ?? '');
+        $description_defaut = trim($_POST['description_defaut'] ?? '');
+        $description = $description_qualite . ($description_defaut ? "\n\nDéfauts : " . $description_defaut : '');
         $prix_post = (float)($_POST['prix'] ?? 0);
         $categorie = $_POST['categorie'] ?? '';
         $gamme = $_POST['gamme'] ?? '';
         $statut_cible = $_POST['statut'] ?? '';
+        $video_url = trim($_POST['video_url'] ?? '') ?: null;
 
         $allowed_categories = ['Électronique', 'Vêtements', 'Maison', 'Livres', 'Sports', 'Divers'];
         $allowed_gammes = ['regulier', 'haut_de_gamme', 'rare'];
         $allowed_status = ['disponible', 'retire'];
 
-        if (!$titre || !$description || !$categorie || !$gamme) {
+        if (!$titre || !$description_qualite || !$categorie || !$gamme) {
             header('Location: ../pages/vendeur/editer_article.php?id=' . $article_id . '&error=' . urlencode('Veuillez remplir tous les champs obligatoires.'));
             exit;
         }
@@ -260,27 +311,53 @@ switch ($action) {
             $stmt_update = $pdo->prepare("UPDATE articles
                                           SET titre = :titre,
                                               description = :description,
+                                              description_qualite = :desc_q,
+                                              description_defaut = :desc_d,
                                               prix = :prix,
                                               categorie = :categorie,
                                               gamme = :gamme,
                                               statut = :statut,
                                               image_url = :image_url,
+                                              video_url = :video_url,
                                               date_debut_enchere = :date_debut,
                                               date_fin_enchere = :date_fin
                                           WHERE id = :id AND vendeur_id = :uid");
             $stmt_update->execute([
                 ':titre' => $titre,
                 ':description' => $description,
+                ':desc_q' => $description_qualite,
+                ':desc_d' => $description_defaut ?: null,
                 ':prix' => $prix_final,
                 ':categorie' => $categorie,
                 ':gamme' => $gamme,
                 ':statut' => $statut_cible,
                 ':image_url' => $image_url,
+                ':video_url' => $video_url,
                 ':date_debut' => $date_debut_finale,
                 ':date_fin' => $date_fin_finale,
                 ':id' => $article_id,
                 ':uid' => $uid,
             ]);
+
+            // Upload photos supplémentaires
+            if (!empty($_FILES['images_supplementaires']['name'][0])) {
+                $upload_dir = __DIR__ . '/../images/articles/';
+                $allowed_img = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                $pos_stmt = $pdo->prepare("SELECT COALESCE(MAX(position), 0) + 1 FROM article_images WHERE article_id = :aid");
+                $pos_stmt->execute([':aid' => $article_id]);
+                $position = (int)$pos_stmt->fetchColumn();
+                foreach ($_FILES['images_supplementaires']['tmp_name'] as $i => $tmp) {
+                    if ($_FILES['images_supplementaires']['error'][$i] !== UPLOAD_ERR_OK || $position > 5) continue;
+                    $ext = strtolower(pathinfo($_FILES['images_supplementaires']['name'][$i], PATHINFO_EXTENSION));
+                    if (!in_array($ext, $allowed_img, true)) continue;
+                    $fn = uniqid('article_extra_') . '.' . $ext;
+                    if (move_uploaded_file($tmp, $upload_dir . $fn)) {
+                        $ins_img = $pdo->prepare("INSERT INTO article_images (article_id, image_url, position) VALUES (:aid, :url, :pos)");
+                        $ins_img->execute([':aid' => $article_id, ':url' => 'images/articles/' . $fn, ':pos' => $position]);
+                        $position++;
+                    }
+                }
+            }
 
             $pdo->commit();
             header('Location: ../pages/vendeur/mes_articles.php?success=' . urlencode('Article mis à jour avec succès.'));

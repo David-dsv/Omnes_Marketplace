@@ -68,18 +68,92 @@ include $base_url . 'includes/navbar.php';
         </nav>
 
         <div class="row g-4">
-            <!-- Image -->
+            <!-- Photos -->
             <div class="col-lg-6 mb-4 animate-on-scroll">
-                <div class="card overflow-hidden" style="border-radius: 16px;">
-                    <div class="position-relative">
-                        <img src="<?php echo $base_url . htmlspecialchars($article['image_url'] ?? 'images/articles/placeholder.png'); ?>"
-                             class="img-fluid w-100" style="max-height: 500px; object-fit: cover;"
-                             alt="<?php echo htmlspecialchars($article['titre']); ?>">
-                        <span class="badge badge-<?php echo $article['gamme']; ?> badge-gamme" style="position:absolute;top:16px;left:16px;font-size:0.85rem;padding:0.5em 1em;">
-                            <?php echo htmlspecialchars($article['gamme']); ?>
-                        </span>
+                <?php
+                // Récupérer les photos supplémentaires
+                try {
+                    $stmt_photos = $pdo->prepare("SELECT image_url FROM article_images WHERE article_id = :aid ORDER BY position");
+                    $stmt_photos->execute([':aid' => $article_id]);
+                    $extra_photos = $stmt_photos->fetchAll(PDO::FETCH_COLUMN);
+                } catch (PDOException $e) {
+                    $extra_photos = [];
+                }
+                $all_photos = array_merge(
+                    [$article['image_url'] ?? 'images/articles/placeholder.png'],
+                    $extra_photos
+                );
+                ?>
+                <?php if (count($all_photos) > 1): ?>
+                    <!-- Carrousel multi-photos -->
+                    <div id="articlePhotosCarousel" class="carousel slide" data-bs-ride="carousel" style="border-radius: 16px; overflow: hidden;">
+                        <div class="carousel-indicators">
+                            <?php foreach ($all_photos as $i => $photo): ?>
+                                <button type="button" data-bs-target="#articlePhotosCarousel" data-bs-slide-to="<?php echo $i; ?>" <?php echo $i === 0 ? 'class="active"' : ''; ?>></button>
+                            <?php endforeach; ?>
+                        </div>
+                        <div class="carousel-inner">
+                            <?php foreach ($all_photos as $i => $photo): ?>
+                                <div class="carousel-item <?php echo $i === 0 ? 'active' : ''; ?>">
+                                    <div class="position-relative">
+                                        <img src="<?php echo $base_url . htmlspecialchars($photo); ?>"
+                                             class="d-block w-100" style="max-height: 500px; object-fit: cover;"
+                                             alt="<?php echo htmlspecialchars($article['titre']); ?>">
+                                        <?php if ($i === 0): ?>
+                                            <span class="badge badge-<?php echo $article['gamme']; ?> badge-gamme" style="position:absolute;top:16px;left:16px;font-size:0.85rem;padding:0.5em 1em;">
+                                                <?php echo htmlspecialchars($article['gamme']); ?>
+                                            </span>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#articlePhotosCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#articlePhotosCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
                     </div>
-                </div>
+                    <!-- Thumbnails -->
+                    <div class="d-flex gap-2 mt-2">
+                        <?php foreach ($all_photos as $i => $photo): ?>
+                            <img src="<?php echo $base_url . htmlspecialchars($photo); ?>"
+                                 class="rounded" style="width:60px;height:60px;object-fit:cover;cursor:pointer;border:2px solid <?php echo $i === 0 ? 'var(--omnes-primary)' : '#dee2e6'; ?>;"
+                                 onclick="document.querySelector('#articlePhotosCarousel').querySelector('[data-bs-slide-to=\'<?php echo $i; ?>\']').click()"
+                                 alt="Photo <?php echo $i + 1; ?>">
+                        <?php endforeach; ?>
+                    </div>
+                <?php else: ?>
+                    <div class="card overflow-hidden" style="border-radius: 16px;">
+                        <div class="position-relative">
+                            <img src="<?php echo $base_url . htmlspecialchars($article['image_url'] ?? 'images/articles/placeholder.png'); ?>"
+                                 class="img-fluid w-100" style="max-height: 500px; object-fit: cover;"
+                                 alt="<?php echo htmlspecialchars($article['titre']); ?>">
+                            <span class="badge badge-<?php echo $article['gamme']; ?> badge-gamme" style="position:absolute;top:16px;left:16px;font-size:0.85rem;padding:0.5em 1em;">
+                                <?php echo htmlspecialchars($article['gamme']); ?>
+                            </span>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!empty($article['video_url'])): ?>
+                    <div class="mt-3">
+                        <?php
+                        $video = $article['video_url'];
+                        // Convertir URL YouTube en embed
+                        if (preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/', $video, $yt_match)):
+                        ?>
+                            <div class="ratio ratio-16x9" style="border-radius: 12px; overflow: hidden;">
+                                <iframe src="https://www.youtube.com/embed/<?php echo htmlspecialchars($yt_match[1]); ?>" allowfullscreen></iframe>
+                            </div>
+                        <?php else: ?>
+                            <video controls class="w-100 rounded" style="max-height:300px;">
+                                <source src="<?php echo htmlspecialchars($video); ?>">
+                            </video>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
             </div>
 
             <!-- Détails -->
@@ -122,8 +196,23 @@ include $base_url . 'includes/navbar.php';
 
                 <!-- Description -->
                 <div class="mb-4">
-                    <h6 class="fw-bold text-muted text-uppercase small">Description</h6>
-                    <p class="lh-lg"><?php echo nl2br(htmlspecialchars($article['description'])); ?></p>
+                    <?php if (!empty($article['description_qualite'])): ?>
+                        <h6 class="fw-bold text-muted text-uppercase small">Qualités</h6>
+                        <p class="lh-lg"><?php echo nl2br(htmlspecialchars($article['description_qualite'])); ?></p>
+                    <?php endif; ?>
+                    <?php if (!empty($article['description_defaut'])): ?>
+                        <h6 class="fw-bold text-muted text-uppercase small mt-3">Défauts</h6>
+                        <p class="lh-lg text-muted"><?php echo nl2br(htmlspecialchars($article['description_defaut'])); ?></p>
+                    <?php endif; ?>
+                    <?php if (empty($article['description_qualite']) && !empty($article['description'])): ?>
+                        <h6 class="fw-bold text-muted text-uppercase small">Description</h6>
+                        <p class="lh-lg"><?php echo nl2br(htmlspecialchars($article['description'])); ?></p>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Identifiant article -->
+                <div class="mb-3">
+                    <small class="text-muted">N° d'identification : <strong>#<?php echo $article['id']; ?></strong></small>
                 </div>
 
                 <!-- Seller info -->
