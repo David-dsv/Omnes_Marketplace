@@ -19,14 +19,19 @@ if ($action !== 'process') {
 $prenom = trim($_POST['prenom'] ?? '');
 $nom = trim($_POST['nom'] ?? '');
 $adresse = trim($_POST['adresse'] ?? '');
+$adresse2 = trim($_POST['adresse2'] ?? '');
 $code_postal = trim($_POST['code_postal'] ?? '');
 $ville = trim($_POST['ville'] ?? '');
+$pays = trim($_POST['pays'] ?? 'France');
+$telephone = trim($_POST['telephone'] ?? '');
+$type_carte = trim($_POST['type_carte'] ?? '');
+$nom_carte = trim($_POST['nom_carte'] ?? '');
 $numero_carte = trim($_POST['numero_carte'] ?? '');
 $expiration = trim($_POST['expiration'] ?? '');
 $cvv = trim($_POST['cvv'] ?? '');
 
-if (!$prenom || !$nom || !$adresse || !$code_postal || !$ville || !$numero_carte || !$expiration || !$cvv) {
-    header('Location: ../pages/paiement.php?error=' . urlencode('Veuillez remplir tous les champs.'));
+if (!$prenom || !$nom || !$adresse || !$code_postal || !$ville || !$pays || !$telephone || !$type_carte || !$nom_carte || !$numero_carte || !$expiration || !$cvv) {
+    header('Location: ../pages/paiement.php?error=' . urlencode('Veuillez remplir tous les champs obligatoires.'));
     exit;
 }
 
@@ -38,8 +43,8 @@ if (!preg_match('/^\d{16}$/', $numero_carte)) {
     header('Location: ../pages/paiement.php?error=' . urlencode('Numéro de carte invalide (16 chiffres requis).'));
     exit;
 }
-if (!preg_match('/^\d{3}$/', $cvv)) {
-    header('Location: ../pages/paiement.php?error=' . urlencode('CVV invalide (3 chiffres requis).'));
+if (!preg_match('/^\d{3,4}$/', $cvv)) {
+    header('Location: ../pages/paiement.php?error=' . urlencode('CVV invalide (3 ou 4 chiffres requis).'));
     exit;
 }
 if (!preg_match('/^(0[1-9]|1[0-2])\/\d{2}$/', $expiration)) {
@@ -162,7 +167,7 @@ try {
 
     $pdo->beginTransaction();
 
-    $titulaire = trim($prenom . ' ' . $nom);
+    $titulaire = $nom_carte;
     $stmt = $pdo->prepare("SELECT id
                            FROM cartes_bancaires
                            WHERE numero_carte = :num AND expiration = :exp AND titulaire = :titulaire
@@ -185,7 +190,7 @@ try {
         ]);
     }
 
-    $adresse_complete = "$adresse, $code_postal $ville";
+    $adresse_complete = $adresse . ($adresse2 ? ", $adresse2" : '') . ", $code_postal $ville, $pays";
     $stmt = $pdo->prepare("INSERT INTO commandes (acheteur_id, total, adresse_livraison, statut)
                            VALUES (:uid, :total, :adresse, 'confirmee')");
     $stmt->execute([

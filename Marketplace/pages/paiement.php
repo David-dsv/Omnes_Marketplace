@@ -129,85 +129,68 @@ include $base_url . 'includes/navbar.php';
                     <!-- Adresse de livraison -->
                     <div class="card p-4 mb-4 shadow-sm" style="border-radius: 16px;">
                         <h5 class="fw-bold mb-3"><i class="bi bi-truck me-2 text-primary"></i>Adresse de livraison</h5>
-                        <?php if ($has_saved_address): ?>
-                            <p class="text-muted small mb-3">
-                                Adresse enregistrée détectée sur ton compte.
-                            </p>
-                        <?php else: ?>
-                            <p class="text-muted small mb-3">
-                                Aucune adresse enregistrée sur ton compte. Merci de renseigner une adresse de livraison.
-                            </p>
-                        <?php endif; ?>
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label">Prénom</label>
+                                <label class="form-label">Prénom <span class="text-danger">*</span></label>
                                 <input type="text" name="prenom" class="form-control" value="<?php echo htmlspecialchars($user_prenom); ?>" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Nom</label>
+                                <label class="form-label">Nom <span class="text-danger">*</span></label>
                                 <input type="text" name="nom" class="form-control" value="<?php echo htmlspecialchars($user_nom); ?>" required>
                             </div>
-                        </div>
-
-                        <?php if ($has_saved_address): ?>
-                        <div class="row g-3 mt-1">
                             <div class="col-12">
-                                <label class="form-label">Adresse enregistrée</label>
-                                <input type="text" class="form-control bg-light" value="<?php echo htmlspecialchars($adresse_ligne); ?>" readonly>
+                                <label class="form-label">Adresse Ligne 1 <span class="text-danger">*</span></label>
+                                <input type="text" name="adresse" class="form-control" value="<?php echo htmlspecialchars($adresse_ligne); ?>" placeholder="Numéro et rue" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Adresse Ligne 2</label>
+                                <input type="text" name="adresse2" class="form-control" placeholder="Appartement, bâtiment, étage...">
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Code postal</label>
-                                <input type="text" class="form-control bg-light" value="<?php echo htmlspecialchars($code_postal); ?>" readonly>
-                            </div>
-                            <div class="col-md-8">
-                                <label class="form-label">Ville</label>
-                                <input type="text" class="form-control bg-light" value="<?php echo htmlspecialchars($ville); ?>" readonly>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-check mt-1">
-                                    <input class="form-check-input" type="checkbox" id="use-custom-address" <?php echo $custom_address_default ? 'checked' : ''; ?>>
-                                    <label class="form-check-label" for="use-custom-address">
-                                        Définir une autre adresse de livraison
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <?php endif; ?>
-
-                        <div
-                            id="custom-delivery-address-fields"
-                            class="row g-3 mt-2 <?php echo $custom_address_default ? '' : 'd-none'; ?>"
-                        >
-                            <div class="col-12">
-                                <label class="form-label"><?php echo $has_saved_address ? 'Autre adresse' : 'Adresse'; ?></label>
-                                <input type="text" id="custom-delivery-address" class="form-control" placeholder="Numéro et rue" <?php echo !$has_saved_address ? 'required' : ''; ?>>
+                                <label class="form-label">Code postal <span class="text-danger">*</span></label>
+                                <input type="text" name="code_postal" class="form-control" value="<?php echo htmlspecialchars($code_postal); ?>" placeholder="75015" pattern="[0-9]{5}" maxlength="5" required>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label"><?php echo $has_saved_address ? 'Autre code postal' : 'Code postal'; ?></label>
-                                <input type="text" id="custom-delivery-postal-code" class="form-control" pattern="[0-9]{5}" placeholder="75015" <?php echo !$has_saved_address ? 'required' : ''; ?>>
+                                <label class="form-label">Ville <span class="text-danger">*</span></label>
+                                <input type="text" name="ville" class="form-control" value="<?php echo htmlspecialchars($ville); ?>" placeholder="Paris" required>
                             </div>
-                            <div class="col-md-8">
-                                <label class="form-label"><?php echo $has_saved_address ? 'Autre ville' : 'Ville'; ?></label>
-                                <input type="text" id="custom-delivery-city" class="form-control" placeholder="Paris" <?php echo !$has_saved_address ? 'required' : ''; ?>>
+                            <div class="col-md-4">
+                                <label class="form-label">Pays <span class="text-danger">*</span></label>
+                                <select name="pays" class="form-select" required>
+                                    <option value="France" selected>France</option>
+                                    <option value="Belgique">Belgique</option>
+                                    <option value="Suisse">Suisse</option>
+                                    <option value="Luxembourg">Luxembourg</option>
+                                    <option value="Canada">Canada</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Téléphone <span class="text-danger">*</span></label>
+                                <input type="tel" name="telephone" class="form-control" placeholder="06 12 34 56 78" required>
                             </div>
                         </div>
-
-                        <input type="hidden" name="adresse" id="delivery-address-hidden" value="<?php echo htmlspecialchars($adresse_ligne); ?>">
-                        <input type="hidden" name="code_postal" id="delivery-postal-code-hidden" value="<?php echo htmlspecialchars($code_postal); ?>">
-                        <input type="hidden" name="ville" id="delivery-city-hidden" value="<?php echo htmlspecialchars($ville); ?>">
                     </div>
 
                     <!-- Paiement -->
                     <div class="card p-4 mb-4 shadow-sm" style="border-radius: 16px;">
                         <h5 class="fw-bold mb-3"><i class="bi bi-credit-card-2-front me-2 text-primary"></i>Informations de paiement</h5>
-                        <div class="card-type-icons mb-3">
-                            <i class="fa-brands fa-cc-visa text-primary"></i>
-                            <i class="fa-brands fa-cc-mastercard text-danger"></i>
-                            <i class="fa-brands fa-cc-amex text-info"></i>
-                        </div>
                         <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Type de carte <span class="text-danger">*</span></label>
+                                <select name="type_carte" id="card-type-select" class="form-select" required>
+                                    <option value="">-- Choisir --</option>
+                                    <option value="Visa">Visa</option>
+                                    <option value="MasterCard">MasterCard</option>
+                                    <option value="American Express">American Express</option>
+                                    <option value="PayPal">PayPal</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nom sur la carte <span class="text-danger">*</span></label>
+                                <input type="text" name="nom_carte" class="form-control" placeholder="Nom affiché sur la carte" required>
+                            </div>
                             <div class="col-12">
-                                <label class="form-label">Numéro de carte</label>
+                                <label class="form-label">Numéro de carte <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-credit-card"></i></span>
                                     <input
@@ -215,7 +198,7 @@ include $base_url . 'includes/navbar.php';
                                         name="numero_carte"
                                         id="card-number-input"
                                         class="form-control"
-                                        placeholder="1234567890123456"
+                                        placeholder="1234 5678 9012 3456"
                                         inputmode="numeric"
                                         autocomplete="cc-number"
                                         minlength="16"
@@ -224,14 +207,20 @@ include $base_url . 'includes/navbar.php';
                                         title="Le numéro de carte doit contenir exactement 16 chiffres."
                                         required
                                     >
+                                    <span class="input-group-text bg-light card-type-icons">
+                                        <i class="fa-brands fa-cc-visa text-primary"></i>
+                                        <i class="fa-brands fa-cc-mastercard text-danger ms-1"></i>
+                                        <i class="fa-brands fa-cc-amex text-info ms-1"></i>
+                                        <i class="fa-brands fa-cc-paypal text-primary ms-1"></i>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Date d'expiration</label>
+                                <label class="form-label">Date d'expiration <span class="text-danger">*</span></label>
                                 <input type="text" name="expiration" class="form-control" placeholder="MM/AA" maxlength="5" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">CVV</label>
+                                <label class="form-label">CVV <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input
                                         type="text"
@@ -242,12 +231,12 @@ include $base_url . 'includes/navbar.php';
                                         inputmode="numeric"
                                         autocomplete="cc-csc"
                                         minlength="3"
-                                        maxlength="3"
-                                        pattern="[0-9]{3}"
-                                        title="Le CVV doit contenir exactement 3 chiffres."
+                                        maxlength="4"
+                                        pattern="[0-9]{3,4}"
+                                        title="Le CVV doit contenir 3 ou 4 chiffres."
                                         required
                                     >
-                                    <span class="input-group-text bg-light" title="3 chiffres au dos de la carte"><i class="bi bi-question-circle"></i></span>
+                                    <span class="input-group-text bg-light" title="3 chiffres au dos (4 pour American Express)"><i class="bi bi-question-circle"></i></span>
                                 </div>
                             </div>
                         </div>
@@ -305,15 +294,6 @@ include $base_url . 'includes/navbar.php';
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    var checkbox = document.getElementById('use-custom-address');
-    var customAddressFields = document.getElementById('custom-delivery-address-fields');
-    var customAddress = document.getElementById('custom-delivery-address');
-    var customPostalCode = document.getElementById('custom-delivery-postal-code');
-    var customCity = document.getElementById('custom-delivery-city');
-    var hiddenAddress = document.getElementById('delivery-address-hidden');
-    var hiddenPostalCode = document.getElementById('delivery-postal-code-hidden');
-    var hiddenCity = document.getElementById('delivery-city-hidden');
-    var form = document.getElementById('payment-form');
     var cardNumberInput = document.getElementById('card-number-input');
     var cardCvvInput = document.getElementById('card-cvv-input');
 
@@ -325,61 +305,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     forceDigits(cardNumberInput, 16);
-    forceDigits(cardCvvInput, 3);
-
-    if (!customAddress || !customPostalCode || !customCity || !hiddenAddress || !hiddenPostalCode || !hiddenCity || !form) {
-        return;
-    }
-
-    var savedAddress = <?php echo json_encode($adresse_ligne); ?>;
-    var savedPostalCode = <?php echo json_encode($code_postal); ?>;
-    var savedCity = <?php echo json_encode($ville); ?>;
-    var hasSavedAddress = <?php echo $has_saved_address ? 'true' : 'false'; ?>;
-
-    function useCustomAddressMode() {
-        return !hasSavedAddress || (checkbox && checkbox.checked);
-    }
-
-    function syncCustomAddressUI(clearFields) {
-        if (!customAddressFields) return;
-
-        if (useCustomAddressMode()) {
-            customAddressFields.classList.remove('d-none');
-            customAddress.required = true;
-            customPostalCode.required = true;
-            customCity.required = true;
-            if (clearFields) {
-                customAddress.value = '';
-                customPostalCode.value = '';
-                customCity.value = '';
-            }
-        } else {
-            customAddressFields.classList.add('d-none');
-            customAddress.required = false;
-            customPostalCode.required = false;
-            customCity.required = false;
-        }
-    }
-
-    if (checkbox) {
-        checkbox.addEventListener('change', function () {
-            syncCustomAddressUI(true);
-        });
-    }
-
-    form.addEventListener('submit', function () {
-        if (useCustomAddressMode()) {
-            hiddenAddress.value = customAddress.value.trim();
-            hiddenPostalCode.value = customPostalCode.value.trim();
-            hiddenCity.value = customCity.value.trim();
-        } else {
-            hiddenAddress.value = savedAddress || '';
-            hiddenPostalCode.value = savedPostalCode || '';
-            hiddenCity.value = savedCity || '';
-        }
-    });
-
-    syncCustomAddressUI(false);
+    forceDigits(cardCvvInput, 4);
 });
 </script>
 
