@@ -54,30 +54,27 @@ include $base_url . 'includes/navbar.php';
 <main class="py-4">
     <div class="container">
         <!-- Profil Vendeur - Mur du vendeur -->
-        <div class="vendor-wall mb-5 animate-on-scroll" style="border-radius: 12px; overflow: hidden; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-            <!-- Arrière-plan -->
-            <div class="vendor-background" style="height: 180px; overflow: hidden; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div class="vendor-wall mb-5 animate-on-scroll">
+            <div class="vendor-background">
                 <?php if ($vendor_data['background_url']): ?>
-                    <img src="<?php echo htmlspecialchars($vendor_data['background_url']); ?>" alt="Background" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img src="<?php echo htmlspecialchars($vendor_data['background_url']); ?>" alt="Background">
                 <?php endif; ?>
             </div>
-
-            <!-- Profil info - Entièrement sur fond blanc -->
-            <div style="padding: 1rem 2rem 2rem; background: white; position: relative; margin-top: -50px;">
+            <div class="vendor-info">
                 <div class="row align-items-center">
                     <div class="col-auto">
-                        <div style="border: 5px solid white; border-radius: 50%; overflow: hidden; width: 100px; height: 100px; background-color: #e9ecef; box-shadow: 0 4px 12px rgba(0,0,0,0.15); flex-shrink: 0;">
+                        <div class="vendor-avatar">
                             <?php if ($vendor_data['photo_url']): ?>
-                                <img src="<?php echo htmlspecialchars($vendor_data['photo_url']); ?>" alt="Photo profil" style="width: 100%; height: 100%; object-fit: cover;">
+                                <img src="<?php echo htmlspecialchars($vendor_data['photo_url']); ?>" alt="Photo profil">
                             <?php else: ?>
-                                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: #e9ecef;">
-                                    <i class="bi bi-person" style="font-size: 2.5rem; color: #999;"></i>
+                                <div class="vendor-avatar-placeholder">
+                                    <i class="bi bi-person"></i>
                                 </div>
                             <?php endif; ?>
                         </div>
                     </div>
                     <div class="col ms-3">
-                        <h2 class="fw-bold mb-0" style="color: #333;">
+                        <h2 class="fw-bold mb-0">
                             <?php echo htmlspecialchars($vendor_data['prenom'] . ' ' . $vendor_data['nom']); ?>
                         </h2>
                         <p class="text-muted mb-3"><i class="bi bi-shop me-1"></i>Vendeur</p>
