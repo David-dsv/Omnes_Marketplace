@@ -1,13 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <?php
-    // Initialiser la base de données (colonnes de photos vendeur)
-    if (!isset($db_initialized)) {
-        require_once __DIR__ . '/init_db.php';
-        $db_initialized = true;
-    }
-    ?>
+    <?php ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Omnes MarketPlace - La marketplace étudiante de la communauté Omnes Education. Achetez et vendez entre étudiants.">

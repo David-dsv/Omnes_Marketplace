@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/helpers.php';
 
 header('Content-Type: application/json');
 
@@ -210,17 +211,8 @@ switch ($action) {
                         ':aid_check' => $article_id,
                     ]);
 
-                    $notif_vendeur = $pdo->prepare('INSERT INTO notifications (utilisateur_id, message) VALUES (:uid, :msg)');
-                    $notif_vendeur->execute([
-                        ':uid' => (int)$item['vendeur_id'],
-                        ':msg' => 'L\'acheteur a annulé l\'accord pour "' . $item['titre'] . '". L\'article a été remis en vente.',
-                    ]);
-
-                    $notif_acheteur = $pdo->prepare('INSERT INTO notifications (utilisateur_id, message) VALUES (:uid, :msg)');
-                    $notif_acheteur->execute([
-                        ':uid' => $uid,
-                        ':msg' => 'Vous avez retiré "' . $item['titre'] . '" de votre panier. L\'article est remis en vente.',
-                    ]);
+                    insert_notification($pdo, (int)$item['vendeur_id'], 'L\'acheteur a annulé l\'accord pour "' . $item['titre'] . '". L\'article a été remis en vente.');
+                    insert_notification($pdo, $uid, 'Vous avez retiré "' . $item['titre'] . '" de votre panier. L\'article est remis en vente.');
                 }
 
                 $pdo->commit();

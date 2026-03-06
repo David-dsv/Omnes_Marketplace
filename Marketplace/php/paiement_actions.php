@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/helpers.php';
 require_once __DIR__ . '/mail_service.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -233,11 +234,7 @@ try {
     $stmt = $pdo->prepare('DELETE FROM panier WHERE utilisateur_id = :uid');
     $stmt->execute([':uid' => $uid]);
 
-    $stmt = $pdo->prepare('INSERT INTO notifications (utilisateur_id, message) VALUES (:uid, :msg)');
-    $stmt->execute([
-        ':uid' => $uid,
-        ':msg' => "Votre commande #$commande_id a été confirmée. Montant : " . number_format($total, 2, ',', ' ') . ' €',
-    ]);
+    insert_notification($pdo, $uid, "Votre commande #$commande_id a été confirmée. Montant : " . number_format($total, 2, ',', ' ') . ' €');
 
     if ($total > 100) {
         $reduction = $total > 200 ? 20 : 10;

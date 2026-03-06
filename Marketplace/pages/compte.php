@@ -3,13 +3,14 @@ session_start();
 $base_url = '../';
 $page_title = 'Mon Compte';
 require_once $base_url . 'config/database.php';
-include $base_url . 'includes/header.php';
-include $base_url . 'includes/navbar.php';
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: connexion.php');
     exit;
 }
+
+include $base_url . 'includes/header.php';
+include $base_url . 'includes/navbar.php';
 
 try {
     $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE id = :id");

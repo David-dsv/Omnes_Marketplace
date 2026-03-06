@@ -364,24 +364,15 @@ include $base_url . 'includes/navbar.php';
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Add event listeners for resolve auction buttons
-    document.querySelectorAll('.btn-resolve-auction').forEach(button => {
+    document.querySelectorAll('.btn-resolve-auction').forEach(function(button) {
         button.addEventListener('click', function() {
-            const articleId = this.getAttribute('data-article-id');
-            resolveAuction(articleId);
+            var articleId = this.getAttribute('data-article-id');
+            if (window.resolveAuction) {
+                window.resolveAuction(articleId);
+            }
         });
     });
 });
-
-function resolveAuction(articleId) {
-    // This function will be defined in script.js
-    // It handles AJAX POST to enchere_actions.php
-    if (typeof window.resolveAuction === 'function') {
-        window.resolveAuction(articleId);
-    } else {
-        alert('Fonction de résolution d\'enchère non disponible.');
-    }
-}
 </script>
 
 <?php include $base_url . 'includes/footer.php'; ?>

@@ -292,21 +292,4 @@ include $base_url . 'includes/navbar.php';
     </div>
 </main>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    var cardNumberInput = document.getElementById('card-number-input');
-    var cardCvvInput = document.getElementById('card-cvv-input');
-
-    function forceDigits(input, maxLength) {
-        if (!input) return;
-        input.addEventListener('input', function () {
-            input.value = input.value.replace(/\D/g, '').slice(0, maxLength);
-        });
-    }
-
-    forceDigits(cardNumberInput, 16);
-    forceDigits(cardCvvInput, 4);
-});
-</script>
-
 <?php include $base_url . 'includes/footer.php'; ?>

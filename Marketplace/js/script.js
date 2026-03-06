@@ -40,27 +40,14 @@ $(document).ready(function () {
     };
 
     // ========================
-    // Navbar scroll effect
+    // Navbar scroll effect + Back to Top
     // ========================
     var $navbar = $('#main-navbar');
-    $(window).on('scroll', function () {
-        if ($(this).scrollTop() > 50) {
-            $navbar.addClass('scrolled');
-        } else {
-            $navbar.removeClass('scrolled');
-        }
-    });
-
-    // ========================
-    // Back to Top button
-    // ========================
     var $backToTop = $('#backToTop');
     $(window).on('scroll', function () {
-        if ($(this).scrollTop() > 400) {
-            $backToTop.addClass('visible');
-        } else {
-            $backToTop.removeClass('visible');
-        }
+        var scrollTop = $(this).scrollTop();
+        $navbar.toggleClass('scrolled', scrollTop > 50);
+        $backToTop.toggleClass('visible', scrollTop > 400);
     });
     $backToTop.on('click', function () {
         $('html, body').animate({ scrollTop: 0 }, 600);
@@ -786,7 +773,9 @@ $(document).ready(function () {
     // ========================
     // Initialisation
     // ========================
-    updateCartCount();
+    if ($('#cart-count').length) {
+        updateCartCount();
+    }
 
     // Trigger scroll animations for elements already visible on page load
     setTimeout(function() {

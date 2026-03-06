@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/helpers.php';
 
 $action = $_POST['action'] ?? '';
 
@@ -40,9 +41,11 @@ switch ($action) {
             if (!is_dir($upload_dir)) {
                 mkdir($upload_dir, 0755, true);
             }
-            $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+            $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
             $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-            if (in_array(strtolower($ext), $allowed)) {
+            $allowed_mimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            $mime = mime_content_type($_FILES['image']['tmp_name']);
+            if (in_array($ext, $allowed) && in_array($mime, $allowed_mimes) && $_FILES['image']['size'] <= 5 * 1024 * 1024) {
                 $filename = uniqid('article_') . '.' . $ext;
                 if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_dir . $filename)) {
                     $image_url = 'images/articles/' . $filename;
@@ -292,9 +295,11 @@ switch ($action) {
 
                 $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
                 $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-                if (!in_array($ext, $allowed, true)) {
+                $allowed_mimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                $mime = mime_content_type($_FILES['image']['tmp_name']);
+                if (!in_array($ext, $allowed, true) || !in_array($mime, $allowed_mimes, true) || $_FILES['image']['size'] > 5 * 1024 * 1024) {
                     $pdo->rollBack();
-                    header('Location: ../pages/vendeur/editer_article.php?id=' . $article_id . '&error=' . urlencode('Format image non supporté.'));
+                    header('Location: ../pages/vendeur/editer_article.php?id=' . $article_id . '&error=' . urlencode('Format image non supporté ou fichier trop volumineux (max 5 Mo).'));
                     exit;
                 }
 

@@ -1,29 +1,17 @@
 <?php
 session_start();
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/helpers.php';
 
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Non connecté.']);
-    exit;
+    json_error('Non connecté.');
 }
 
 $action = $_POST['action'] ?? '';
 $uid = (int)$_SESSION['user_id'];
 $user_role = $_SESSION['user_role'] ?? '';
-
-function json_error(string $message): void
-{
-    echo json_encode(['success' => false, 'message' => $message]);
-    exit;
-}
-
-function insert_notification(PDO $pdo, int $utilisateur_id, string $message): void
-{
-    $stmt = $pdo->prepare('INSERT INTO notifications (utilisateur_id, message) VALUES (:uid, :msg)');
-    $stmt->execute([':uid' => $utilisateur_id, ':msg' => $message]);
-}
 
 function get_last_message(PDO $pdo, int $negociation_id): ?array
 {

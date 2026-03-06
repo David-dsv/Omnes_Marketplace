@@ -1,42 +1,30 @@
 <?php
 session_start();
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/helpers.php';
 
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Non connecté.']);
-    exit;
+    json_error('Non connecté.');
 }
 
 $action = $_POST['action'] ?? '';
 $uid = (int)$_SESSION['user_id'];
 $user_role = $_SESSION['user_role'] ?? '';
 
-function json_error_auction(string $message): void
-{
-    echo json_encode(['success' => false, 'message' => $message]);
-    exit;
-}
-
-function insert_auction_notification(PDO $pdo, int $utilisateur_id, string $message): void
-{
-    $stmt = $pdo->prepare('INSERT INTO notifications (utilisateur_id, message) VALUES (:uid, :msg)');
-    $stmt->execute([':uid' => $utilisateur_id, ':msg' => $message]);
-}
-
 try {
     switch ($action) {
         case 'place_bid':
             if ($user_role !== 'acheteur') {
-                json_error_auction('Accès réservé aux acheteurs.');
+                json_error('Accès réservé aux acheteurs.');
             }
 
             $article_id = (int)($_POST['article_id'] ?? 0);
             $montant_max = (float)($_POST['montant_max'] ?? 0);
 
             if ($article_id <= 0 || $montant_max <= 0) {
-                json_error_auction('Données invalides.');
+                json_error('Données invalides.');
             }
 
             $pdo->beginTransaction();
@@ -126,12 +114,12 @@ try {
 
         case 'resolve_auction':
             if ($user_role !== 'administrateur') {
-                json_error_auction('Accès refusé.');
+                json_error('Accès refusé.');
             }
 
             $article_id = (int)($_POST['article_id'] ?? 0);
             if ($article_id <= 0) {
-                json_error_auction('Article invalide.');
+                json_error('Article invalide.');
             }
 
             $pdo->beginTransaction();
@@ -243,19 +231,19 @@ try {
             }
 
             $prix_str = number_format($winning_price, 2, ',', ' ');
-            insert_auction_notification(
+            insert_notification(
                 $pdo,
                 (int)$winner['acheteur_id'],
                 'Vous avez remporté l\'enchère pour "' . $article['titre'] . '" au prix de ' . $prix_str . ' €. L\'article a été ajouté à votre panier.'
             );
-            insert_auction_notification(
+            insert_notification(
                 $pdo,
                 (int)$article['vendeur_id'],
                 'L\'enchère pour votre article "' . $article['titre'] . '" est terminée. Vendu à ' . $prix_str . ' €.'
             );
 
             for ($i = 1, $len = count($bids); $i < $len; $i++) {
-                insert_auction_notification(
+                insert_notification(
                     $pdo,
                     (int)$bids[$i]['acheteur_id'],
                     'L\'enchère pour "' . $article['titre'] . '" est terminée. Vous n\'avez malheureusement pas remporté cet article.'
@@ -274,11 +262,11 @@ try {
             break;
 
         default:
-            json_error_auction('Action inconnue.');
+            json_error('Action inconnue.');
     }
 } catch (Throwable $e) {
     if ($pdo->inTransaction()) {
         $pdo->rollBack();
     }
-    json_error_auction($e->getMessage() ?: 'Erreur serveur.');
+    json_error($e->getMessage() ?: 'Erreur serveur.');
 }
