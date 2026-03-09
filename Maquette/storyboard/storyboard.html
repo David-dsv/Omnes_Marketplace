@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Storyboard - Omnes MarketPlace</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: white;
+            padding: 40px;
+            font-size: 12px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .subtitle {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #666;
+        }
+        .storyboard {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+        }
+        .row {
+            display: flex;
+            align-items: flex-start;
+            gap: 30px;
+        }
+        .page-box {
+            border: 2px solid black;
+            background: white;
+            min-width: 180px;
+        }
+        .page-title {
+            background: #ddd;
+            padding: 5px 10px;
+            font-weight: bold;
+            border-bottom: 1px solid black;
+            font-size: 11px;
+        }
+        .page-content {
+            padding: 10px;
+            min-height: 100px;
+        }
+        .line {
+            height: 8px;
+            background: #ccc;
+            margin-bottom: 5px;
+            width: 80%;
+        }
+        .line.short { width: 50%; }
+        .line.long { width: 95%; }
+        .box {
+            border: 1px solid #999;
+            height: 40px;
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #666;
+        }
+        .box.tall { height: 60px; }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 5px;
+        }
+        .grid .item {
+            border: 1px solid #999;
+            height: 35px;
+        }
+        .sidebar-layout {
+            display: flex;
+            gap: 5px;
+        }
+        .sidebar {
+            width: 40px;
+            border: 1px solid #999;
+            height: 80px;
+        }
+        .main {
+            flex: 1;
+            border: 1px solid #999;
+            height: 80px;
+        }
+        .annotation {
+            max-width: 280px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .arrow {
+            font-size: 20px;
+            color: black;
+            align-self: center;
+        }
+        .arrow-down {
+            text-align: center;
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 14px;
+            border-bottom: 1px solid black;
+            padding-bottom: 5px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 3px;
+            margin-bottom: 8px;
+        }
+        .nav-link {
+            border: 1px solid black;
+            padding: 2px 5px;
+            font-size: 9px;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 30px 0;
+        }
+        @media print {
+            body { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<h1>STORYBOARD - Omnes MarketPlace</h1>
+<p class="subtitle">Cheminement utilisateur et liens entre les pages</p>
+
+<div class="storyboard">
+
+    <!-- ACCUEIL -->
+    <div class="row">
+        <div class="page-box">
+            <div class="page-title">ACCUEIL (index.php)</div>
+            <div class="page-content">
+                <div class="nav-links">
+                    <span class="nav-link">Accueil</span>
+                    <span class="nav-link">Parcourir</span>
+                    <span class="nav-link">Notifs</span>
+                    <span class="nav-link">Panier</span>
+                    <span class="nav-link">Compte</span>
+                </div>
+                <div class="box tall">Hero + Recherche</div>
+                <div class="grid">
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                </div>
+                <div class="line short"></div>
+                <div class="box">Contact + Map</div>
+            </div>
+        </div>
+        <span class="arrow">→</span>
+        <div class="annotation">
+            <strong>Page principale.</strong> Contient: hero carousel + barre recherche, categories (6 boutons), selection du jour / ventes flash, contact + Google Map. Liens vers toutes les pages via navbar.
+        </div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <!-- TOUT PARCOURIR -->
+    <div class="row">
+        <div class="page-box">
+            <div class="page-title">TOUT PARCOURIR (tout_parcourir.php)</div>
+            <div class="page-content">
+                <div class="nav-links">
+                    <span class="nav-link">Accueil</span>
+                    <span class="nav-link" style="background:#ccc;">Parcourir</span>
+                    <span class="nav-link">Notifs</span>
+                    <span class="nav-link">Panier</span>
+                    <span class="nav-link">Compte</span>
+                </div>
+                <div class="sidebar-layout">
+                    <div class="sidebar" style="font-size:8px;padding:3px;">
+                        Filtres:<br>Type<br>Cat.<br>Gamme<br>Prix
+                    </div>
+                    <div class="main">
+                        <div class="grid" style="padding:5px;">
+                            <div class="item"></div>
+                            <div class="item"></div>
+                            <div class="item"></div>
+                            <div class="item"></div>
+                            <div class="item"></div>
+                            <div class="item"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="arrow">→</span>
+        <div class="annotation">
+            <strong>Catalogue des articles.</strong> Filtres: Type (Achat immediat, Negociation, Enchere), Categorie (Electronique, Vetements, Maison, Livres, Sports, Divers), Gamme (Rare, Haut de gamme, Regulier). Clic sur article → page detail.
+        </div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <!-- ARTICLE -->
+    <div class="row">
+        <div class="page-box">
+            <div class="page-title">ARTICLE (article.php)</div>
+            <div class="page-content">
+                <div class="box tall">Photo article</div>
+                <div class="line long"></div>
+                <div class="line short"></div>
+                <div style="font-size:10px;margin:5px 0;">Prix: XX EUR</div>
+                <div class="box" style="background:#eee;">[Bouton action]</div>
+            </div>
+        </div>
+        <span class="arrow">→</span>
+        <div class="annotation">
+            <strong>Detail d'un article.</strong> Affiche: photos, description (qualite + defauts), prix, vendeur. <strong>3 boutons possibles:</strong> "Ajouter au panier" (achat immediat), "Faire une offre" (negociation), "Encherir" (enchere). Un article ne peut pas etre en enchere ET negociation en meme temps.
+        </div>
+    </div>
+
+    <div class="arrow-down">↓ ↓ ↓</div>
+
+    <!-- 3 PARCOURS -->
+    <div class="row" style="justify-content: space-around;">
+        <!-- Achat immediat -->
+        <div style="text-align:center;">
+            <div class="page-box" style="min-width:130px;">
+                <div class="page-title">PANIER</div>
+                <div class="page-content" style="min-height:50px;">
+                    <div class="line"></div>
+                    <div class="box" style="height:30px;">Commander</div>
+                </div>
+            </div>
+            <div class="arrow-down">↓</div>
+            <div class="page-box" style="min-width:130px;">
+                <div class="page-title">PAIEMENT</div>
+                <div class="page-content" style="min-height:50px;">
+                    <div class="line"></div>
+                    <div class="box" style="height:30px;">Payer</div>
+                </div>
+            </div>
+            <p style="margin-top:10px;font-size:10px;"><em>Achat immediat</em></p>
+        </div>
+
+        <!-- Negociation -->
+        <div style="text-align:center;">
+            <div class="page-box" style="min-width:130px;">
+                <div class="page-title">NEGOCIATION</div>
+                <div class="page-content" style="min-height:50px;">
+                    <div style="font-size:9px;">Round 1/5</div>
+                    <div class="box" style="height:30px;">Mon offre</div>
+                </div>
+            </div>
+            <div class="arrow-down">↓ (max 5x)</div>
+            <div class="page-box" style="min-width:130px;">
+                <div class="page-title">ACCEPTE → PANIER</div>
+                <div class="page-content" style="min-height:50px;font-size:10px;">
+                    Prix negocie
+                </div>
+            </div>
+            <p style="margin-top:10px;font-size:10px;"><em>Negociation</em></p>
+        </div>
+
+        <!-- Enchere -->
+        <div style="text-align:center;">
+            <div class="page-box" style="min-width:130px;">
+                <div class="page-title">ENCHERE</div>
+                <div class="page-content" style="min-height:50px;">
+                    <div style="font-size:9px;">Fin: JJ/MM</div>
+                    <div class="box" style="height:30px;">Max: XX EUR</div>
+                </div>
+            </div>
+            <div class="arrow-down">↓ (auto)</div>
+            <div class="page-box" style="min-width:130px;">
+                <div class="page-title">RESULTAT</div>
+                <div class="page-content" style="min-height:50px;font-size:10px;">
+                    Gagne → Panier<br>Perdu → Notif
+                </div>
+            </div>
+            <p style="margin-top:10px;font-size:10px;"><em>Enchere</em></p>
+        </div>
+    </div>
+
+    <div class="annotation" style="max-width:100%;margin-top:20px;">
+        <strong>3 types d'achat:</strong> (1) Achat immediat: ajout panier → paiement. (2) Negociation: max 5 rounds, si accepte → panier au prix negocie, acheteur engage legalement. (3) Enchere: indiquer max, systeme encherit auto, gagnant paie prix final (pas son max).
+    </div>
+
+    <hr>
+
+    <!-- ESPACE VENDEUR -->
+    <div class="section-title">ESPACE VENDEUR</div>
+    <div class="row">
+        <div class="page-box">
+            <div class="page-title">DASHBOARD VENDEUR</div>
+            <div class="page-content" style="min-height:80px;">
+                <div style="font-size:9px;margin-bottom:5px;">Menu: Dashboard | Mes Articles | Ajouter | Negociations</div>
+                <div class="box" style="height:30px;">Stats</div>
+                <div class="box" style="height:30px;">Liste articles</div>
+            </div>
+        </div>
+        <span class="arrow">→</span>
+        <div class="page-box" style="min-width:140px;">
+            <div class="page-title">AJOUTER ARTICLE</div>
+            <div class="page-content" style="min-height:80px;">
+                <div class="line"></div>
+                <div class="box" style="height:25px;">Photo</div>
+                <div style="font-size:8px;">Type: [ ] Immediat [ ] Nego [ ] Enchere</div>
+            </div>
+        </div>
+        <span class="arrow">→</span>
+        <div class="annotation">
+            <strong>Espace vendeur</strong> (compte cree par admin). Peut: publier articles, gerer negociations, voir stats. Article: ID, nom, photos, description, prix, type vente, categorie, gamme.
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- ESPACE ADMIN -->
+    <div class="section-title">ESPACE ADMINISTRATEUR</div>
+    <div class="row">
+        <div class="page-box">
+            <div class="page-title">DASHBOARD ADMIN</div>
+            <div class="page-content" style="min-height:80px;">
+                <div style="font-size:9px;margin-bottom:5px;">Menu: Dashboard | Vendeurs | Articles | Encheres</div>
+                <div class="box" style="height:30px;">Stats globales</div>
+                <div class="box" style="height:30px;">Gestion vendeurs</div>
+            </div>
+        </div>
+        <span class="arrow">→</span>
+        <div class="annotation">
+            <strong>Admin = proprietaire du site.</strong> Peut: ajouter/supprimer vendeurs, superviser encheres, vendre ses propres articles (super-vendeur). Seul l'admin peut creer des comptes vendeurs.
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- CONNEXION -->
+    <div class="section-title">AUTHENTIFICATION</div>
+    <div class="row">
+        <div class="page-box" style="min-width:130px;">
+            <div class="page-title">CONNEXION</div>
+            <div class="page-content" style="min-height:60px;">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="box" style="height:25px;">Connexion</div>
+            </div>
+        </div>
+        <span class="arrow">↔</span>
+        <div class="page-box" style="min-width:130px;">
+            <div class="page-title">INSCRIPTION</div>
+            <div class="page-content" style="min-height:60px;">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="box" style="height:25px;">Creer compte</div>
+            </div>
+        </div>
+        <span class="arrow">→</span>
+        <div class="annotation">
+            <strong>Connexion:</strong> Email + mot de passe. Redirection selon role. <strong>Inscription:</strong> Uniquement acheteurs. Clause obligatoire: engagement legal si offre acceptee.
+        </div>
+    </div>
+
+</div>
+
+<div style="margin-top:50px; text-align:center; color:#666; font-size:11px;">
+    Omnes MarketPlace - Projet Web APP 2026 - ECE Paris
+</div>
+
+</body>
+</html>

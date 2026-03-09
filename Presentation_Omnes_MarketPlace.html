@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentation - Omnes MarketPlace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0D0B2B;
+            --navy-light: #1F1B4E;
+            --purple: #3D1A8A;
+            --purple-brand: #6B3FBE;
+            --violet: #8B44FF;
+            --violet-light: #A66FFF;
+            --white: #ffffff;
+            --light: #f7f8fc;
+            --gray: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #1a1a2e;
+            color: #333;
+        }
+
+        /* Slide container */
+        .slides-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .slide {
+            width: 100%;
+            min-height: 675px;
+            background: var(--white);
+            border-radius: 12px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            page-break-after: always;
+        }
+
+        /* ===== SLIDE 1 : PAGE DE GARDE ===== */
+        .slide-cover {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 40%, var(--purple) 70%, var(--violet) 100%);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 80px;
+            min-height: 675px;
+        }
+        .slide-cover .badge-ece {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--violet-light);
+            margin-bottom: 20px;
+            border: 1px solid rgba(139,68,255,0.4);
+            padding: 8px 24px;
+            border-radius: 30px;
+        }
+        .slide-cover h1 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 52px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.1;
+        }
+        .slide-cover h1 span {
+            color: var(--violet-light);
+        }
+        .slide-cover .subtitle {
+            font-size: 20px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.75);
+            margin-bottom: 50px;
+            max-width: 700px;
+        }
+        .slide-cover .team-grid {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .slide-cover .team-member {
+            text-align: center;
+        }
+        .slide-cover .team-member .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(139,68,255,0.25);
+            border: 2px solid var(--violet-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--violet-light);
+        }
+        .slide-cover .team-member .name {
+            font-weight: 500;
+            font-size: 15px;
+        }
+        .slide-cover .team-member .role {
+            font-size: 12px;
+            color: var(--gray);
+        }
+        .slide-cover .footer-info {
+            margin-top: 40px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* ===== HEADER COMMUN ===== */
+        .slide-header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--purple) 100%);
+            padding: 28px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .slide-header h2 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--white);
+        }
+        .slide-header .slide-num {
+            font-size: 14px;
+            color: var(--violet-light);
+            font-weight: 500;
+            background: rgba(139,68,255,0.2);
+            padding: 4px 16px;
+            border-radius: 20px;
+        }
+        .slide-body {
+            padding: 40px 50px;
+        }
+
+        /* ===== SOMMAIRE ===== */
+        .sommaire-list {
+            list-style: none;
+            counter-reset: sommaire;
+        }
+        .sommaire-list li {
+            counter-increment: sommaire;
+            padding: 14px 20px;
+            border-bottom: 1px solid #eee;
+            font-size: 17px;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .sommaire-list li::before {
+            content: counter(sommaire, decimal-leading-zero);
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--purple-brand);
+            min-width: 40px;
+        }
+        .sommaire-list li:hover {
+            background: var(--light);
+        }
+
+        /* ===== GRIDS ===== */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+        .grid-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* ===== CARDS ===== */
+        .info-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 24px;
+            border-left: 4px solid var(--purple-brand);
+        }
+        .info-card h4 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        .info-card p, .info-card ul {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.7;
+        }
+        .info-card ul {
+            padding-left: 16px;
+        }
+        .info-card.accent-violet { border-left-color: var(--violet); }
+        .info-card.accent-success { border-left-color: var(--success); }
+        .info-card.accent-warning { border-left-color: var(--warning); }
+        .info-card.accent-danger { border-left-color: var(--danger); }
+        .info-card.accent-navy { border-left-color: var(--navy); }
+
+        /* ===== STAT CARDS ===== */
+        .stat-card {
+            background: linear-gradient(135deg, var(--navy), var(--purple));
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            color: var(--white);
+        }
+        .stat-card .number {
+            font-family: 'Roboto', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--violet-light);
+        }
+        .stat-card .label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+            margin-top: 4px;
+        }
+
+        /* ===== ROLE CARDS ===== */
+        .role-card {
+            border-radius: 12px;
+            padding: 28px;
+            text-align: center;
+        }
+        .role-card .role-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            font-size: 24px;
+        }
+        .role-card h4 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .role-card ul {
+            text-align: left;
+            font-size: 12.5px;
+            line-height: 1.8;
+            color: #555;
+            padding-left: 18px;
+        }
+        .role-admin { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+        .role-admin .role-icon { background: #f59e0b; color: white; }
+        .role-vendeur { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+        .role-vendeur .role-icon { background: #3b82f6; color: white; }
+        .role-acheteur { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+        .role-acheteur .role-icon { background: #10b981; color: white; }
+
+        /* ===== TECH BADGE ===== */
+        .tech-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            margin: 4px;
+        }
+        .tech-badge.html { background: #fff3e0; color: #e65100; border: 1px solid #ffcc02; }
+        .tech-badge.css { background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; }
+        .tech-badge.js { background: #fffde7; color: #f57f17; border: 1px solid #fff176; }
+        .tech-badge.php { background: #ede7f6; color: #4527a0; border: 1px solid #b39ddb; }
+        .tech-badge.mysql { background: #e0f2f1; color: #00695c; border: 1px solid #80cbc4; }
+        .tech-badge.bootstrap { background: #f3e5f5; color: #6a1b9a; border: 1px solid #ce93d8; }
+        .tech-badge.jquery { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+        .tech-badge.git { background: #fce4ec; color: #c62828; border: 1px solid #ef9a9a; }
+
+        /* ===== TABLE ===== */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12.5px;
+        }
+        .styled-table th {
+            background: var(--navy);
+            color: var(--white);
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 500;
+            font-size: 12px;
+        }
+        .styled-table td {
+            padding: 9px 14px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+        .styled-table tr:hover td {
+            background: var(--light);
+        }
+        .styled-table .pk { color: var(--purple-brand); font-weight: 600; }
+        .styled-table .fk { color: var(--violet); font-style: italic; }
+
+        /* ===== FLOW DIAGRAM ===== */
+        .flow-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 10px 0;
+        }
+        .flow-box {
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            text-align: center;
+            min-width: 140px;
+        }
+        .flow-arrow {
+            font-size: 20px;
+            color: var(--purple-brand);
+        }
+        .flow-client { background: #e3f2fd; color: #1565c0; border: 2px solid #90caf9; }
+        .flow-server { background: #e8f5e9; color: #2e7d32; border: 2px solid #a5d6a7; }
+        .flow-db { background: #fce4ec; color: #c62828; border: 2px solid #ef9a9a; }
+        .flow-cdn { background: #e0f7fa; color: #00695c; border: 2px solid #80cbc4; }
+
+        /* ===== SECTION TITLE ===== */
+        .section-title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--violet-light);
+            display: inline-block;
+        }
+        .section-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+            font-weight: 300;
+        }
+
+        /* ===== COMMIT LIST ===== */
+        .commit-list {
+            list-style: none;
+        }
+        .commit-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 7px 0;
+            font-size: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .commit-hash {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            color: var(--purple-brand);
+            background: #f0ecf9;
+            padding: 2px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+        .commit-author {
+            font-size: 11px;
+            color: var(--gray);
+            font-weight: 500;
+            min-width: 80px;
+        }
+
+        /* ===== TREE ===== */
+        .file-tree {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.8;
+            background: #1e1e2e;
+            color: #cdd6f4;
+            padding: 20px 24px;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #89b4fa; font-weight: bold; }
+        .file-tree .file { color: #a6e3a1; }
+        .file-tree .comment { color: #6c7086; }
+
+        /* ===== BILAN ===== */
+        .bilan-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+        .bilan-card h4 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        .bilan-card p {
+            font-size: 13px;
+            line-height: 1.7;
+            color: #555;
+        }
+
+        /* ===== PRINT ===== */
+        @media print {
+            body { background: white; }
+            .slide {
+                box-shadow: none;
+                margin-bottom: 0;
+                page-break-after: always;
+                border: 1px solid #ddd;
+            }
+            .slides-container { padding: 0; }
+        }
+
+        /* ===== NAV CONTROLS ===== */
+        .nav-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(13,11,43,0.9);
+            backdrop-filter: blur(10px);
+            padding: 10px 24px;
+            border-radius: 30px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .nav-bar span {
+            color: var(--violet-light);
+            font-size: 13px;
+            font-weight: 500;
+            min-width: 80px;
+            text-align: center;
+        }
+        .nav-bar button {
+            background: var(--purple-brand);
+            border: none;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .nav-bar button:hover { background: var(--violet); }
+
+        .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        .tag-purple { background: #f0ecf9; color: var(--purple-brand); }
+        .tag-green { background: #d1fae5; color: #059669; }
+        .tag-blue { background: #dbeafe; color: #2563eb; }
+        .tag-orange { background: #ffedd5; color: #c2410c; }
+    </style>
+</head>
+<body>
+
+<div class="slides-container">
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 1 : PAGE DE GARDE -->
+    <!-- ============================================================ -->
+    <div class="slide" id="slide-1">
+        <div class="slide-cover">
+            <div class="badge-ece">ECE Paris - ING3 APP - Projet Web 2026</div>
+            <h1>Omnes <span>MarketPlace</span></h1>
+            <p class="subtitle">Le magasinage en ligne pour la communaute Omnes Education</p>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="avatar">DV</div>
+                    <div class="name">David Vuong</div>
+                    <div class="role">Developpeur Full-Stack</div>
+                </div>
+                <div class="team-member">
+                    <div class="avatar">DH</div>
+                    <div class="name">Dhippo</div>
+                    <div class="role">Developpeur Full-Stack</div>
+                </div>
+                <div class="team-member">
+                    <div class="avatar">CR</div>
+                    <div class="name">Come Regnier</div>
+                    <div class="role">Developpeur Full-Stack</div>
+                </div>
+            </div>
+            <div class="footer-info">Mars 2026 | Projet Programmation Web APP | Equipe Rouge</div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 2 : SOMMAIRE -->
+    <!-- ============================================================ -->
+    <div class="slide" id="slide-2">
+        <div class="slide-header">
+            <h2>Sommaire</h2>
+            <div class="slide-num">02 / 16</div>
+        </div>
+        <div class="slide-body">
+            <ol class="sommaire-list">
+                <li>Presentation du projet</li>
+                <li>Repartition du travail</li>
+                <li>Stack technique</li>
+                <li>Architecture du systeme</li>
+                <li>Conception de la base de donnees</li>
+                <li>Modele relationnel</li>
+                <li>Design du front-end</li>
+                <li>Specifications fonctionnelles</li>
+                <li>Les 3 types de vente</li>
+                <li>Fonctionnalites avancees</li>
+                <li>Structure du projet</li>
+                <li>Journal d'assistance par IA</li>
+                <li>Versioning Git</li>
+                <li>Bilan collectif et individuel</li>
+                <li>References et bibliographie</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 3 : PRESENTATION DU PROJET -->
+    <!-- ============================================================ -->
+    <div class="slide" id="slide-3">
+        <div class="slide-header">
+            <h2>Presentation du projet</h2>
+            <div class="slide-num">03 / 16</div>
+        </div>
+        <div class="slide-body">
+            <p class="section-subtitle">Marketplace etudiante style "Le Bon Coin" pour la communaute Omnes Education</p>
+
+            <div class="grid-2" style="margin-bottom: 30px;">
+                <div>
+                    <div class="section-title">Concept</div>
+                    <p style="font-size: 14px; line-height: 1.8; color: #444;">
+                        <strong>Omnes MarketPlace</strong> est une plateforme d'e-commerce permettant aux etudiants de la communaute Omnes Education d'acheter et de vendre des articles entre eux : electronique, vetements, livres, meubles, sports, etc.
+                    </p>
+                    <br>
+                    <p style="font-size: 14px; line-height: 1.8; color: #444;">
+                        Le site propose <strong>3 modes de vente</strong> differents et s'appuie sur un systeme de <strong>3 roles utilisateurs</strong> avec des permissions distinctes.
+                    </p>
+                </div>
+                <div>
+                    <div class="grid-2" style="gap: 12px;">
+                        <div class="stat-card">
+                            <div class="number">3</div>
+                            <div class="label">Roles utilisateurs</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="number">3</div>
+                            <div class="label">Types de vente</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="number">6</div>
+                            <div class="label">Categories</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="number">3</div>
+                            <div class="label">Gammes d'articles</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-3">
+                <div class="role-card role-admin">
+                    <div class="role-icon">A</div>
+                    <h4>Administrateur</h4>
+                    <ul>
+                        <li>Super-vendeur du site</li>
+                        <li>Cree / supprime les vendeurs</li>
+                        <li>Modere les articles</li>
+                        <li>Resout les encheres</li>
+                    </ul>
+                </div>
+                <div class="role-card role-vendeur">
+                    <div class="role-icon">V</div>
+                    <h4>Vendeur</h4>
+                    <ul>
+                        <li>Publie des articles</li>
+                        <li>Repond aux negociations</li>
+                        <li>Mur de profil personnalise</li>
+                        <li>Tableau de bord et stats</li>
+                    </ul>
+                </div>
+                <div class="role-card role-acheteur">
+                    <div class="role-icon">C</div>
+                    <h4>Acheteur</h4>
+                    <ul>
+                        <li>Inscription libre</li>
+                        <li>Achete, negocie, encherit</li>
+                        <li>Panier et paiement</li>
+                        <li>Avis et alertes de recherche</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 4 : REPARTITION DU TRAVAIL -->
+    <!-- ============================================================ -->
+    <div class="slide" id="slide-4">
+        <div class="slide-header">
+            <h2>Repartition du travail</h2>
+            <div class="slide-num">04 / 16</div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-3">
+                <div class="info-card">
+                    <h4>David Vuong (davidsv)</h4>
+                    <p style="color: var(--purple-brand); font-weight: 600; margin-bottom: 8px;">Front-end & Integration</p>
+                    <ul>
+                        <li>Front-end (HTML/CSS/JS)</li>
+                        <li>Refonte visuelle et design</li>
+                        <li>Systeme de negociation</li>
+                        <li>Systeme d'encheres</li>
+                        <li>Dashboard admin et vendeur</li>
+                        <li>Mur de profil vendeur</li>
+                        <li>Multi-photos et videos</li>
+                        <li>Integration et deploiement</li>
+                    </ul>
+                </div>
+                <div class="info-card accent-violet">
+                    <h4>Dhippo</h4>
+                    <p style="color: var(--violet); font-weight: 600; margin-bottom: 8px;">Back-end & Documentation</p>
+                    <ul>
+                        <li>Architecture du systeme</li>
+                        <li>Modele entite-association</li>
+                        <li>Specifications fonctionnelles</li>
+                        <li>Remplissage base de donnees</li>
+                        <li>Storyboard et wireframes</li>
+                        <li>Documents de conception</li>
+                    </ul>
+                </div>
+                <div class="info-card accent-success">
+                    <h4>Come Regnier</h4>
+                    <p style="color: var(--success); font-weight: 600; margin-bottom: 8px;">BDD & Fonctionnalites</p>
+                    <ul>
+                        <li>Conception du schema SQL</li>
+                        <li>Creation des 13 tables MySQL</li>
+                        <li>Relations et contraintes FK</li>
+                        <li>Fonctionnalite de recherche</li>
+                        <li>Panier et logique d'achat</li>
+                        <li>Tests et validation globale</li>
+                        <li>Debugging et ajout de logs</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <div class="section-title">Statistiques du projet</div>
+                <div class="grid-4">
+                    <div class="stat-card">
+                        <div class="number">28</div>
+                        <div class="label">Commits</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">41</div>
+                        <div class="label">Fichiers PHP</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">~6500</div>
+                        <div class="label">Lignes de code</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">13</div>
+                        <div class="label">Tables SQL</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 5 : STACK TECHNIQUE -->
+    <!-- ============================================================ -->
+    <div class="slide" id="slide-5">
+        <div class="slide-header">
+            <h2>Stack technique</h2>
+            <div class="slide-num">05 / 16</div>
+        </div>
+        <div class="slide-body">
+            <p class="section-subtitle">100% natif, aucun CMS ni framework backend</p>
+
+            <div class="grid-2">
+                <div>
+                    <div class="section-title">Front-end</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px;">
+                        <span class="tech-badge html">HTML5</span>
+                        <span class="tech-badge css">CSS3</span>
+                        <span class="tech-badge bootstrap">Bootstrap 5.3</span>
+                        <span class="tech-badge js">JavaScript</span>
+                        <span class="tech-badge jquery">jQuery 3.7</span>
+                        <span class="tech-badge css">Font Awesome 6.5</span>
+                        <span class="tech-badge bootstrap">Bootstrap Icons</span>
+                        <span class="tech-badge css">Google Fonts (Poppins)</span>
+                    </div>
+
+                    <div class="section-title">Back-end</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px;">
+                        <span class="tech-badge php">PHP 8.x natif</span>
+                        <span class="tech-badge php">PDO (requetes preparees)</span>
+                        <span class="tech-badge php">Sessions PHP</span>
+                        <span class="tech-badge php">bcrypt (hash mdp)</span>
+                    </div>
+
+                    <div class="section-title">Base de donnees</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px;">
+                        <span class="tech-badge mysql">MySQL 8+</span>
+                        <span class="tech-badge mysql">InnoDB</span>
+                        <span class="tech-badge mysql">utf8mb4_unicode_ci</span>
+                    </div>
+
+                    <div class="section-title">Versioning</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                        <span class="tech-badge git">Git</span>
+                        <span class="tech-badge git">GitHub</span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="section-title">Palette de couleurs</div>
+                    <div style="margin-bottom: 24px;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                            <div style="width: 40px; height: 40px; border-radius: 8px; background: #0D0B2B;"></div>
+                            <div><strong>Navy</strong><br><span style="font-size: 12px; color: #888;">#0D0B2B</span></div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                            <div style="width: 40px; height: 40px; border-radius: 8px; background: #3D1A8A;"></div>
+                            <div><strong>Purple Dark</strong><br><span style="font-size: 12px; color: #888;">#3D1A8A</span></div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                            <div style="width: 40px; height: 40px; border-radius: 8px; background: #6B3FBE;"></div>
+                            <div><strong>Purple Brand</strong><br><span style="font-size: 12px; color: #888;">#6B3FBE</span></div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                            <div style="width: 40px; height: 40px; border-radius: 8px; background: #8B44FF;"></div>
+                            <div><strong>Violet Accent</strong><br><span style="font-size: 12px; color: #888;">#8B44FF</span></div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                            <div style="width: 40px; height: 40px; border-radius: 8px; background: #A66FFF;"></div>
+                            <div><strong>Violet Light</strong><br><span style="font-size: 12px; color: #888;">#A66FFF</span></div>
+                        </div>
+                    </div>
+
+                    <div class="section-title">Typographie</div>
+                    <div style="font-size: 14px; line-height: 2;">
+                        <p><strong style="font-family: Roboto, sans-serif;">Roboto 500</strong> - Titres et headings</p>
+                        <p><strong style="font-family: Poppins, sans-serif;">Poppins 300-600</strong> - Corps de texte</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 6 : ARCHITECTURE DU SYSTEME -->
+    <!-- ============================================================ -->
+    <div class="slide" id="slide-6">
+        <div class="slide-header">
+            <h2>Architecture du systeme</h2>
+            <div class="slide-num">06 / 16</div>
+        </div>
+        <div class="slide-body">
+            <p class="section-subtitle">Architecture 3 tiers : Client, Serveur PHP, Base de donnees MySQL</p>
+
+            <!-- Simplified architecture diagram -->
+            <div style="margin-bottom: 30px;">
+                <div class="flow-row">
+                    <div class="flow-box flow-cdn">CDN<br><small>Bootstrap 5.3, jQuery 3.7<br>Font Awesome, Google Fonts</small></div>
+                </div>
+                <div class="flow-row">
+                    <span class="flow-arrow" style="transform: rotate(90deg);">&#x27A1;</span>
+                </div>
+                <div class="flow-row">
+                    <div class="flow-box flow-client" style="min-width: 260px;">
+                        <strong>NAVIGATEUR WEB (Client)</strong><br>
+                        <small>HTML5 / CSS3 / JavaScript / jQuery<br>AJAX requests</small>
+                    </div>
+                </div>
+                <div class="flow-row">
+                    <span class="flow-arrow" style="transform: rotate(90deg);">&#x27A1;</span>
+                    <span style="font-size: 12px; color: #888;">HTTP GET / POST / AJAX</span>
+                </div>
+                <div class="flow-row">
+                    <div class="flow-box flow-server" style="min-width: 500px;">
+                        <strong>SERVEUR PHP 8.x</strong><br><br>
+                        <div style="display: flex; justify-content: space-around; font-size: 11px;">
+                            <div style="background: rgba(0,0,0,0.05); padding: 8px 12px; border-radius: 6px;">
+                                <strong>Pages PHP (24)</strong><br>
+                                Publiques, Admin, Vendeur
+                            </div>
+                            <div style="background: rgba(0,0,0,0.05); padding: 8px 12px; border-radius: 6px;">
+                                <strong>Includes (3)</strong><br>
+                                header, navbar, footer
+                            </div>
+                            <div style="background: rgba(0,0,0,0.05); padding: 8px 12px; border-radius: 6px;">
+                                <strong>Scripts actions (11)</strong><br>
+                                auth, panier, paiement...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flow-row">
+                    <span class="flow-arrow" style="transform: rotate(90deg);">&#x27A1;</span>
+                    <span style="font-size: 12px; color: #888;">PDO / Requetes SQL preparees</span>
+                </div>
+                <div class="flow-row">
+                    <div class="flow-box flow-db" style="min-width: 260px;">
+                        <strong>MySQL 8+</strong><br>
+                        <small>omnes_marketplace | 13 tables | InnoDB | utf8mb4</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="info-card">
+                    <h4>Flux d'authentification</h4>
+                    <p>1. Formulaire login (email + mot de passe)<br>
+                    2. Verification en BDD (password_verify / bcrypt)<br>
+                    3. Creation session PHP ($_SESSION)<br>
+                    4. Redirection selon le role (admin / vendeur / acheteur)</p>
+                </div>
+                <div class="info-card accent-violet">
+                    <h4>Securite implementee</h4>
+                    <p>
+                        Mots de passe hashes (bcrypt)<br>
+                        Requetes preparees (PDO) - anti-injection SQL<br>
+                        Verification de role sur pages protegees<br>
+                        Validation des entrees utilisateur<br>
+                        Regeneration de session a la connexion
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 7 : CONCEPTION BDD -->
+    <!-- ============================================================ -->
+    <div class="slide" id="slide-7">
+        <div class="slide-header">
+            <h2>Conception de la base de donnees</h2>
+            <div class="slide-num">07 / 16</div>
+        </div>
+        <div class="slide-body" style="padding: 24px 36px;">
+            <p class="section-subtitle">Modele entite-association - 13 tables avec cles primaires et etrangeres</p>
+
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Table</th>
+                        <th>Champs principaux</th>
+                        <th>Relations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>utilisateurs</strong></td>
+                        <td><span class="pk">id PK</span>, prenom, nom, email (UNIQUE), mot_de_passe, telephone, adresse, role (ENUM), actif, photo_url, background_url</td>
+                        <td>1:N avec articles, panier, commandes, encheres, negociations, avis, notifications</td>
+                    </tr>
+                    <tr>
+                        <td><strong>articles</strong></td>
+                        <td><span class="pk">id PK</span>, <span class="fk">vendeur_id FK</span>, titre, description, description_qualite, description_defaut, prix, categorie, type_vente, gamme, image_url, video_url, statut</td>
+                        <td>N:1 utilisateurs, 1:N panier, encheres, negociations, avis</td>
+                    </tr>
+                    <tr>
+                        <td><strong>article_images</strong></td>
+                        <td><span class="pk">id PK</span>, <span class="fk">article_id FK</span>, image_url, position</td>
+                        <td>N:1 articles</td>
+                    </tr>
+                    <tr>
+                        <td><strong>panier</strong></td>
+                        <td><span class="pk">id PK</span>, <span class="fk">utilisateur_id FK</span>, <span class="fk">article_id FK</span>, quantite, prix_negocie, <span class="fk">negociation_id FK</span>, <span class="fk">enchere_id FK</span></td>
+                        <td>N:1 utilisateurs, articles, negociations, encheres</td>
+                    </tr>
+                    <tr>
+                        <td><strong>commandes</strong></td>
+                        <td><span class="pk">id PK</span>, <span class="fk">acheteur_id FK</span>, total, adresse_livraison, statut</td>
+                        <td>N:1 utilisateurs, 1:N commande_articles, cartes_reduction</td>
+                    </tr>
+                    <tr>
+                        <td><strong>commande_articles</strong></td>
+                        <td><span class="pk">id PK</span>, <span class="fk">commande_id FK</span>, <span class="fk">article_id FK</span>, prix</td>
+                        <td>N:1 commandes, articles</td>
+                    </tr>
+                    <tr>
+                        <td><strong>negociations</strong></td>
+                        <td><span class="pk">id PK</span>, <span class="fk">article_id FK</span>, <span class="fk">acheteur_id FK</span>, <span class="fk">vendeur_id FK</span>, statut, prix_accorde</td>
+                        <td>N:1 utilisateurs, articles ; 1:N negociation_messages</td>
+                    </tr>
+                    <tr>
+                        <td><strong>negociation_messages</strong></td>
+                        <td><span class="pk">id PK</span>, <span class="fk">negociation_id FK</span>, <span class="fk">auteur_id FK</span>, montant_propose, message, statut</td>
+                        <td>N:1 negociations, utilisateurs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>encheres</strong></td>
+                        <td><span class="pk">id PK</span>, <span class="fk">article_id FK</span>, <span class="fk">acheteur_id FK</span>, montant_max, prix_paye, statut</td>
+                        <td>N:1 articles, utilisateurs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>avis</strong></td>
+                        <td><span class="pk">id PK</span>, <span class="fk">article_id FK</span>, <span class="fk">auteur_id FK</span>, note (1-5), commentaire</td>
+                        <td>N:1 articles, utilisateurs | UNIQUE(article_id, auteur_id)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>notifications</strong></td>
+                        <td><span class="pk">id PK</span>, <span class="fk">utilisateur_id FK</span>, message, lue</td>
+                        <td>N:1 utilisateurs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>alertes_recherche</strong></td>
+                        <td><span class="pk">id PK</span>, <span class="fk">utilisateur_id FK</span>, mot_cle, categorie, prix_max</td>
+                        <td>N:1 utilisateurs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>cartes_bancaires</strong></td>
+                        <td><span class="pk">id PK</span>, numero_carte, expiration, cvv, titulaire</td>
+                        <td>Table de validation (pas de FK)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>cartes_reduction</strong></td>
+                        <td><span class="pk">id PK</span>, <span class="fk">utilisateur_id FK</span>, pourcentage, <span class="fk">commande_id FK</span>, utilisee</td>
+                        <td>N:1 utilisateurs, commandes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 8 : MODELE RELATIONNEL -->
+    <!-- ============================================================ -->
+    <div class="slide" id="slide-8">
+        <div class="slide-header">
+            <h2>Modele relationnel</h2>
+            <div class="slide-num">08 / 16</div>
+        </div>
+        <div class="slide-body">
+            <p class="section-subtitle">Cles primaires <span class="tag tag-purple">soulignees</span>, cles etrangeres en <span class="tag tag-blue" style="font-style: italic;">italique</span></p>
+
+            <div style="font-size: 13px; line-height: 2.2; background: var(--light); padding: 24px 28px; border-radius: 12px; font-family: 'Courier New', monospace;">
+                <p><strong>UTILISATEURS</strong> (<u style="color: var(--purple-brand);">id</u>, prenom, nom, email, mot_de_passe, telephone, adresse, role, actif, photo_url, background_url, date_creation)</p>
+                <p><strong>ARTICLES</strong> (<u style="color: var(--purple-brand);">id</u>, <em style="color: var(--violet);">vendeur_id</em>, titre, description, description_qualite, description_defaut, prix, categorie, type_vente, gamme, image_url, video_url, statut, date_debut_enchere, date_fin_enchere, date_creation)</p>
+                <p><strong>ARTICLE_IMAGES</strong> (<u style="color: var(--purple-brand);">id</u>, <em style="color: var(--violet);">article_id</em>, image_url, position, date_creation)</p>
+                <p><strong>PANIER</strong> (<u style="color: var(--purple-brand);">id</u>, <em style="color: var(--violet);">utilisateur_id</em>, <em style="color: var(--violet);">article_id</em>, quantite, prix_negocie, <em style="color: var(--violet);">negociation_id</em>, <em style="color: var(--violet);">enchere_id</em>, date_ajout)</p>
+                <p><strong>COMMANDES</strong> (<u style="color: var(--purple-brand);">id</u>, <em style="color: var(--violet);">acheteur_id</em>, total, adresse_livraison, statut, date_creation)</p>
+                <p><strong>COMMANDE_ARTICLES</strong> (<u style="color: var(--purple-brand);">id</u>, <em style="color: var(--violet);">commande_id</em>, <em style="color: var(--violet);">article_id</em>, prix)</p>
+                <p><strong>NEGOCIATIONS</strong> (<u style="color: var(--purple-brand);">id</u>, <em style="color: var(--violet);">article_id</em>, <em style="color: var(--violet);">acheteur_id</em>, <em style="color: var(--violet);">vendeur_id</em>, statut, prix_accorde, date_resolution, date_creation)</p>
+                <p><strong>NEGOCIATION_MESSAGES</strong> (<u style="color: var(--purple-brand);">id</u>, <em style="color: var(--violet);">negociation_id</em>, <em style="color: var(--violet);">auteur_id</em>, montant_propose, message, statut, date_creation)</p>
+                <p><strong>ENCHERES</strong> (<u style="color: var(--purple-brand);">id</u>, <em style="color: var(--violet);">article_id</em>, <em style="color: var(--violet);">acheteur_id</em>, montant_max, prix_paye, statut, date_creation)</p>
+                <p><strong>AVIS</strong> (<u style="color: var(--purple-brand);">id</u>, <em style="color: var(--violet);">article_id</em>, <em style="color: var(--violet);">auteur_id</em>, note, commentaire, date_creation)</p>
+                <p><strong>NOTIFICATIONS</strong> (<u style="color: var(--purple-brand);">id</u>, <em style="color: var(--violet);">utilisateur_id</em>, message, lue, date_creation)</p>
+                <p><strong>ALERTES_RECHERCHE</strong> (<u style="color: var(--purple-brand);">id</u>, <em style="color: var(--violet);">utilisateur_id</em>, mot_cle, categorie, prix_max, date_creation)</p>
+                <p><strong>CARTES_BANCAIRES</strong> (<u style="color: var(--purple-brand);">id</u>, numero_carte, expiration, cvv, titulaire)</p>
+                <p><strong>CARTES_REDUCTION</strong> (<u style="color: var(--purple-brand);">id</u>, <em style="color: var(--violet);">utilisateur_id</em>, pourcentage, <em style="color: var(--violet);">commande_id</em>, utilisee, date_creation)</p>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <div class="grid-3">
+                    <div class="info-card">
+                        <h4>Contraintes UNIQUE</h4>
+                        <ul>
+                            <li>PANIER (utilisateur_id, article_id)</li>
+                            <li>ENCHERES (article_id, acheteur_id)</li>
+                            <li>AVIS (article_id, auteur_id)</li>
+                        </ul>
+                    </div>
+                    <div class="info-card accent-violet">
+                        <h4>Types ENUM</h4>
+                        <ul>
+                            <li>role: acheteur, vendeur, admin</li>
+                            <li>type_vente: immediat, nego, encheres</li>
+                            <li>gamme: regulier, haut_de_gamme, rare</li>
+                        </ul>
+                    </div>
+                    <div class="info-card accent-success">
+                        <h4>Cles etrangeres</h4>
+                        <ul>
+                            <li>FK principales: ON DELETE CASCADE</li>
+                            <li>FK panier (nego/enchere): ON DELETE SET NULL</li>
+                            <li>Toutes indexees pour performances</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 9 : DESIGN DU FRONT -->
+    <!-- ============================================================ -->
+    <div class="slide" id="slide-9">
+        <div class="slide-header">
+            <h2>Design du front-end</h2>
+            <div class="slide-num">09 / 16</div>
+        </div>
+        <div class="slide-body">
+            <p class="section-subtitle">Wireframes et storyboard - Navigation entre les pages</p>
+
+            <div class="section-title">Structure de navigation</div>
+            <div style="text-align: center; margin-bottom: 24px;">
+                <div style="display: inline-flex; gap: 4px; background: var(--navy); padding: 10px 20px; border-radius: 10px;">
+                    <span style="color: white; padding: 6px 16px; background: var(--purple-brand); border-radius: 6px; font-size: 13px;">Accueil</span>
+                    <span style="color: white; padding: 6px 16px; border-radius: 6px; font-size: 13px;">Tout Parcourir</span>
+                    <span style="color: white; padding: 6px 16px; border-radius: 6px; font-size: 13px;">Notifications</span>
+                    <span style="color: white; padding: 6px 16px; border-radius: 6px; font-size: 13px;">Panier</span>
+                    <span style="color: white; padding: 6px 16px; border-radius: 6px; font-size: 13px;">Votre Compte</span>
+                </div>
+            </div>
+
+            <div class="section-title">Pages implementees (24 pages PHP)</div>
+            <div class="grid-3" style="margin-bottom: 20px;">
+                <div class="info-card">
+                    <h4>Pages publiques (13)</h4>
+                    <ul>
+                        <li>Accueil (hero, categories, stats)</li>
+                        <li>Tout Parcourir (filtres, pagination)</li>
+                        <li>Detail article (galerie, avis)</li>
+                        <li>Connexion (split layout)</li>
+                        <li>Inscription</li>
+                        <li>Panier</li>
+                        <li>Paiement (stepper 3 etapes)</li>
+                        <li>Negociation (chat interface)</li>
+                        <li>Mon Compte (profil, commandes)</li>
+                        <li>Notifications + alertes</li>
+                        <li>Avis</li>
+                    </ul>
+                </div>
+                <div class="info-card accent-warning">
+                    <h4>Pages Admin (5)</h4>
+                    <ul>
+                        <li>Dashboard (statistiques globales)</li>
+                        <li>Gestion des vendeurs</li>
+                        <li>Gestion des articles</li>
+                        <li>Gestion des encheres</li>
+                        <li>Detail enchere</li>
+                    </ul>
+                </div>
+                <div class="info-card accent-violet">
+                    <h4>Pages Vendeur (6)</h4>
+                    <ul>
+                        <li>Dashboard (mur de profil, stats)</li>
+                        <li>Mes articles</li>
+                        <li>Ajouter un article</li>
+                        <li>Editer un article</li>
+                        <li>Editer profil (photo + fond)</li>
+                        <li>Mes negociations</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section-title">Elements de design</div>
+            <div class="grid-4">
+                <div style="background: var(--light); border-radius: 10px; padding: 16px; text-align: center;">
+                    <div style="font-size: 13px; font-weight: 600; color: var(--navy);">Hero Carousel</div>
+                    <div style="font-size: 11px; color: #888; margin-top: 4px;">3 slides avec overlay gradient</div>
+                </div>
+                <div style="background: var(--light); border-radius: 10px; padding: 16px; text-align: center;">
+                    <div style="font-size: 13px; font-weight: 600; color: var(--navy);">Glassmorphism Navbar</div>
+                    <div style="font-size: 11px; color: #888; margin-top: 4px;">Sticky + mega menu</div>
+                </div>
+                <div style="background: var(--light); border-radius: 10px; padding: 16px; text-align: center;">
+                    <div style="font-size: 13px; font-weight: 600; color: var(--navy);">Compteurs animes</div>
+                    <div style="font-size: 11px; color: #888; margin-top: 4px;">IntersectionObserver + animation</div>
+                </div>
+                <div style="background: var(--light); border-radius: 10px; padding: 16px; text-align: center;">
+                    <div style="font-size: 13px; font-weight: 600; color: var(--navy);">Google Maps</div>
+                    <div style="font-size: 11px; color: #888; margin-top: 4px;">Campus ECE Paris</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 10 : SPECIFICATIONS FONCTIONNELLES -->
+    <!-- ============================================================ -->
+    <div class="slide" id="slide-10">
+        <div class="slide-header">
+            <h2>Specifications fonctionnelles</h2>
+            <div class="slide-num">10 / 16</div>
+        </div>
+        <div class="slide-body">
+            <div class="section-title">Cas d'utilisation principaux</div>
+            <div class="grid-2" style="margin-bottom: 24px;">
+                <div class="info-card">
+                    <h4>UC1 - Inscription acheteur</h4>
+                    <p><span class="tag tag-green">Acteur: Visiteur</span><br>
+                    Le visiteur remplit le formulaire (prenom, nom, email, mot de passe). Compte cree en role "acheteur". Redirection vers l'accueil.</p>
+                </div>
+                <div class="info-card accent-violet">
+                    <h4>UC2 - Connexion</h4>
+                    <p><span class="tag tag-blue">Acteur: Tout utilisateur</span><br>
+                    Saisie email + mot de passe. Verification BDD (password_verify). Session PHP, redirection selon role.</p>
+                </div>
+                <div class="info-card accent-success">
+                    <h4>UC3 - Achat immediat</h4>
+                    <p><span class="tag tag-green">Acteur: Acheteur</span><br>
+                    Ajout au panier, passage au paiement, validation carte, creation commande, article marque "vendu".</p>
+                </div>
+                <div class="info-card accent-warning">
+                    <h4>UC4 - Negociation</h4>
+                    <p><span class="tag tag-orange">Acteur: Acheteur + Vendeur</span><br>
+                    Proposition de prix, max 5 rounds, clause legale si acceptation. Ajout auto au panier.</p>
+                </div>
+                <div class="info-card accent-danger">
+                    <h4>UC5 - Meilleure offre</h4>
+                    <p><span class="tag tag-purple">Acteur: Acheteur + Admin</span><br>
+                    Enchere scellee, prix max soumis, resolution admin, prix paye = 2e offre + 1 EUR.</p>
+                </div>
+                <div class="info-card accent-navy">
+                    <h4>UC6 - Administration</h4>
+                    <p><span class="tag tag-orange">Acteur: Admin</span><br>
+                    Creation/suppression vendeurs, moderation articles, resolution encheres, statistiques globales.</p>
+                </div>
+            </div>
+
+            <div class="section-title">Criteres de validation</div>
+            <div class="grid-3">
+                <div style="font-size: 12px; line-height: 2;">
+                    <p>3 roles utilisateurs distincts</p>
+                    <p>3 types de vente fonctionnels</p>
+                    <p>3 gammes d'articles</p>
+                    <p>CRUD complet articles</p>
+                </div>
+                <div style="font-size: 12px; line-height: 2;">
+                    <p>Panier fonctionnel</p>
+                    <p>Paiement simule (validation BDD)</p>
+                    <p>Notifications en base</p>
+                    <p>Alertes de recherche</p>
+                </div>
+                <div style="font-size: 12px; line-height: 2;">
+                    <p>Avis et notes 1-5 etoiles</p>
+                    <p>Design responsive</p>
+                    <p>Google Maps integre</p>
+                    <p>Carte de reduction (bonus)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 11 : LES 3 TYPES DE VENTE -->
+    <!-- ============================================================ -->
+    <div class="slide" id="slide-11">
+        <div class="slide-header">
+            <h2>Les 3 types de vente</h2>
+            <div class="slide-num">11 / 16</div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-3">
+                <div class="info-card" style="border-left-color: var(--success);">
+                    <h4 style="color: var(--success);">Achat immediat</h4>
+                    <div style="font-size: 42px; text-align: center; margin: 16px 0; color: var(--success);">&#x1F6D2;</div>
+                    <div style="font-size: 13px; line-height: 1.8;">
+                        <p><strong>1.</strong> L'acheteur consulte l'article</p>
+                        <p><strong>2.</strong> Clic "Ajouter au panier"</p>
+                        <p><strong>3.</strong> Passage au paiement</p>
+                        <p><strong>4.</strong> Formulaire adresse + carte</p>
+                        <p><strong>5.</strong> Validation (carte en BDD)</p>
+                        <p><strong>6.</strong> Commande creee</p>
+                        <p><strong>7.</strong> Article "vendu"</p>
+                        <p><strong>8.</strong> Notification + email</p>
+                    </div>
+                </div>
+
+                <div class="info-card" style="border-left-color: var(--warning);">
+                    <h4 style="color: var(--warning);">Negociation</h4>
+                    <div style="font-size: 42px; text-align: center; margin: 16px 0; color: var(--warning);">&#x1F91D;</div>
+                    <div style="font-size: 13px; line-height: 1.8;">
+                        <p><strong>1.</strong> L'acheteur propose un prix</p>
+                        <p><strong>2.</strong> Le vendeur recoit la proposition</p>
+                        <p><strong>3.</strong> Accepte / Refuse / Contre-offre</p>
+                        <p><strong>4.</strong> Maximum 5 rounds</p>
+                        <p><strong>5.</strong> Clause legale : l'acheteur est engage</p>
+                        <p><strong>6.</strong> Si accord : prix verrouille</p>
+                        <p><strong>7.</strong> Ajout auto au panier</p>
+                        <p><strong>8.</strong> Passage au paiement</p>
+                    </div>
+                </div>
+
+                <div class="info-card" style="border-left-color: var(--violet);">
+                    <h4 style="color: var(--violet);">Meilleure offre</h4>
+                    <div style="font-size: 42px; text-align: center; margin: 16px 0; color: var(--violet);">&#x1F3AF;</div>
+                    <div style="font-size: 13px; line-height: 1.8;">
+                        <p><strong>1.</strong> Article avec periode definie</p>
+                        <p><strong>2.</strong> L'acheteur soumet prix max</p>
+                        <p><strong>3.</strong> Plusieurs encherisseurs</p>
+                        <p><strong>4.</strong> A la cloture : resolution admin</p>
+                        <p><strong>5.</strong> Prix paye = 2e offre + 1 EUR</p>
+                        <p><strong>6.</strong> Gagnant notifie</p>
+                        <p><strong>7.</strong> Ajout auto au panier</p>
+                        <p><strong>8.</strong> Perdants informes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px;">
+                <div class="section-title">Bonus : cartes de reduction</div>
+                <div class="grid-2">
+                    <div class="info-card accent-success">
+                        <h4>Achat > 100 EUR</h4>
+                        <p>Carte de reduction de <strong>10%</strong> generee automatiquement, utilisable sur la prochaine commande.</p>
+                    </div>
+                    <div class="info-card accent-warning">
+                        <h4>Achat > 200 EUR</h4>
+                        <p>Carte de reduction de <strong>20%</strong> generee automatiquement, tracee dans la table cartes_reduction.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 12 : FONCTIONNALITES AVANCEES -->
+    <!-- ============================================================ -->
+    <div class="slide" id="slide-12">
+        <div class="slide-header">
+            <h2>Fonctionnalites avancees</h2>
+            <div class="slide-num">12 / 16</div>
+        </div>
+        <div class="slide-body">
+            <p class="section-subtitle">Fonctionnalites bonus au-dela du cahier des charges</p>
+
+            <div class="grid-3" style="margin-bottom: 20px;">
+                <div class="info-card">
+                    <h4>Mur de profil vendeur</h4>
+                    <p>Photo de profil (max 5 MB) + image de fond (max 10 MB). Upload avec apercu en temps reel. Auto-suppression des anciennes images.</p>
+                </div>
+                <div class="info-card accent-violet">
+                    <h4>Multi-photos + Video</h4>
+                    <p>Galerie multi-images par article avec carousel et miniatures. Support video YouTube/URL optionnelle.</p>
+                </div>
+                <div class="info-card accent-success">
+                    <h4>Alertes de recherche</h4>
+                    <p>L'acheteur definit des criteres (mot-cle, categorie, prix max). Notification automatique quand un article correspondant est publie.</p>
+                </div>
+                <div class="info-card accent-warning">
+                    <h4>Systeme d'avis</h4>
+                    <p>Notes 1-5 etoiles + commentaire par article. Un seul avis par utilisateur par article (contrainte UNIQUE).</p>
+                </div>
+                <div class="info-card accent-danger">
+                    <h4>Cartes de reduction</h4>
+                    <p>10-20% de reduction auto-generee pour achats > 100 EUR. Tracee en BDD, marquee utilisee apres application.</p>
+                </div>
+                <div class="info-card accent-navy">
+                    <h4>Compteur panier AJAX</h4>
+                    <p>Mise a jour en temps reel du badge du panier dans la navbar sans rechargement de page.</p>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="info-card">
+                    <h4>Description qualite/defaut</h4>
+                    <p>Chaque article a une description des qualites et une description des defauts separees, pour plus de transparence.</p>
+                </div>
+                <div class="info-card accent-violet">
+                    <h4>Validation paiement avancee</h4>
+                    <p>Algorithme de Luhn pour numeros de carte, verification de la date d'expiration, validation du CVV, code postal 5 chiffres.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 13 : STRUCTURE DU PROJET -->
+    <!-- ============================================================ -->
+    <div class="slide" id="slide-13">
+        <div class="slide-header">
+            <h2>Structure du projet</h2>
+            <div class="slide-num">13 / 16</div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="file-tree">
+<span class="dir">Marketplace/</span>
+├── <span class="file">index.php</span> <span class="comment"># Page d'accueil</span>
+├── <span class="dir">config/</span>
+│   └── <span class="file">database.php</span> <span class="comment"># Connexion PDO</span>
+├── <span class="dir">css/</span>
+│   └── <span class="file">style.css</span> <span class="comment"># 2000+ lignes</span>
+├── <span class="dir">js/</span>
+│   └── <span class="file">script.js</span> <span class="comment"># 550+ lignes</span>
+├── <span class="dir">includes/</span>
+│   ├── <span class="file">header.php</span>
+│   ├── <span class="file">navbar.php</span>
+│   └── <span class="file">footer.php</span>
+├── <span class="dir">php/</span>
+│   ├── <span class="file">auth.php</span>
+│   ├── <span class="file">article_actions.php</span>
+│   ├── <span class="file">panier_actions.php</span>
+│   ├── <span class="file">paiement_actions.php</span>
+│   ├── <span class="file">negociation_actions.php</span>
+│   ├── <span class="file">enchere_actions.php</span>
+│   ├── <span class="file">avis_actions.php</span>
+│   ├── <span class="file">admin_actions.php</span>
+│   ├── <span class="file">vendeur_actions.php</span>
+│   └── <span class="file">helpers.php</span>
+├── <span class="dir">pages/</span>
+│   ├── <span class="file">tout_parcourir.php</span>
+│   ├── <span class="file">article.php</span>
+│   ├── <span class="file">panier.php</span>
+│   ├── <span class="file">paiement.php</span>
+│   ├── <span class="file">compte.php</span>
+│   ├── <span class="file">connexion.php</span>
+│   ├── <span class="file">inscription.php</span>
+│   ├── <span class="file">notifications.php</span>
+│   ├── <span class="file">negociation.php</span>
+│   ├── <span class="file">avis.php</span>
+│   ├── <span class="dir">admin/</span>
+│   │   ├── <span class="file">dashboard.php</span>
+│   │   ├── <span class="file">gestion_vendeurs.php</span>
+│   │   ├── <span class="file">gestion_articles.php</span>
+│   │   └── <span class="file">gestion_encheres.php</span>
+│   └── <span class="dir">vendeur/</span>
+│       ├── <span class="file">dashboard.php</span>
+│       ├── <span class="file">mes_articles.php</span>
+│       ├── <span class="file">ajouter_article.php</span>
+│       ├── <span class="file">editer_profil.php</span>
+│       └── <span class="file">negociations.php</span>
+└── <span class="dir">images/</span>
+                </div>
+
+                <div>
+                    <div class="section-title">Patrons d'architecture</div>
+                    <div class="info-card" style="margin-bottom: 16px;">
+                        <h4>Base URL pattern</h4>
+                        <p>Chaque page definit <code>$base_url</code> relativement a sa profondeur dans l'arborescence ('', '../', '../../').</p>
+                    </div>
+                    <div class="info-card accent-violet" style="margin-bottom: 16px;">
+                        <h4>Shared includes</h4>
+                        <p>Toute page : header.php -> navbar.php -> contenu -> footer.php. Les 3 composants partages garantissent la coherence.</p>
+                    </div>
+                    <div class="info-card accent-success" style="margin-bottom: 16px;">
+                        <h4>Session-based auth</h4>
+                        <p><code>$_SESSION['user_id']</code>, <code>$_SESSION['user_role']</code> pour gerer l'authentification et les permissions.</p>
+                    </div>
+                    <div class="info-card accent-warning" style="margin-bottom: 16px;">
+                        <h4>PHP action scripts</h4>
+                        <p>Les formulaires POST vers <code>php/*_actions.php</code> qui traitent la logique metier et redirigent.</p>
+                    </div>
+                    <div class="info-card accent-danger">
+                        <h4>Single CSS + Single JS</h4>
+                        <p>Un seul fichier <code>style.css</code> (2000+ lignes) et un seul <code>script.js</code> (550+ lignes) pour tout le site.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 14 : JOURNAL IA -->
+    <!-- ============================================================ -->
+    <div class="slide" id="slide-14">
+        <div class="slide-header">
+            <h2>Journal d'assistance par IA</h2>
+            <div class="slide-num">14 / 16</div>
+        </div>
+        <div class="slide-body">
+            <p class="section-subtitle">Outils IA utilises et parties du projet influencees</p>
+
+            <div class="grid-2" style="margin-bottom: 24px;">
+                <div>
+                    <div class="section-title">Outil utilise</div>
+                    <div class="info-card" style="margin-bottom: 12px;">
+                        <h4>Claude Code (Anthropic)</h4>
+                        <p>Assistant IA en ligne de commande (CLI) utilise pour le developpement full-stack : generation et refactoring de code PHP/CSS/JS, aide au debugging, optimisation du code, et assistance a la conception de la base de donnees.</p>
+                        <br>
+                        <p><strong>Utilisation typique :</strong> on decrivait la fonctionnalite souhaitee en langage naturel et Claude Code generait le code correspondant, qu'on relisait, adaptait et integrait dans le projet.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="section-title">Parties influencees par l'IA</div>
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Partie du projet</th>
+                                <th>Niveau</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Structure CSS / animations</td>
+                                <td><span class="tag tag-orange">Assiste</span></td>
+                            </tr>
+                            <tr>
+                                <td>Scripts PHP actions</td>
+                                <td><span class="tag tag-orange">Assiste</span></td>
+                            </tr>
+                            <tr>
+                                <td>Schema SQL (create_database.sql)</td>
+                                <td><span class="tag tag-blue">Guide</span></td>
+                            </tr>
+                            <tr>
+                                <td>Validation paiement (Luhn)</td>
+                                <td><span class="tag tag-orange">Assiste</span></td>
+                            </tr>
+                            <tr>
+                                <td>Logique negociation</td>
+                                <td><span class="tag tag-purple">Humain + IA</span></td>
+                            </tr>
+                            <tr>
+                                <td>Design visuel / palette</td>
+                                <td><span class="tag tag-green">Humain</span></td>
+                            </tr>
+                            <tr>
+                                <td>Architecture projet</td>
+                                <td><span class="tag tag-green">Humain</span></td>
+                            </tr>
+                            <tr>
+                                <td>Documents de conception</td>
+                                <td><span class="tag tag-blue">Guide</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="info-card" style="background: #fff3e0;">
+                <h4 style="color: #e65100;">Estimation du code genere par IA</h4>
+                <p>Environ <strong>30-40%</strong> du code a ete assiste ou genere par des outils IA. Le reste (60-70%) a ete ecrit manuellement, incluant l'architecture, le design, les choix techniques et l'integration globale. Tout le code IA a ete relu, adapte et teste par l'equipe.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 15 : VERSIONING GIT -->
+    <!-- ============================================================ -->
+    <div class="slide" id="slide-15">
+        <div class="slide-header">
+            <h2>Versioning Git</h2>
+            <div class="slide-num">15 / 16</div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2" style="margin-bottom: 24px;">
+                <div>
+                    <div class="section-title">Repository GitHub</div>
+                    <div class="info-card" style="margin-bottom: 16px;">
+                        <h4>github.com/David-dsv/Omnes_Marketplace</h4>
+                        <p>
+                            <strong>Branche :</strong> main<br>
+                            <strong>Commits :</strong> 28 commits<br>
+                            <strong>Contributeurs :</strong> 3 membres
+                        </p>
+                    </div>
+
+                    <div class="section-title">Contributeurs</div>
+                    <div style="display: flex; gap: 16px;">
+                        <div style="text-align: center; background: var(--light); padding: 16px; border-radius: 10px; flex: 1;">
+                            <div style="font-size: 28px; font-weight: 700; color: var(--purple-brand);">20</div>
+                            <div style="font-size: 12px; color: #888;">davidsv</div>
+                        </div>
+                        <div style="text-align: center; background: var(--light); padding: 16px; border-radius: 10px; flex: 1;">
+                            <div style="font-size: 28px; font-weight: 700; color: var(--violet);">6</div>
+                            <div style="font-size: 12px; color: #888;">dhippo</div>
+                        </div>
+                        <div style="text-align: center; background: var(--light); padding: 16px; border-radius: 10px; flex: 1;">
+                            <div style="font-size: 28px; font-weight: 700; color: var(--success);">2</div>
+                            <div style="font-size: 12px; color: #888;">Come Regnier</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="section-title">Historique des commits (28)</div>
+                    <ul class="commit-list" style="max-height: 420px; overflow-y: auto;">
+                        <li><span class="commit-hash">78f59de</span> Simplify : nettoyage global du projet</li>
+                        <li><span class="commit-hash">8bdcb7d</span> Enhancement massif CSS : polish production-grade</li>
+                        <li><span class="commit-hash">5be4a45</span> Ajout Livrable 1 : documents de conception</li>
+                        <li><span class="commit-hash">864be7c</span> Ajout clause legale sur la page Mon Compte</li>
+                        <li><span class="commit-hash">b3ee55e</span> Ajout carte bancaire masquee sur Mon Compte</li>
+                        <li><span class="commit-hash">be971e0</span> Ajout multi-photos, video, alertes de recherche</li>
+                        <li><span class="commit-hash">107bccb</span> Fix formulaire paiement : bug saisie</li>
+                        <li><span class="commit-hash">913367d</span> Simplification et optimisation (-217 lignes)</li>
+                        <li><span class="commit-hash">bf1b93a</span> Correction fonctionnalite de recherche</li>
+                        <li><span class="commit-hash">026da19</span> Ajout liste des comptes de test</li>
+                        <li><span class="commit-hash">a980b9e</span> Mur de profil vendeur (photo + fond)</li>
+                        <li><span class="commit-hash">cd6aa01</span> Ajout MailHog pour emails</li>
+                        <li><span class="commit-hash">9a0f00d</span> Amelioration dashboard admin et vendeur</li>
+                        <li><span class="commit-hash">0149661</span> 3 types de ventes implementees</li>
+                        <li><span class="commit-hash">4173523</span> Remplissage base de donnees</li>
+                        <li><span class="commit-hash">6dada6d</span> Amelioration responsive navbar</li>
+                        <li><span class="commit-hash">9ebffe7</span> Correction des accents (import base)</li>
+                        <li><span class="commit-hash">cf2cf73</span> Ajout du Readme</li>
+                        <li><span class="commit-hash">5135722</span> Suppression formes animees hero</li>
+                        <li><span class="commit-hash">c633e06</span> Remplacement police Jost par Roboto 500</li>
+                        <li><span class="commit-hash">3783ce4</span> Ajout police Jost pour titres</li>
+                        <li><span class="commit-hash">ebc69c7</span> Palette bleu vers violet Omnes Education</li>
+                        <li><span class="commit-hash">e490c43</span> Ajout images articles</li>
+                        <li><span class="commit-hash">a76ebb6</span> Nettoyage emojis, icones decoratives</li>
+                        <li><span class="commit-hash">fd5b32b</span> Logo Omnes Education</li>
+                        <li><span class="commit-hash">43fc89f</span> Front-end complet : refonte visuelle</li>
+                        <li><span class="commit-hash">2ed438a</span> Initial commit : structure complete</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 16 : BILAN + REFERENCES -->
+    <!-- ============================================================ -->
+    <div class="slide" id="slide-16">
+        <div class="slide-header">
+            <h2>Bilan et references</h2>
+            <div class="slide-num">16 / 16</div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2" style="margin-bottom: 24px;">
+                <div>
+                    <div class="section-title">Bilan collectif</div>
+                    <div class="bilan-card">
+                        <p>Le projet Omnes MarketPlace a ete mene a bien avec succes. L'equipe a implemente l'ensemble des fonctionnalites demandees dans le cahier des charges : les 3 types de vente (achat immediat, negociation avec max 5 rounds, et meilleure offre), les 3 roles utilisateurs avec des interfaces dediees, le systeme de panier et paiement, les notifications et alertes de recherche, ainsi que le systeme d'avis.</p>
+                        <br>
+                        <p>Au-dela du cahier des charges, nous avons ajoute des fonctionnalites avancees : mur de profil vendeur avec upload d'images, multi-photos par article, cartes de reduction, validation de paiement avancee (algorithme de Luhn), et un compteur de panier AJAX temps reel.</p>
+                        <br>
+                        <p>Le stack 100% natif (sans framework backend) nous a permis de comprendre en profondeur les mecanismes du web : sessions PHP, requetes preparees PDO, gestion de fichiers, AJAX, et responsive design.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="section-title">Bilan individuel</div>
+                    <div class="bilan-card" style="margin-bottom: 12px;">
+                        <h4>David Vuong</h4>
+                        <p>J'ai travaille sur le front-end et l'integration des fonctionnalites. Le plus gros defi a ete de faire cohabiter les 3 types de vente (achat immediat, negociation, encheres) dans un meme panier avec des logiques differentes.</p>
+                    </div>
+                    <div class="bilan-card" style="margin-bottom: 12px;">
+                        <h4>Dhippo</h4>
+                        <p>J'ai pris en charge la documentation et la conception : architecture systeme, modele entite-association, specifications fonctionnelles, storyboard. J'ai aussi rempli la base de donnees avec les donnees de test.</p>
+                    </div>
+                    <div class="bilan-card">
+                        <h4>Come Regnier</h4>
+                        <p>J'ai concu le schema SQL avec les 13 tables, les relations et contraintes de la base de donnees. J'ai aussi developpe la fonctionnalite de recherche, contribue a la logique du panier, et effectue les tests de validation sur l'ensemble de l'application.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title">References et bibliographie</div>
+            <div class="grid-2">
+                <div style="font-size: 12.5px; line-height: 2;">
+                    <p><strong>Bootstrap 5.3</strong> - getbootstrap.com</p>
+                    <p><strong>jQuery 3.7</strong> - jquery.com</p>
+                    <p><strong>Font Awesome 6.5</strong> - fontawesome.com</p>
+                    <p><strong>Google Fonts</strong> - fonts.google.com (Poppins, Roboto)</p>
+                    <p><strong>PHP Manual</strong> - php.net/manual</p>
+                    <p><strong>MySQL Documentation</strong> - dev.mysql.com/doc</p>
+                </div>
+                <div style="font-size: 12.5px; line-height: 2;">
+                    <p><strong>W3Schools</strong> - w3schools.com (HTML, CSS, PHP, JS)</p>
+                    <p><strong>MDN Web Docs</strong> - developer.mozilla.org</p>
+                    <p><strong>OpenClassrooms</strong> - MySQL et PHP (tutoriels)</p>
+                    <p><strong>Bootstrap Icons</strong> - icons.getbootstrap.com</p>
+                    <p><strong>Google Maps API</strong> - developers.google.com/maps</p>
+                    <p><strong>Stack Overflow</strong> - stackoverflow.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav-bar" id="navbar">
+    <button onclick="prevSlide()">Precedent</button>
+    <span id="slideCounter">1 / 16</span>
+    <button onclick="nextSlide()">Suivant</button>
+    <button onclick="toggleFullscreen()" style="background: var(--navy);">Plein ecran</button>
+</div>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+
+    function showSlide(index) {
+        currentSlide = Math.max(0, Math.min(index, slides.length - 1));
+        slides[currentSlide].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('slideCounter').textContent = (currentSlide + 1) + ' / ' + slides.length;
+    }
+
+    function nextSlide() { showSlide(currentSlide + 1); }
+    function prevSlide() { showSlide(currentSlide - 1); }
+
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else {
+            document.exitFullscreen();
+        }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+            e.preventDefault();
+            nextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            prevSlide();
+        } else if (e.key === 'f' || e.key === 'F') {
+            toggleFullscreen();
+        }
+    });
+
+    // Update counter on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const index = Array.from(slides).indexOf(entry.target);
+                if (index !== -1) {
+                    currentSlide = index;
+                    document.getElementById('slideCounter').textContent = (currentSlide + 1) + ' / ' + slides.length;
+                }
+            }
+        });
+    }, { threshold: 0.5 });
+
+    slides.forEach(slide => observer.observe(slide));
+</script>
+
+</body>
+</html>

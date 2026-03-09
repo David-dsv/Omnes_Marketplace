@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Script Oral - Soutenance Omnes MarketPlace</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #1a1a2e;
+            line-height: 1.85;
+            font-size: 11pt;
+            background: #fff;
+            padding: 20mm 25mm;
+            max-width: 210mm;
+            margin: 0 auto;
+        }
+        @media print {
+            body { font-size: 10.5pt; padding: 15mm 20mm; }
+            .page-break { page-break-before: always; }
+        }
+        h1 {
+            font-size: 20pt;
+            color: #6B3FBE;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #555;
+            font-size: 10pt;
+            margin-bottom: 24px;
+            border-bottom: 2px solid #6B3FBE;
+            padding-bottom: 12px;
+        }
+        h2 {
+            font-size: 13pt;
+            color: #6B3FBE;
+            margin: 20px 0 8px 0;
+            padding-bottom: 3px;
+            border-bottom: 1px solid #ddd;
+        }
+        .speaker {
+            font-weight: 700;
+            color: #0D0B2B;
+            display: inline-block;
+            margin-top: 10px;
+            margin-bottom: 2px;
+            font-size: 10.5pt;
+        }
+        .speaker.come::before { content: "Come : "; color: #2e7d32; }
+        .speaker.david::before { content: "David : "; color: #1565c0; }
+        .speaker.hippolyte::before { content: "Hippolyte : "; color: #c62828; }
+        p { margin-bottom: 6px; }
+        .note {
+            font-size: 9pt;
+            color: #888;
+            font-style: italic;
+            margin: 4px 0 8px 0;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Script Oral &mdash; Soutenance Omnes MarketPlace</h1>
+<p class="subtitle">Come, David, Hippolyte &mdash; Mars 2026</p>
+
+<!-- ======================================== -->
+<h2>1. Introduction</h2>
+
+<p class="speaker come"></p>
+<p>Bonjour, nous sommes Come, David et Hippolyte, et nous vous presentons Omnes MarketPlace. C'est une plateforme de marketplace etudiante pour la communaute Omnes Education, dans l'esprit du Bon Coin. Les etudiants peuvent acheter et vendre tout type d'article : electronique, vetements, livres, mobilier, equipements sportifs, et plus encore.</p>
+
+<p class="speaker david"></p>
+<p>Le projet a ete developpe en stack 100% native, sans aucun framework back-end ni CMS. On utilise PHP 8 pour le serveur, MySQL 8 pour la base de donnees, et Bootstrap 5.3 avec du JavaScript et jQuery pour le front. Le tout represente 39 fichiers PHP, 14 tables en base, environ 2 600 lignes de CSS et 800 lignes de JavaScript.</p>
+
+<p class="speaker hippolyte"></p>
+<p>L'application gere trois roles utilisateurs : administrateur, vendeur et acheteur. Et trois types de vente : l'achat immediat, la negociation entre vendeur et acheteur, et le systeme de meilleure offre par encheres a l'aveugle. On va vous detailler tout ca dans la presentation.</p>
+
+<!-- ======================================== -->
+<h2>2. Repartition du travail</h2>
+
+<p class="speaker come"></p>
+<p>Pour la repartition, Come s'est occupe de l'architecture generale, la base de donnees, la configuration serveur et l'integration globale des differents modules. David a pris en charge tout le front-end : le design CSS, le responsive, la navbar, le footer, les pages publiques et l'identite visuelle du site. Hippolyte a developpe la logique metier : le systeme d'authentification, la gestion des roles, les tableaux de bord admin et vendeur, ainsi que le systeme de paiement et les notifications. On a tous collabore sur les parties transversales comme le panier, les negociations et les tests.</p>
+
+<!-- ======================================== -->
+<h2>3. Architecture du systeme</h2>
+
+<p class="speaker david"></p>
+<p>L'architecture suit un modele MVC simplifie en PHP natif. On a trois couches : la couche presentation avec HTML, CSS, Bootstrap et JavaScript ; la couche logique avec des scripts PHP d'action qui traitent les formulaires et redirigent ; et la couche donnees avec MySQL via PDO.</p>
+
+<p class="speaker come"></p>
+<p>Cote structure de fichiers, on a un dossier config pour la connexion PDO, un dossier includes avec les composants partages header, navbar et footer que chaque page inclut. Le dossier pages contient 12 pages publiques, 5 pages admin et 6 pages vendeur. Le dossier php contient 11 scripts d'action. Et on a un fichier CSS unique et un fichier JS unique pour tout le site. Chaque page definit une variable base_url selon sa profondeur dans l'arborescence, et les formulaires font un POST vers les scripts d'action qui traitent la requete puis redirigent.</p>
+
+<p class="note">[Montrer le schema d'architecture : Maquette/architecture_systeme.png]</p>
+
+<!-- ======================================== -->
+<h2>4. Modele Entite-Association</h2>
+
+<p class="speaker hippolyte"></p>
+<p>La base de donnees comporte 14 tables. Au coeur, on a la table utilisateurs qui gere les trois roles avec un hashage bcrypt des mots de passe. La table articles stocke les annonces avec leur type de vente, leur gamme et leur statut. On a aussi une table article_images pour la galerie multi-photos.</p>
+
+<p class="speaker come"></p>
+<p>Pour les transactions, le point le plus complexe c'est le panier polymorphe. Une seule table panier gere les trois types de transaction grace a deux colonnes nullable : negociation_id et enchere_id. Si les deux sont null, c'est un achat immediat. Si negociation_id est rempli, c'est une negociation validee avec le prix accorde. Si enchere_id est rempli, c'est une enchere remportee. Ca evite d'avoir trois tables panier separees.</p>
+
+<p class="speaker david"></p>
+<p>On a aussi les tables negociations et negociation_messages pour le chat de negociation avec un maximum de 5 tours. La table encheres stocke les offres a l'aveugle avec le montant maximum et le prix paye. Les tables commandes et commande_articles gerent les commandes finalisees. Et enfin les tables avis pour les notations, notifications pour les alertes, cartes_bancaires pour la simulation de paiement, et cartes_reduction pour les bonus de fidelite.</p>
+
+<p class="note">[Montrer le diagramme E/A : Maquette/entite_association.png]</p>
+
+<!-- ======================================== -->
+<h2>5. Design du front-end</h2>
+
+<p class="speaker david"></p>
+<p>Pour le design, on a adopte une palette violet et bleu marine qui reprend les couleurs d'Omnes Education. La couleur primaire est un violet a 6B3FBE, le fond sombre est un bleu marine profond a 0D0B2B, et l'accent est un violet vif a 8B44FF. La police de titres est Roboto 500, et Poppins pour le corps de texte. On utilise un effet glassmorphism sur la barre de navigation avec un fond semi-transparent et un backdrop-filter.</p>
+
+<p class="speaker david"></p>
+<p>La page d'accueil comprend un carrousel hero plein ecran avec une barre de recherche integree, des compteurs animes, une grille de categories, des sections selection du jour et ventes flash, une section comment ca marche en trois etapes, des temoignages, et une carte Google Maps du campus ECE Paris. Le CSS fait environ 2 600 lignes, tout est fait sur mesure sans template, et tout est responsive grace a Bootstrap et des media queries personnalisees.</p>
+
+<p class="note">[Montrer le storyboard : Maquette/storyboard/storyboard.html]</p>
+
+<!-- ======================================== -->
+<div class="page-break"></div>
+
+<h2>6. Specifications fonctionnelles</h2>
+
+<p class="speaker hippolyte"></p>
+<p>Commencons par les trois types de vente. Le premier, l'achat immediat, c'est le plus simple. L'acheteur voit un prix fixe, clique sur ajouter au panier, et procede au paiement. L'article passe au statut vendu a la finalisation. On verifie qu'il est encore disponible avant chaque ajout.</p>
+
+<p class="speaker come"></p>
+<p>Le deuxieme type, la negociation, c'est la fonctionnalite la plus complexe du projet. L'acheteur ouvre une session de negociation avec le vendeur. Ils echangent des propositions de prix dans un chat, avec un maximum de 5 tours. Si le vendeur accepte une proposition, l'article est verrouille au prix accorde et ajoute automatiquement au panier de l'acheteur. Si l'acheteur retire ensuite l'article du panier, la negociation expire et l'article est remis en vente avec une notification au vendeur. Tout ca est gere par des transactions SQL avec SELECT FOR UPDATE pour eviter les conflits de concurrence.</p>
+
+<p class="speaker hippolyte"></p>
+<p>Le troisieme type, la meilleure offre, utilise un mecanisme d'enchere a l'aveugle inspire du modele Vickrey. Chaque acheteur soumet son montant maximum sans voir les autres offres. A la cloture par l'administrateur, le gagnant est celui avec l'offre la plus haute, mais il paie le prix de la deuxieme meilleure offre plus un euro, ou le prix de reserve s'il est seul. L'article est ensuite ajoute automatiquement au panier du gagnant, et les perdants recoivent une notification.</p>
+
+<p class="speaker david"></p>
+<p>Pour le paiement, c'est une simulation complete. L'utilisateur remplit un formulaire d'adresse et de carte bancaire. On valide le format en front et en back : 16 chiffres pour le numero, 3 ou 4 pour le CVV, date d'expiration non depassee, code postal 5 chiffres. Le tout se fait dans une transaction SQL atomique : creation de la commande, insertion des lignes, passage des articles en vendu, et vidage du panier. Si le montant depasse 100 euros, une carte de reduction de 10% est generee automatiquement, et 20% au-dela de 200 euros. Un email de confirmation est envoye via MailHog.</p>
+
+<p class="speaker come"></p>
+<p>On a aussi un systeme de notifications stockees en base avec un polling AJAX qui met a jour le compteur dans la navbar. Un systeme d'avis avec des notes de 1 a 5 etoiles, un seul avis par utilisateur par article. Une recherche avec filtres avances par categorie, gamme, type de vente et fourchette de prix. Et un profil vendeur personnalisable avec upload de photo et image de fond, avec validation MIME et controle de taille.</p>
+
+<!-- ======================================== -->
+<h2>7. Demonstration</h2>
+
+<p class="speaker david"></p>
+<p>On va maintenant faire une demonstration en direct. D'abord le parcours acheteur : on se connecte, on parcourt les articles, on en ajoute un au panier en achat immediat, et on fait le paiement complet.</p>
+
+<p class="note">[Demo live : connexion acheteur > tout parcourir > article > panier > paiement > commande dans compte]</p>
+
+<p class="speaker come"></p>
+<p>Ensuite, la negociation. On ouvre deux navigateurs : un pour le vendeur, un pour l'acheteur. L'acheteur ouvre une negociation, propose un prix. Le vendeur repond avec une contre-offre. L'acheteur repropose, le vendeur accepte. On voit que l'article est automatiquement ajoute au panier de l'acheteur au prix negocie, et que les deux parties recoivent des notifications.</p>
+
+<p class="note">[Demo live : 2 navigateurs, negociation en temps reel]</p>
+
+<p class="speaker hippolyte"></p>
+<p>Enfin, les encheres. On montre un article en mode meilleure offre avec deux acheteurs qui placent des offres differentes. L'admin cloture l'enchere depuis son dashboard, et on voit le calcul du prix Vickrey, l'article dans le panier du gagnant, et la notification de defaite du perdant. Puis on montre rapidement le dashboard admin avec les statistiques et la gestion des vendeurs.</p>
+
+<p class="note">[Demo live : encheres + dashboard admin]</p>
+
+<!-- ======================================== -->
+<h2>8. Securite et bonnes pratiques</h2>
+
+<p class="speaker hippolyte"></p>
+<p>Cote securite, toutes les requetes SQL utilisent des requetes preparees PDO avec des parametres nommes, ce qui bloque les injections SQL. Les mots de passe sont hashes avec bcrypt via password_hash. On regenere l'identifiant de session apres chaque connexion pour empecher la fixation de session. Les uploads sont valides par type MIME, extension et taille. Chaque page protegee verifie le role en session. Les messages d'erreur sont generiques cote client et les details sont logues cote serveur. Et les operations critiques utilisent des transactions SQL avec SELECT FOR UPDATE pour gerer la concurrence.</p>
+
+<p class="speaker come"></p>
+<p>Pour les bonnes pratiques, on a centralise le code commun dans un fichier helpers.php avec des constantes et des fonctions partagees pour eviter la duplication. On utilise des variables CSS pour la coherence visuelle. Les pages sont separees des scripts d'action pour garder une separation claire entre affichage et logique.</p>
+
+<!-- ======================================== -->
+<h2>9. Journal d'assistance par IA</h2>
+
+<p class="speaker david"></p>
+<p>On a utilise Claude Code, le CLI d'Anthropic, comme assistant de developpement. Il nous a aide principalement sur quatre points : la generation et l'amelioration du CSS pour atteindre un niveau production, le refactoring du PHP avec la centralisation du code duplique, le debug de problemes comme les headers already sent ou les race conditions SQL, et la revue de code avec un audit de securite et de performance. La conception de l'architecture, les choix techniques, la logique metier et les tests ont ete faits par nous. L'IA a ete un outil d'acceleration sur les taches repetitives, pas un remplacement.</p>
+
+<!-- ======================================== -->
+<h2>10. Versioning Git</h2>
+
+<p class="speaker come"></p>
+<p>On a utilise Git avec GitHub pour le versioning, avec plus de 28 commits sur la branche main. Les messages de commit sont en francais et descriptifs. On utilise un gitignore pour exclure les fichiers sensibles. Chaque commit represente une fonctionnalite ou correction logique complete.</p>
+
+<p class="note">[Montrer l'historique GitHub]</p>
+
+<!-- ======================================== -->
+<h2>11. Bilan</h2>
+
+<p class="speaker hippolyte"></p>
+<p>Pour le bilan collectif, le projet a ete formateur. On a du concevoir une application complete de zero sans framework, ce qui nous a force a comprendre en profondeur chaque composant. Les points forts : l'application est fonctionnelle avec les trois types de vente operationnels, l'interface est soignee et responsive, et la securite a ete prise en compte. Les difficultes principales ont ete la gestion de la concurrence sur les negociations et encheres, et le panier polymorphe qui gere trois types de transaction dans une seule table.</p>
+
+<p class="speaker come"></p>
+<p>Comme ameliorations possibles, on pourrait ajouter des WebSockets pour le temps reel au lieu du polling AJAX, integrer un vrai systeme de paiement comme Stripe, ajouter des tokens CSRF sur tous les formulaires, et mettre en place des tests automatises avec PHPUnit.</p>
+
+<p class="speaker david"></p>
+<p>Merci pour votre attention. On est prets pour vos questions.</p>
+
+</body>
+</html>
