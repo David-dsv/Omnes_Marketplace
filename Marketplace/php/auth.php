@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/helpers.php';
 
 $action = $_POST['action'] ?? $_GET['action'] ?? '';
 
@@ -29,6 +30,11 @@ function handleLogin(PDO $pdo): void
 
     if (!$email || !$password) {
         header('Location: ../pages/connexion.php?error=' . urlencode('Veuillez remplir tous les champs.'));
+        exit;
+    }
+
+    if (!is_valid_email($email)) {
+        header('Location: ../pages/connexion.php?error=' . urlencode('Format d\'email invalide.'));
         exit;
     }
 
@@ -82,13 +88,18 @@ function handleRegister(PDO $pdo): void
         exit;
     }
 
-    if ($password !== $password_confirm) {
-        header('Location: ../pages/inscription.php?error=' . urlencode('Les mots de passe ne correspondent pas.'));
+    if (!is_valid_email($email)) {
+        header('Location: ../pages/inscription.php?error=' . urlencode('Format d\'email invalide.'));
         exit;
     }
 
-    if (strlen($password) < 6) {
-        header('Location: ../pages/inscription.php?error=' . urlencode('Le mot de passe doit contenir au moins 6 caractères.'));
+    if (!is_valid_password($password)) {
+        header('Location: ../pages/inscription.php?error=' . urlencode('Le mot de passe doit contenir au moins ' . MIN_PASSWORD_LENGTH . ' caractères.'));
+        exit;
+    }
+
+    if ($password !== $password_confirm) {
+        header('Location: ../pages/inscription.php?error=' . urlencode('Les mots de passe ne correspondent pas.'));
         exit;
     }
 
