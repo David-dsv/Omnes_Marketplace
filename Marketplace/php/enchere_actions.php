@@ -27,6 +27,10 @@ try {
                 json_error('Données invalides.');
             }
 
+            if ($montant_max < 0.01 || $montant_max > 999999.99) {
+                json_error('Le montant doit être entre 0,01 € et 999 999,99 €.');
+            }
+
             $pdo->beginTransaction();
 
             $stmt = $pdo->prepare("SELECT *
