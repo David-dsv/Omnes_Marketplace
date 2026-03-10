@@ -2,6 +2,7 @@
 session_start();
 header('Content-Type: application/json');
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/helpers.php';
 
 if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] ?? '') !== 'vendeur') {
     http_response_code(403);
@@ -45,7 +46,14 @@ function handle_upload(PDO $pdo, int $uid, string $file_key, string $column, str
         mkdir($upload_dir, 0755, true);
     }
 
-    $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    
+    if (!in_array($ext, ALLOWED_IMAGE_EXTENSIONS)) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Extension de fichier non autorisée']);
+        exit;
+    }
+    
     $filename = $prefix . '_' . $uid . '_' . time() . '.' . $ext;
     $filepath = $upload_dir . '/' . $filename;
 
