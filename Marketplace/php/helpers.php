@@ -117,3 +117,12 @@ function is_valid_credit_card(string $card_number): bool
     }
     return $sum % 10 === 0;
 }
+
+/**
+ * Validate URL (HTTP/HTTPS only).
+ */
+function is_valid_url(string $url): bool
+{
+    return filter_var($url, FILTER_VALIDATE_URL) !== false && 
+           preg_match('/^https?:\/\//', $url) === 1;
+}

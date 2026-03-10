@@ -49,6 +49,11 @@ switch ($action) {
             exit;
         }
 
+        if ($video_url && !is_valid_url($video_url)) {
+            header('Location: ../pages/vendeur/ajouter_article.php?error=' . urlencode('L\'URL vidéo est invalide.'));
+            exit;
+        }
+
         // Gestion de l'image
         $image_url = 'images/articles/placeholder.png';
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -208,6 +213,11 @@ switch ($action) {
 
         if (!in_array($statut_cible, $allowed_status, true)) {
             header('Location: ../pages/vendeur/editer_article.php?id=' . $article_id . '&error=' . urlencode('Statut invalide. Seuls "disponible" et "retire" sont autorisés.'));
+            exit;
+        }
+
+        if ($video_url && !is_valid_url($video_url)) {
+            header('Location: ../pages/vendeur/editer_article.php?id=' . $article_id . '&error=' . urlencode('L\'URL vidéo est invalide.'));
             exit;
         }
 
