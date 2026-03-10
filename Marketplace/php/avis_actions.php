@@ -23,6 +23,11 @@ if ($action === 'add') {
         exit;
     }
 
+    if (strlen($commentaire) < 5 || strlen($commentaire) > 1000) {
+        echo json_encode(['success' => false, 'message' => 'Le commentaire doit contenir entre 5 et 1000 caractères.']);
+        exit;
+    }
+
     $note = max(1, min(5, $note));
 
     try {
