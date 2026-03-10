@@ -71,6 +71,14 @@ try {
                 json_error('Données invalides.');
             }
 
+            if ($montant < 0.01 || $montant > 999999.99) {
+                json_error('Le montant doit être entre 0,01 € et 999 999,99 €.');
+            }
+
+            if ($message && (strlen($message) < 3 || strlen($message) > 500)) {
+                json_error('Le message doit contenir entre 3 et 500 caractères.');
+            }
+
             $pdo->beginTransaction();
 
             $stmt = $pdo->prepare("SELECT *
