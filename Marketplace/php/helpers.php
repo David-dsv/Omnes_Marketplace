@@ -126,3 +126,37 @@ function is_valid_url(string $url): bool
     return filter_var($url, FILTER_VALIDATE_URL) !== false && 
            preg_match('/^https?:\/\//', $url) === 1;
 }
+
+/**
+ * Validate uploaded image file.
+ */
+function is_valid_image_file(array $file, int $max_size_mb = 5): array
+{
+    $errors = [];
+    
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        $errors[] = 'Erreur lors du téléchargement du fichier';
+        return $errors;
+    }
+    
+    $max_bytes = $max_size_mb * 1024 * 1024;
+    if ($file['size'] > $max_bytes) {
+        $errors[] = "Le fichier dépasse la taille limite ({$max_size_mb} MB)";
+        return $errors;
+    }
+    
+    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    if (!in_array($ext, ALLOWED_IMAGE_EXTENSIONS, true)) {
+        $errors[] = 'Format de fichier non autorisé (JPEG, PNG, GIF, WebP seulement)';
+        return $errors;
+    }
+    
+    $mime = mime_content_type($file['tmp_name']);
+    $allowed_mimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!in_array($mime, $allowed_mimes, true)) {
+        $errors[] = 'Le fichier n\'est pas une image valide';
+        return $errors;
+    }
+    
+    return $errors;
+}

@@ -56,16 +56,14 @@ switch ($action) {
 
         // Gestion de l'image
         $image_url = 'images/articles/placeholder.png';
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $upload_dir = __DIR__ . '/../images/articles/';
-            if (!is_dir($upload_dir)) {
-                mkdir($upload_dir, 0755, true);
-            }
-            $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
-            $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-            $allowed_mimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-            $mime = mime_content_type($_FILES['image']['tmp_name']);
-            if (in_array($ext, $allowed) && in_array($mime, $allowed_mimes) && $_FILES['image']['size'] <= 5 * 1024 * 1024) {
+        if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+            $image_errors = is_valid_image_file($_FILES['image'], 5);
+            if (count($image_errors) === 0) {
+                $upload_dir = __DIR__ . '/../images/articles/';
+                if (!is_dir($upload_dir)) {
+                    mkdir($upload_dir, 0755, true);
+                }
+                $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
                 $filename = uniqid('article_') . '.' . $ext;
                 if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_dir . $filename)) {
                     $image_url = 'images/articles/' . $filename;
@@ -130,12 +128,21 @@ switch ($action) {
             // Upload photos supplémentaires
             if (!empty($_FILES['images_supplementaires']['name'][0])) {
                 $upload_dir = __DIR__ . '/../images/articles/';
-                $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
                 $position = 1;
                 foreach ($_FILES['images_supplementaires']['tmp_name'] as $i => $tmp) {
-                    if ($_FILES['images_supplementaires']['error'][$i] !== UPLOAD_ERR_OK || $position > 4) continue;
+                    if ($_FILES['images_supplementaires']['error'][$i] === UPLOAD_ERR_NO_FILE || $position > 4) continue;
+                    
+                    $file_info = [
+                        'name' => $_FILES['images_supplementaires']['name'][$i],
+                        'tmp_name' => $tmp,
+                        'error' => $_FILES['images_supplementaires']['error'][$i],
+                        'size' => $_FILES['images_supplementaires']['size'][$i],
+                    ];
+                    
+                    $img_errors = is_valid_image_file($file_info, 5);
+                    if (count($img_errors) > 0) continue;
+                    
                     $ext = strtolower(pathinfo($_FILES['images_supplementaires']['name'][$i], PATHINFO_EXTENSION));
-                    if (!in_array($ext, $allowed, true)) continue;
                     $fn = uniqid('article_extra_') . '.' . $ext;
                     if (move_uploaded_file($tmp, $upload_dir . $fn)) {
                         $stmt_img = $pdo->prepare("INSERT INTO article_images (article_id, image_url, position) VALUES (:aid, :url, :pos)");
