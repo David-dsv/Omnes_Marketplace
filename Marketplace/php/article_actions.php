@@ -34,6 +34,21 @@ switch ($action) {
             exit;
         }
 
+        if (strlen($titre) < 5 || strlen($titre) > 100) {
+            header('Location: ../pages/vendeur/ajouter_article.php?error=' . urlencode('Le titre doit contenir entre 5 et 100 caractères.'));
+            exit;
+        }
+
+        if (strlen($description_qualite) < 10 || strlen($description_qualite) > 2000) {
+            header('Location: ../pages/vendeur/ajouter_article.php?error=' . urlencode('La description doit contenir entre 10 et 2000 caractères.'));
+            exit;
+        }
+
+        if ($prix < 0.01 || $prix > 999999.99) {
+            header('Location: ../pages/vendeur/ajouter_article.php?error=' . urlencode('Le prix doit être entre 0,01 € et 999 999,99 €.'));
+            exit;
+        }
+
         // Gestion de l'image
         $image_url = 'images/articles/placeholder.png';
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
