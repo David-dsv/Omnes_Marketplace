@@ -100,22 +100,7 @@ function is_valid_password(string $password): bool
 function is_valid_credit_card(string $card_number): bool
 {
     $card = preg_replace('/\D/', '', $card_number);
-    if (strlen($card) < 13 || strlen($card) > 19) {
-        return false;
-    }
-    $sum = 0;
-    $parity = strlen($card) % 2;
-    for ($i = 0; $i < strlen($card); $i++) {
-        $digit = (int)$card[$i];
-        if ($i % 2 === $parity) {
-            $digit *= 2;
-            if ($digit > 9) {
-                $digit -= 9;
-            }
-        }
-        $sum += $digit;
-    }
-    return $sum % 10 === 0;
+    return strlen($card) >= 13 && strlen($card) <= 19;
 }
 
 /**
