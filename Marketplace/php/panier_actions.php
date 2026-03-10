@@ -50,15 +50,15 @@ switch ($action) {
                 exit;
             }
 
+            if ($article['statut'] !== 'disponible') {
+                json_error('Article non disponible.');
+            }
+
             $stmt = $pdo->prepare('SELECT id FROM panier WHERE utilisateur_id = :uid AND article_id = :aid');
             $stmt->execute([':uid' => $uid, ':aid' => $article_id]);
             $existing_panier_id = $stmt->fetchColumn();
 
             if ($article['type_vente'] === 'achat_immediat') {
-                if ($article['statut'] !== 'disponible') {
-                    echo json_encode(['success' => false, 'message' => 'Article non disponible.']);
-                    exit;
-                }
                 if ($existing_panier_id) {
                     echo json_encode(['success' => false, 'message' => 'Article déjà dans le panier.']);
                     exit;
