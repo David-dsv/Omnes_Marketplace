@@ -9,6 +9,9 @@ const ROLE_ADMIN = 'administrateur';
 const ROLE_VENDEUR = 'vendeur';
 const ROLE_ACHETEUR = 'acheteur';
 
+const MIN_PASSWORD_LENGTH = 8;
+const MAX_ADDRESS_LENGTH = 100;
+
 const CATEGORIES = ['Électronique', 'Vêtements', 'Maison', 'Livres', 'Sports', 'Divers'];
 
 const TYPE_VENTE_LABELS = [
@@ -54,4 +57,63 @@ function insert_notification(PDO $pdo, int $utilisateur_id, string $message): vo
 {
     $stmt = $pdo->prepare('INSERT INTO notifications (utilisateur_id, message) VALUES (:uid, :msg)');
     $stmt->execute([':uid' => $utilisateur_id, ':msg' => $message]);
+}
+
+// ---- Validation helpers ----
+
+/**
+ * Validate email format.
+ */
+function is_valid_email(string $email): bool
+{
+    return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+}
+
+/**
+ * Validate phone number format (France: 9-10 digits).
+ */
+function is_valid_phone(string $phone): bool
+{
+    $phone = preg_replace('/\D/', '', $phone);
+    return strlen($phone) >= 9 && strlen($phone) <= 10;
+}
+
+/**
+ * Validate postal code (France: 5 digits).
+ */
+function is_valid_postal_code(string $code): bool
+{
+    return preg_match('/^\d{5}$/', $code) === 1;
+}
+
+/**
+ * Validate password strength.
+ */
+function is_valid_password(string $password): bool
+{
+    return strlen($password) >= MIN_PASSWORD_LENGTH;
+}
+
+/**
+ * Validate credit card using Luhn algorithm.
+ */
+function is_valid_credit_card(string $card_number): bool
+{
+    $card = preg_replace('/\D/', '', $card_number);
+    if (strlen($card) < 13 || strlen($card) > 19) {
+        return false;
+    }
+    $sum = 0;
+    $parity = strlen($card) % 2;
+    for ($i = 0; $i < strlen($card); $i++) {
+        $digit = (int)$card[$i];
+        if ($i % 2 === $parity) {
+            $digit *= 2;
+            if ($digit > 9) {
+                $digit -= 9;
+            }
+        }
+        $sum += $digit;
+    }
+    return $sum % 10 === 0;
 }
