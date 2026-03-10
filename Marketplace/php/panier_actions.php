@@ -28,9 +28,15 @@ switch ($action) {
     case 'add':
         $article_id = (int)($_POST['article_id'] ?? 0);
         $negotiation_id = (int)($_POST['negotiation_id'] ?? 0);
+        $quantite = max(1, (int)($_POST['quantite'] ?? 1));
 
         if ($article_id <= 0) {
             echo json_encode(['success' => false, 'message' => 'Article invalide.']);
+            exit;
+        }
+
+        if ($quantite <= 0 || $quantite > 999) {
+            echo json_encode(['success' => false, 'message' => 'Quantité invalide.']);
             exit;
         }
 
