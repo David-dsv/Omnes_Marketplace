@@ -36,12 +36,27 @@ if (!$prenom || !$nom || !$adresse || !$code_postal || !$ville || !$pays || !$te
     exit;
 }
 
+if (strlen($adresse) > MAX_ADDRESS_LENGTH) {
+    header('Location: ../pages/paiement.php?error=' . urlencode('L\'adresse est trop longue (maximum ' . MAX_ADDRESS_LENGTH . ' caractères).'));
+    exit;
+}
+
+if (!is_valid_postal_code($code_postal)) {
+    header('Location: ../pages/paiement.php?error=' . urlencode('Code postal invalide (5 chiffres requis).'));
+    exit;
+}
+
+if (!is_valid_phone($telephone)) {
+    header('Location: ../pages/paiement.php?error=' . urlencode('Numéro de téléphone invalide.'));
+    exit;
+}
+
 $numero_carte = preg_replace('/\D+/', '', $numero_carte);
 $expiration = preg_replace('/\s+/', '', $expiration);
 $cvv = preg_replace('/\D+/', '', $cvv);
 
-if (!preg_match('/^\d{16}$/', $numero_carte)) {
-    header('Location: ../pages/paiement.php?error=' . urlencode('Numéro de carte invalide (16 chiffres requis).'));
+if (!is_valid_credit_card($numero_carte)) {
+    header('Location: ../pages/paiement.php?error=' . urlencode('Numéro de carte bancaire invalide.'));
     exit;
 }
 if (!preg_match('/^\d{3,4}$/', $cvv)) {
@@ -50,10 +65,6 @@ if (!preg_match('/^\d{3,4}$/', $cvv)) {
 }
 if (!preg_match('/^(0[1-9]|1[0-2])\/\d{2}$/', $expiration)) {
     header('Location: ../pages/paiement.php?error=' . urlencode('Date d\'expiration invalide (format MM/AA).'));
-    exit;
-}
-if (!preg_match('/^\d{5}$/', $code_postal)) {
-    header('Location: ../pages/paiement.php?error=' . urlencode('Code postal invalide (5 chiffres requis).'));
     exit;
 }
 
