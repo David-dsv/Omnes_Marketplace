@@ -4,6 +4,8 @@
  * Utilise mail() avec msmtp configuré vers MailHog (SMTP localhost:1025)
  */
 
+require_once __DIR__ . '/helpers.php';
+
 function envoyer_email_confirmation_commande(PDO $pdo, int $commande_id, int $acheteur_id): bool
 {
     // Récupérer les infos de l'acheteur
@@ -11,6 +13,11 @@ function envoyer_email_confirmation_commande(PDO $pdo, int $commande_id, int $ac
     $stmt->execute([':id' => $acheteur_id]);
     $acheteur = $stmt->fetch();
     if (!$acheteur || empty($acheteur['email'])) {
+        return false;
+    }
+
+    // Valider le format email avant d'envoyer
+    if (!is_valid_email($acheteur['email'])) {
         return false;
     }
 
