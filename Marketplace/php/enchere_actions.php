@@ -62,6 +62,12 @@ try {
             if ($now >= $date_fin) {
                 throw new RuntimeException('Les enchères sont terminées.');
             }
+            
+            // Vérifier que la durée minimale d'enchère est respectée (1 heure)
+            $intervalle = $date_fin->diff($now);
+            if ($intervalle->h < 1 && $intervalle->days === 0) {
+                throw new RuntimeException('Les enchères doivent durer au minimum 1 heure.');
+            }
             if ($montant_max < (float)$article['prix']) {
                 throw new RuntimeException(
                     'L\'enchère doit être supérieure ou égale au prix de réserve (' . number_format((float)$article['prix'], 2, ',', ' ') . ' €).'
