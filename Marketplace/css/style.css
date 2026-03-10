@@ -83,7 +83,8 @@ body {
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
-    color: var(--omnes-text-primary);
+    /* Inherit parent color so headings stay readable on dark/colored sections. */
+    color: inherit;
     letter-spacing: -0.01em;
     line-height: 1.3;
 }
@@ -675,7 +676,7 @@ img {
 section h2 {
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
-    color: var(--omnes-dark);
+    color: inherit;
     position: relative;
 }
 
@@ -687,7 +688,7 @@ section h2 {
     font-weight: 500;
     margin-bottom: 0.6rem;
     letter-spacing: -0.02em;
-    color: var(--omnes-text-primary);
+    color: inherit;
 }
 .section-title p {
     color: var(--omnes-text-secondary);
