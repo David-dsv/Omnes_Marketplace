@@ -95,6 +95,10 @@ switch ($action) {
                 header('Location: ../pages/vendeur/ajouter_article.php?error=' . urlencode('La date de début d\'enchères est invalide.'));
                 exit;
             }
+            if ($date_debut && $date_debut_ts < time()) {
+                header('Location: ../pages/vendeur/ajouter_article.php?error=' . urlencode('La date de début d\'enchères ne peut pas être dans le passé.'));
+                exit;
+            }
             if ($date_debut_ts >= $date_fin_ts) {
                 header('Location: ../pages/vendeur/ajouter_article.php?error=' . urlencode('La date de fin doit être postérieure à la date de début.'));
                 exit;
@@ -287,6 +291,11 @@ switch ($action) {
                     if ($date_debut_ts === false) {
                         $pdo->rollBack();
                         header('Location: ../pages/vendeur/editer_article.php?id=' . $article_id . '&error=' . urlencode('La date de début d\'enchères est invalide.'));
+                        exit;
+                    }
+                    if ($date_debut_input !== '' && $date_debut_ts < time()) {
+                        $pdo->rollBack();
+                        header('Location: ../pages/vendeur/editer_article.php?id=' . $article_id . '&error=' . urlencode('La date de début d\'enchères ne peut pas être dans le passé.'));
                         exit;
                     }
 
