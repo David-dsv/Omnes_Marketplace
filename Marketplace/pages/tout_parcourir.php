@@ -35,7 +35,7 @@ if ($gamme) {
 if ($recherche) {
     // Recherche sur titre et description - utiliser des paramètres séparés pour éviter les conflits PDO
     $where[] = "(a.titre LIKE :recherche_titre OR a.description LIKE :recherche_desc)";
-    $search_term = '%' . addslashes($recherche) . '%';
+    $search_term = '%' . $recherche . '%';
     $params[':recherche_titre'] = $search_term;
     $params[':recherche_desc'] = $search_term;
 }
