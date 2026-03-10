@@ -4,7 +4,7 @@ $base_url = '../../';
 $page_title = 'Ajouter un article';
 require_once $base_url . 'config/database.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'vendeur') {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'vendeur') {
     header('Location: ' . $base_url . 'pages/connexion.php');
     exit;
 }
